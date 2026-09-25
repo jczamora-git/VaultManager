@@ -33,25 +33,25 @@ withDefaults(
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 13px;
   margin: 0 auto;
   user-select: none;
 }
 
 .vk-pin-dot {
-  width: 12px;
-  height: 12px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: #E2DED9;
+  background: #E7E2DE;
   opacity: 0.45;
   transform: scale(0.75);
-  transition: transform var(--vk-motion-base) var(--vk-ease-enter),
-              opacity var(--vk-motion-base) var(--vk-ease-enter),
-              background-color var(--vk-motion-base) ease;
+  transition: transform var(--vk-motion-fast) var(--vk-ease-enter),
+              opacity var(--vk-motion-fast) var(--vk-ease-enter),
+              background-color var(--vk-motion-fast) ease;
 }
 
 .vk-pin-dot.is-filled {
-  background: #B82825;
+  background: #C52A27;
   opacity: 1;
   transform: scale(1);
 }
@@ -60,7 +60,7 @@ withDefaults(
 :global(.dark) .vk-pin-dot,
 :global(.ion-palette-dark) .vk-pin-dot,
 :global(body.dark-theme) .vk-pin-dot {
-  background: #333333;
+  background: #363636;
 }
 
 :global(.dark) .vk-pin-dot.is-filled,
@@ -71,15 +71,15 @@ withDefaults(
 
 /* Precise horizontal shake animation */
 .is-shaking {
-  animation: vk-dot-shake 280ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: vk-dot-shake 260ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 @keyframes vk-dot-shake {
   0% { transform: translateX(0); }
-  20% { transform: translateX(-7px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(3px); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
   100% { transform: translateX(0); }
 }
 </style>

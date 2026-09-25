@@ -1529,23 +1529,22 @@ function getCategoryCount(credentials?: any[]): number {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 320px;
+  width: min(100%, 270px);
   margin: 0 auto;
 }
 
 .vk-pin-status-slot {
-  min-height: 22px;
-  height: 22px;
+  min-height: 18px;
+  height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 6px 0 16px 0;
+  margin: 4px 0 4px 0;
 }
 
 .vk-pin-error-text {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 600;
   color: var(--brand-red);
   text-align: center;
   line-height: 1.2;

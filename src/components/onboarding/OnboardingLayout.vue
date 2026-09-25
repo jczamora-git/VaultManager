@@ -274,6 +274,7 @@ defineEmits<{
 
 .pos-lower .vk-sheet-container {
   justify-content: flex-end;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(24px, 3.5dvh, 36px));
 }
 
 .pos-center .vk-sheet-container {

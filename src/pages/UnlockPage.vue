@@ -355,23 +355,23 @@ function goToMasterPasswordFallback() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 320px;
+  width: min(100%, 270px);
+  max-width: 270px;
 }
 
 /* Fixed-height error/status slot prevents keypad jumping */
 .vk-unlock-status-slot {
-  min-height: 22px;
-  height: 22px;
+  min-height: 18px;
+  height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 6px 0 16px 0;
+  margin: 4px 0 4px 0;
 }
 
 .vk-unlock-status {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 600;
   color: var(--brand-red);
   text-align: center;
   line-height: 1.2;
@@ -382,7 +382,7 @@ function goToMasterPasswordFallback() {
 }
 
 .vk-unlock-footer {
-  margin-top: 24px;
+  margin-top: 18px;
   display: flex;
   justify-content: center;
 }

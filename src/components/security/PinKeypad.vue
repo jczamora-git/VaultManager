@@ -114,8 +114,8 @@
         <svg
           v-if="biometricType === 'face'"
           xmlns="http://www.w3.org/2000/svg"
-          width="26"
-          height="26"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -136,8 +136,8 @@
         <svg
           v-else
           xmlns="http://www.w3.org/2000/svg"
-          width="26"
-          height="26"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -214,6 +214,7 @@ const emit = defineEmits<{
   (e: 'digit', digit: string): void;
   (e: 'backspace'): void;
   (e: 'biometric'): void;
+  (e: 'clear'): void;
 }>();
 
 async function triggerHaptic() {
@@ -267,9 +268,9 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
   width: 100%;
-  max-width: 300px;
+  max-width: 260px;
   margin: 0 auto;
   user-select: none;
 }
@@ -283,45 +284,49 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  gap: 24px;
+  gap: 26px;
 }
 
 .vk-keypad-btn {
-  width: 62px;
-  height: 62px;
+  width: 60px;
+  height: 60px;
   min-width: 58px;
   min-height: 58px;
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  background: #F7F5F2;
-  color: #181818;
+  background: #F6F4F1;
+  color: #171717;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.65rem;
   font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   cursor: pointer;
-  transition: transform var(--vk-motion-instant) var(--vk-ease-press), background-color var(--vk-motion-fast) ease;
+  transition: transform var(--vk-motion-instant) var(--vk-ease-press),
+              background-color var(--vk-motion-fast) ease,
+              color var(--vk-motion-fast) ease;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
 
 .vk-keypad-btn:active {
   transform: scale(0.94);
-  background: #EBE8E3;
+  background: #ECE9E5;
 }
 
 .vk-keypad-action-btn {
   background: transparent;
   border-color: transparent;
   box-shadow: none;
-  color: var(--text-primary);
-  transition: transform var(--vk-motion-instant) var(--vk-ease-press), color var(--vk-motion-fast) ease;
+  color: #171717;
+  transition: transform var(--vk-motion-instant) var(--vk-ease-press),
+              color var(--vk-motion-fast) ease;
 }
 
 .vk-keypad-action-btn:active {
   transform: scale(0.92);
-  background: rgba(0, 0, 0, 0.05);
+  background: transparent;
 }
 
 .vk-biometric-btn {
@@ -329,20 +334,20 @@ onUnmounted(() => {
 }
 
 .vk-keypad-spacer {
-  width: 62px;
-  height: 62px;
+  width: 60px;
+  height: 60px;
   min-width: 58px;
   min-height: 58px;
 }
 
-/* Responsive adjustment for short devices */
+/* Responsive adjustment for short devices (<= 720px) */
 @media (max-height: 720px) {
   .vk-pin-keypad {
-    gap: 14px;
-    max-width: 280px;
+    gap: 12px;
+    max-width: 250px;
   }
   .vk-keypad-row {
-    gap: 18px;
+    gap: 22px;
   }
   .vk-keypad-btn,
   .vk-keypad-spacer {
@@ -354,12 +359,28 @@ onUnmounted(() => {
   }
 }
 
+/* Responsive adjustment for tall devices (>= 850px) */
+@media (min-height: 850px) {
+  .vk-pin-keypad {
+    gap: 16px;
+    max-width: 260px;
+  }
+  .vk-keypad-row {
+    gap: 26px;
+  }
+  .vk-keypad-btn,
+  .vk-keypad-spacer {
+    width: 60px;
+    height: 60px;
+  }
+}
+
 /* Dark Theme Keypad */
 :global(.dark) .vk-keypad-btn,
 :global(.ion-palette-dark) .vk-keypad-btn,
 :global(body.dark-theme) .vk-keypad-btn {
-  background: #1B1B1B;
-  color: #F6F6F6;
+  background: #202020;
+  color: #F5F5F5;
   border: 1px solid rgba(255, 255, 255, 0.07);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
 }
@@ -367,7 +388,7 @@ onUnmounted(() => {
 :global(.dark) .vk-keypad-btn:active,
 :global(.ion-palette-dark) .vk-keypad-btn:active,
 :global(body.dark-theme) .vk-keypad-btn:active {
-  background: #282828;
+  background: #2B2B2B;
 }
 
 :global(.dark) .vk-keypad-action-btn,
@@ -376,6 +397,7 @@ onUnmounted(() => {
   background: transparent;
   border-color: transparent;
   box-shadow: none;
+  color: #F5F5F5;
 }
 
 :global(.dark) .vk-biometric-btn,
