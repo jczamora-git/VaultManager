@@ -1,10 +1,9 @@
 <template>
   <div class="vk-onboarding-layout" :class="[`pos-${contentPosition}`, { 'is-scrollable': scrollable }]">
-    <!-- RED / DARK HERO HEADER (Information Only) -->
-    <header class="vk-onboarding-header vk-hero-backdrop">
-      <div class="vk-container vk-header-inner">
-        <!-- Top Nav (Back Button & Step Badge) -->
-        <div v-if="showBack || step || $slots['top-right']" class="vk-header-top-row">
+    <!-- RED / DARK COMPACT TOP NAV STRIP -->
+    <header class="vk-onboarding-nav-strip vk-hero-backdrop">
+      <div class="vk-container vk-nav-inner">
+        <div class="vk-nav-top-row">
           <button
             v-if="showBack"
             type="button"
@@ -16,34 +15,38 @@
               <path d="m15 18-6-6 6-6"/>
             </svg>
           </button>
-          <div v-else></div>
+          <div v-else class="vk-nav-spacer"></div>
 
           <slot name="top-right">
             <span v-if="step" class="vk-step-badge">{{ step }}</span>
           </slot>
         </div>
-
-        <!-- Extra Hero Content (e.g., Brand tag, Avatar) -->
-        <slot name="hero-extra"></slot>
-
-        <!-- Title & Subtitle -->
-        <div class="vk-header-text">
-          <h1 class="vk-hero-title">{{ title }}</h1>
-          <p v-if="subtitle" class="vk-hero-subtitle">{{ subtitle }}</p>
-        </div>
       </div>
     </header>
 
-    <!-- WHITE / DARK SHEET (Interaction Cluster) -->
+    <!-- MAIN WHITE / DARK SHEET (Unified Title + Interaction Cluster) -->
     <main class="vk-onboarding-sheet vk-sheet">
       <div class="vk-container vk-sheet-container">
-        <!-- Vertical breathing room / spacer for lower & center positioning -->
-        <div v-if="contentPosition !== 'natural'" class="vk-sheet-top-spacer"></div>
+        <!-- Top Breathing Room / Proportional Spacer -->
+        <div class="vk-cluster-top-spacer"></div>
 
-        <!-- Main Interaction Body -->
-        <div class="vk-sheet-content">
-          <slot></slot>
+        <!-- Unified Content Group: Title + Subtitle + Main Form/CTA -->
+        <div class="vk-onboarding-cluster" :class="{ 'is-centered': centerTitle }">
+          <!-- Title & Subtitle Block inside the sheet -->
+          <div v-if="title || $slots['title-extra']" class="vk-cluster-title-block">
+            <slot name="title-extra"></slot>
+            <h1 class="vk-cluster-title">{{ title }}</h1>
+            <p v-if="subtitle" class="vk-cluster-subtitle">{{ subtitle }}</p>
+          </div>
+
+          <!-- Main Interactive Content Slot -->
+          <div class="vk-cluster-main-content">
+            <slot></slot>
+          </div>
         </div>
+
+        <!-- Bottom Breathing Room -->
+        <div class="vk-cluster-bottom-spacer"></div>
       </div>
     </main>
   </div>
@@ -57,6 +60,7 @@ withDefaults(
     step?: string;
     showBack?: boolean;
     contentPosition?: 'lower' | 'center' | 'natural';
+    centerTitle?: boolean;
     scrollable?: boolean;
   }>(),
   {
@@ -64,6 +68,7 @@ withDefaults(
     step: '',
     showBack: true,
     contentPosition: 'lower',
+    centerTitle: false,
     scrollable: false,
   }
 );
@@ -89,24 +94,28 @@ defineEmits<{
   -webkit-overflow-scrolling: touch;
 }
 
-/* Header Section */
-.vk-onboarding-header {
+/* Compact Top Nav Strip */
+.vk-onboarding-nav-strip {
   flex-shrink: 0;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 14px);
-  padding-bottom: 22px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 10px);
+  padding-bottom: 12px;
 }
 
-.vk-header-inner {
+.vk-nav-inner {
   display: flex;
   flex-direction: column;
 }
 
-.vk-header-top-row {
+.vk-nav-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 44px;
-  margin-bottom: 12px;
+}
+
+.vk-nav-spacer {
+  width: 44px;
+  height: 44px;
 }
 
 .vk-hero-circle-btn {
@@ -138,9 +147,9 @@ defineEmits<{
 .vk-step-badge {
   font-size: 0.775rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.15);
-  padding: 4px 12px;
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.18);
+  padding: 5px 14px;
   border-radius: var(--radius-pill);
   letter-spacing: -0.01em;
 }
@@ -149,35 +158,6 @@ defineEmits<{
   background: var(--vk-bg-surface-soft);
   color: var(--text-secondary);
   border: 1px solid var(--vk-border);
-}
-
-.vk-header-text {
-  margin-top: 2px;
-}
-
-.vk-hero-title {
-  font-size: 1.85rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  margin: 0 0 6px 0;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-}
-
-.dark .vk-hero-title {
-  color: var(--text-primary);
-}
-
-.vk-hero-subtitle {
-  font-size: 0.925rem;
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0;
-  line-height: 1.4;
-  max-width: 340px;
-}
-
-.dark .vk-hero-subtitle {
-  color: var(--text-secondary);
 }
 
 /* White / Dark Content Sheet */
@@ -189,73 +169,142 @@ defineEmits<{
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   min-height: 0;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .vk-sheet-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding-top: 12px;
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  justify-content: space-between;
+  padding-top: 8px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
   width: 100%;
   max-width: 360px;
   margin: 0 auto;
 }
 
-/* Dynamic Positioning */
-.pos-lower .vk-sheet-top-spacer {
-  flex: 1;
-  min-height: 16px;
-  max-height: 120px;
+/* Unified Vertical Content Cluster */
+.vk-onboarding-cluster {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
-.pos-center .vk-sheet-container {
-  justify-content: center;
+.vk-onboarding-cluster.is-centered .vk-cluster-title-block {
+  text-align: center;
 }
 
-.pos-center .vk-sheet-top-spacer {
+.vk-onboarding-cluster.is-centered .vk-cluster-subtitle {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Title Block inside Sheet */
+.vk-cluster-title-block {
+  margin-bottom: 24px;
+}
+
+.vk-cluster-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 6px 0;
+}
+
+.vk-cluster-subtitle {
+  font-size: 0.885rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+  max-width: 340px;
+}
+
+.vk-cluster-main-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Dynamic Vertical Proportions */
+.pos-lower .vk-cluster-top-spacer {
   flex: 0.6;
+  min-height: 8px;
+  max-height: 50px;
+}
+
+.pos-lower .vk-cluster-bottom-spacer {
+  flex: 1;
+  min-height: 12px;
+  max-height: 80px;
+}
+
+.pos-center .vk-cluster-top-spacer {
+  flex: 1;
   min-height: 10px;
   max-height: 60px;
 }
 
-.pos-natural .vk-sheet-container {
-  justify-content: flex-start;
-  padding-top: 20px;
+.pos-center .vk-cluster-bottom-spacer {
+  flex: 1;
+  min-height: 10px;
+  max-height: 60px;
 }
 
-.vk-sheet-content {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+.pos-natural .vk-cluster-top-spacer {
+  display: none;
+}
+
+.pos-natural .vk-cluster-bottom-spacer {
+  flex: 1;
 }
 
 /* Responsive Short Screens (<= 720px) */
 @media (max-height: 720px) {
-  .vk-onboarding-header {
-    padding-bottom: 14px;
+  .vk-onboarding-nav-strip {
+    padding-bottom: 8px;
   }
-  .vk-header-top-row {
-    margin-bottom: 6px;
+  .vk-cluster-title-block {
+    margin-bottom: 16px;
   }
-  .vk-hero-title {
-    font-size: 1.6rem;
+  .vk-cluster-title {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
   }
-  .vk-hero-subtitle {
-    font-size: 0.85rem;
+  .vk-cluster-subtitle {
+    font-size: 0.825rem;
   }
-  .pos-lower .vk-sheet-top-spacer {
-    min-height: 6px;
+  .pos-lower .vk-cluster-top-spacer {
+    min-height: 4px;
+    max-height: 24px;
+  }
+  .pos-lower .vk-cluster-bottom-spacer {
+    min-height: 8px;
     max-height: 36px;
   }
   .vk-sheet-container {
-    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
   }
 }
 
-/* Fallback for when content needs scroll on small screen or keyboard open */
+/* Tall Phones (>= 850px) */
+@media (min-height: 850px) {
+  .pos-lower .vk-cluster-top-spacer {
+    flex: 0.8;
+    max-height: 70px;
+  }
+  .pos-lower .vk-cluster-bottom-spacer {
+    flex: 1.2;
+    max-height: 100px;
+  }
+  .vk-cluster-title-block {
+    margin-bottom: 28px;
+  }
+}
+
+/* Keyboard open / very short screens */
 @media (max-height: 560px) {
   .vk-onboarding-layout {
     overflow-y: auto !important;

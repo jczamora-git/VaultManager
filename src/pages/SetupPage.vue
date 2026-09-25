@@ -380,6 +380,7 @@
           title="Create your PIN"
           subtitle="Use six digits for quick everyday access."
           :step="isImportFlow ? 'Security Setup' : 'Step 3 of 6'"
+          :center-title="true"
           content-position="lower"
           @back="handleStep4Back"
         >
@@ -406,6 +407,7 @@
           title="Confirm your PIN"
           subtitle="Enter your six digits again to make sure."
           :step="isImportFlow ? 'Security Setup' : 'Step 4 of 6'"
+          :center-title="true"
           content-position="lower"
           @back="resetToCreatePin"
         >
@@ -429,10 +431,11 @@
         <OnboardingLayout
           v-else-if="step === 6"
           key="step6"
-          :title="biometricAvailability.label"
+          :title="`Enable ${biometricAvailability.label}`"
           subtitle="Unlock Vaultify without typing your PIN each time."
           :step="isImportFlow ? 'Security Setup' : 'Step 5 of 6'"
-          content-position="lower"
+          :center-title="true"
+          content-position="center"
           @back="goToStep(5)"
         >
           <div class="vk-bio-setup-cluster">
@@ -459,7 +462,6 @@
               </svg>
             </div>
 
-            <h3 class="vk-bio-setup-title">Enable {{ biometricAvailability.label }}</h3>
             <p class="vk-bio-setup-text">
               Your device's biometric sensor securely authorizes access to your encrypted vault key.
             </p>
