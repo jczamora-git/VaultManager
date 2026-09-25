@@ -50,6 +50,51 @@ npm run dev
 npm run build
 ```
 
+### 4. Android Local Build
+
+#### Sync Capacitor Android Assets:
+```bash
+npx cap sync android
+```
+
+#### Build Debug APK Locally:
+- **Windows (PowerShell / Command Prompt)**:
+  ```powershell
+  cd android
+  .\gradlew.bat assembleDebug
+  ```
+- **macOS / Linux**:
+  ```bash
+  cd android
+  ./gradlew assembleDebug
+  ```
+
+Output APK will be located at:
+`android/app/build/outputs/apk/debug/app-debug.apk`
+
+---
+
+## 🤖 GitHub Actions CI/CD & Releases
+
+The repository includes automated CI/CD via GitHub Actions at `.github/workflows/build.yml`.
+
+### Build Triggers
+
+- **Automatic Build**: Every push and pull request to the `main` branch.
+- **Manual Build**: Go to **GitHub** → **Actions** → **Vaultify Build** → **Run workflow**.
+- **Release Build**: Pushing a version tag (e.g., `v1.0.0`) automatically builds both Debug & Release APKs/AAB bundles and publishes a GitHub Release.
+
+### Creating a Release:
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+### Downloading Build Artifacts:
+1. Navigate to **GitHub** → **Actions**.
+2. Click on the latest run under **Vaultify Build**.
+3. Scroll down to the **Artifacts** section to download `Vaultify-Android-Debug` (or `Vaultify-Android-Release`).
+
 ---
 
 ## 🔒 Security Architecture

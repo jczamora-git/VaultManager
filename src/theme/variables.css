@@ -11,6 +11,7 @@
   --brand-red-deep: #721816;
   --brand-red-subtle: rgba(184, 40, 37, 0.08);
   --brand-red-glow: rgba(184, 40, 37, 0.2);
+  --vk-brand-gradient: linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%);
 
   --black: #080808;
   --black-soft: #111111;
@@ -132,6 +133,7 @@ body.dark-theme {
   --brand-red: #C52A27;
   --brand-red-subtle: rgba(197, 42, 39, 0.15);
   --brand-red-glow: rgba(197, 42, 39, 0.3);
+  --vk-brand-gradient: linear-gradient(180deg, #181818 0%, #121212 45%, #0D0D0D 100%);
 
   --vk-bg-hero: #0D0D0D;
   --vk-bg-hero-text: #FFFFFF;

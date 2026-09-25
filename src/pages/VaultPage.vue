@@ -1,8 +1,8 @@
 <template>
-  <ion-page>
-    <ion-content :fullscreen="true">
-      <!-- RED / DARK HERO HEADER -->
-      <div class="vk-hero-backdrop vk-vault-hero">
+  <ion-page class="vk-vault-ion-page">
+    <ion-content :fullscreen="true" class="vk-vault-ion-content">
+      <!-- RED / DARK HERO HEADER (Transparent content over red backdrop) -->
+      <header class="vk-vault-hero">
         <div class="vk-container">
           <!-- Top Brand & Profile Greeting Row -->
           <div class="vk-hero-top-row">
@@ -34,10 +34,10 @@
             />
           </div>
         </div>
-      </div>
+      </header>
 
       <!-- MAIN WHITE / DARK CONTENT SHEET -->
-      <div class="vk-sheet vk-vault-sheet">
+      <main class="vk-sheet vk-vault-sheet">
         <div class="vk-container">
           <!-- 54px Soft Search Pill -->
           <div class="vk-search-pill-wrapper">
@@ -127,7 +127,7 @@
             />
           </div>
         </div>
-      </div>
+      </main>
 
       <!-- Red Floating Action Button (FAB) - Shown when items exist -->
       <ion-fab v-if="vaultStore.credentials.length > 0" vertical="bottom" horizontal="end" slot="fixed" class="vk-fab">
@@ -311,18 +311,44 @@ function clearFilters() {
   background: var(--vk-bg-surface-elevated);
 }
 
+.vk-vault-ion-page {
+  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+}
+
+.vk-vault-ion-content {
+  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+}
+
+.vk-vault-hero {
+  background: transparent !important;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
+  padding-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
 .vk-kpi-card-wrapper {
   width: 100%;
 }
 
 .vk-vault-sheet {
-  background: var(--vk-bg-sheet);
-  border-radius: 28px 28px 0 0;
+  background: #FFFFFF;
+  border-radius: 36px 36px 0 0;
   margin-top: -12px;
   position: relative;
   z-index: 2;
-  padding-top: 20px;
-  min-height: 50dvh;
+  padding-top: 24px;
+  padding-bottom: var(--vk-content-bottom-padding);
+  min-height: calc(100dvh - 200px);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
+}
+
+.dark .vk-vault-sheet {
+  background: #151515;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.04), 0 -12px 32px rgba(0, 0, 0, 0.4);
 }
 
 .vk-vault-section {

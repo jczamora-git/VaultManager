@@ -22,12 +22,12 @@ body {
 
 /* Page Header Structure with proper safe-area top breathing room */
 .vk-hero-backdrop {
-  background-color: var(--vk-bg-hero);
+  background: transparent !important;
   color: var(--vk-bg-hero-text);
   padding-top: var(--vk-safe-top);
-  padding-bottom: 28px;
+  padding-bottom: 24px;
   position: relative;
-  transition: background-color 0.2s ease;
+  z-index: 1;
 }
 
 .vk-hero-title {
@@ -36,27 +36,43 @@ body {
   letter-spacing: -0.03em;
   margin: 0 0 4px 0;
   line-height: 1.15;
-  color: var(--vk-bg-hero-text);
+  color: #FFFFFF;
+}
+
+.dark .vk-hero-title {
+  color: var(--text-primary);
 }
 
 .vk-hero-subtitle {
   font-size: 0.9rem;
-  color: var(--vk-bg-hero-subtitle);
+  color: rgba(255, 255, 255, 0.9);
   margin: 0;
   line-height: 1.45;
   font-weight: 400;
 }
 
+.dark .vk-hero-subtitle {
+  color: var(--text-secondary);
+}
+
 /* Main Content Sheet */
 .vk-sheet {
   background: var(--vk-bg-sheet);
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  border-radius: 36px 36px 0 0;
   padding: 24px 0 var(--vk-content-bottom-padding) 0;
-  box-shadow: var(--vk-shadow-soft);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
   min-height: calc(100dvh - 160px);
   position: relative;
   margin-top: -12px;
+  z-index: 2;
   transition: background-color 0.2s ease;
+}
+
+.dark .vk-sheet {
+  background: #151515;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.04), 0 -12px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* Ticket/Cutout Detail */

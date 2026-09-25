@@ -1,18 +1,12 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-      <!-- HERO HEADER -->
-      <div class="vk-hero-backdrop">
-        <div class="vk-container">
-          <h1 class="vk-hero-title">Settings</h1>
-          <p class="vk-hero-subtitle">Control how Vaultify works.</p>
-        </div>
-      </div>
-
-      <!-- MAIN CONTENT SHEET -->
-      <div class="vk-sheet">
-        <div class="vk-container">
-          <!-- SECTION: LOCAL PROFILE -->
+      <VaultifyHeroSheetLayout
+        title="Settings"
+        subtitle="Control how Vaultify works."
+        :has-dock="true"
+      >
+        <!-- SECTION: LOCAL PROFILE -->
           <div class="vk-settings-profile-card" @click="openEditProfileModal">
             <div class="vk-settings-profile-avatar" :style="{ backgroundColor: profileStore.avatarColor }">
               {{ profileStore.initials }}
@@ -189,8 +183,7 @@
             <div class="vk-version-badge">Vaultify v{{ APP_VERSION }}</div>
             <p class="vk-version-desc">Private. Local. Encrypted.</p>
           </div>
-        </div>
-      </div>
+        </VaultifyHeroSheetLayout>
 
       <!-- Export Backup Re-auth Modal -->
       <ion-modal :is-open="showExportModal" @didDismiss="showExportModal = false" class="vk-fullscreen-modal">
@@ -579,20 +572,20 @@
       </ion-modal>
 
       <!-- Edit Profile Modal -->
-      <ion-modal :is-open="showEditProfileModal" @didDismiss="showEditProfileModal = false">
-        <div class="vk-modal-page">
-          <AppHeader title="Local Profile" :show-back="false">
-            <template #actions>
-              <button type="button" class="vk-btn-icon-only" @click="showEditProfileModal = false">✕</button>
-            </template>
-          </AppHeader>
-
-          <div class="vk-container ion-padding">
+      <ion-modal :is-open="showEditProfileModal" @didDismiss="showEditProfileModal = false" class="vk-fullscreen-modal">
+        <VaultifyHeroSheetLayout
+          title="Local Profile"
+          subtitle="Customize your name and appearance."
+          :show-close="true"
+          hero-size="compact"
+          @close="showEditProfileModal = false"
+        >
+          <div class="vk-modal-form-wrap">
             <p class="vk-modal-desc">
               Your profile stays strictly on this device and is used for personalized greetings.
             </p>
 
-            <form @submit.prevent="handleSaveProfile">
+            <form @submit.prevent="handleSaveProfile" class="vk-modal-form">
               <div class="vk-input-group">
                 <label class="vk-label">Display Name</label>
                 <div class="vk-input-wrapper">
@@ -654,7 +647,7 @@
               </div>
             </form>
           </div>
-        </div>
+        </VaultifyHeroSheetLayout>
       </ion-modal>
     </ion-content>
   </ion-page>

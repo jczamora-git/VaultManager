@@ -269,6 +269,11 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+ion-content {
+  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+}
+
 .vk-detail-hero {
   text-align: center;
   padding-bottom: 28px;
