@@ -288,14 +288,14 @@ onUnmounted(() => {
 }
 
 .vk-keypad-btn {
-  width: clamp(54px, 15vw, 62px);
-  height: clamp(54px, 15vw, 62px);
+  width: clamp(56px, 15vw, 60px);
+  height: clamp(56px, 15vw, 60px);
   min-width: 52px;
   min-height: 52px;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   background: #F1EFEC;
-  color: #151515;
+  color: #171717;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -319,7 +319,7 @@ onUnmounted(() => {
   background: transparent;
   border-color: transparent;
   box-shadow: none;
-  color: #151515;
+  color: #171717;
   transition: transform 90ms var(--vk-ease-press),
               color 100ms ease;
 }

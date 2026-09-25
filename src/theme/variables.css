@@ -170,3 +170,47 @@ body.dark-theme {
   --vk-shadow-soft: 0 14px 40px rgba(0, 0, 0, 0.6);
   --vk-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
+
+/* ================================================= */
+/* DEDICATED LIGHT ONBOARDING THEME SCOPE           */
+/* ================================================= */
+.vaultify-onboarding {
+  color-scheme: light !important;
+
+  /* Onboarding Scoped Light Design Tokens */
+  --canvas: #FFFFFF;
+  --ion-background-color: #FFFFFF;
+  --ion-background-color-rgb: 255, 255, 255;
+  --ion-text-color: #151515;
+  --ion-text-color-rgb: 21, 21, 21;
+
+  --text-primary: #151515;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+
+  --brand-red: #B82825;
+  --brand-red-dark: #8F1F1D;
+  --brand-red-subtle: rgba(184, 40, 37, 0.10);
+  --brand-red-glow: rgba(184, 40, 37, 0.2);
+
+  --vk-bg-hero: #B82825;
+  --vk-bg-hero-text: #FFFFFF;
+  --vk-bg-hero-subtitle: rgba(255, 255, 255, 0.9);
+
+  --vk-bg-sheet: #FFFFFF;
+  --vk-bg-card: #FFFFFF;
+  --vk-bg-surface-soft: #F1EFEC;
+  --vk-bg-surface-elevated: #F8F8F6;
+  --vk-bg-input: #F1EFEC;
+  --vk-border: rgba(0, 0, 0, 0.06);
+  --vk-divider: rgba(0, 0, 0, 0.06);
+  --vk-border-focus: #B82825;
+
+  --vk-btn-primary-bg: #0A0A0A;
+  --vk-btn-primary-text: #FFFFFF;
+  --vk-btn-secondary-bg: #F1EFEC;
+  --vk-btn-secondary-text: #151515;
+
+  --vk-shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.06);
+  --vk-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+}

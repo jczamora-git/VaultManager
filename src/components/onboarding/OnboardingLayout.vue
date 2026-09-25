@@ -153,7 +153,7 @@ defineEmits<{
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.14);
   border: none;
   color: #FFFFFF;
   display: flex;
@@ -166,14 +166,14 @@ defineEmits<{
 
 .vk-hero-circle-btn:active {
   transform: scale(0.94);
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.26);
 }
 
 .vk-step-badge {
   font-size: 0.775rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.95);
-  background: rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.16);
   padding: 5px 14px;
   border-radius: var(--radius-pill);
   letter-spacing: -0.01em;
@@ -193,6 +193,14 @@ defineEmits<{
   animation: vkFadeUp var(--vk-motion-base) var(--vk-ease-enter) 0ms forwards;
 }
 
+.hero-pin .vk-hero-copy {
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+  margin-inline: auto;
+}
+
 .vk-hero-title {
   font-size: clamp(1.65rem, 5.5vw, 1.85rem);
   font-weight: 800;
@@ -202,12 +210,21 @@ defineEmits<{
   margin: 0;
 }
 
+.hero-pin .vk-hero-title {
+  text-align: center;
+}
+
 .vk-hero-subtitle {
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.9);
   line-height: 1.38;
   margin: 4px 0 0 0;
   max-width: 340px;
+}
+
+.hero-pin .vk-hero-subtitle {
+  text-align: center;
+  margin: 5px auto 0 auto;
 }
 
 /* ========================================= */

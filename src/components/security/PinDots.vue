@@ -56,8 +56,8 @@ withDefaults(
 }
 
 .vk-pin-inner-dot {
-  width: clamp(10px, 2.8vw, 12px);
-  height: clamp(10px, 2.8vw, 12px);
+  width: clamp(8px, 2.2vw, 10px);
+  height: clamp(8px, 2.2vw, 10px);
   border-radius: 50%;
   background: var(--brand-red, #B82825);
   transform: scale(0);
