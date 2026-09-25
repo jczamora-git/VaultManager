@@ -45,7 +45,7 @@ const analysis = computed(() => {
 
 <style scoped>
 .vk-strength-meter {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .vk-strength-header {

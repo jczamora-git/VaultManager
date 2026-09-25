@@ -355,8 +355,8 @@ function goToMasterPasswordFallback() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: min(100%, 270px);
-  max-width: 270px;
+  width: min(100%, 254px);
+  max-width: 254px;
 }
 
 /* Fixed-height error/status slot prevents keypad jumping */
@@ -366,7 +366,7 @@ function goToMasterPasswordFallback() {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 4px 0 4px 0;
+  margin: 3px 0 3px 0;
 }
 
 .vk-unlock-status {

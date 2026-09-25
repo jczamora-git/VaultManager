@@ -1555,11 +1555,11 @@ function getCategoryCount(credentials?: any[]): number {
 
 /* Form Helper Note */
 .vk-form-helper-note {
-  font-size: 0.75rem;
-  line-height: 1.4;
+  font-size: 0.775rem;
+  line-height: 1.45;
   color: #7A7A7A;
-  margin-top: -2px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 18px;
   font-weight: 400;
 }
 
@@ -1573,7 +1573,7 @@ function getCategoryCount(credentials?: any[]): number {
 }
 
 .vk-setup-actions {
-  margin-top: 4px;
+  margin-top: 0;
 }
 
 /* PIN Step Unified Cluster */
@@ -1581,7 +1581,7 @@ function getCategoryCount(credentials?: any[]): number {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: min(100%, 270px);
+  width: min(100%, 254px);
   margin: 0 auto;
 }
 
@@ -1591,7 +1591,7 @@ function getCategoryCount(credentials?: any[]): number {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 4px 0 4px 0;
+  margin: 3px 0 3px 0;
 }
 
 .vk-pin-error-text {

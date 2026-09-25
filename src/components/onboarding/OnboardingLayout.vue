@@ -274,7 +274,7 @@ defineEmits<{
 
 .pos-lower .vk-sheet-container {
   justify-content: flex-end;
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(24px, 3.5dvh, 36px));
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(24px, 3.6dvh, 36px));
 }
 
 .pos-center .vk-sheet-container {
@@ -283,14 +283,14 @@ defineEmits<{
 
 .pos-center-lower .vk-sheet-container {
   justify-content: center;
-  padding-top: clamp(16px, 2.5dvh, 28px);
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(20px, 3.5dvh, 36px));
+  padding-top: clamp(16px, 2.2dvh, 24px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(18px, 3.2dvh, 32px));
 }
 
 .pos-center-lower .vk-sheet-content {
   margin-top: auto;
   margin-bottom: auto;
-  transform: translateY(10px);
+  transform: translateY(6px);
 }
 
 .vk-sheet-content {
@@ -326,7 +326,7 @@ defineEmits<{
 /* Tall Screen Adaptations (>= 850px) */
 @media (min-height: 850px) {
   .pos-center-lower .vk-sheet-content {
-    transform: translateY(14px);
+    transform: translateY(8px);
   }
 }
 

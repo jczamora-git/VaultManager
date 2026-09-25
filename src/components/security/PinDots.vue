@@ -39,15 +39,15 @@ withDefaults(
 }
 
 .vk-pin-dot {
-  width: 9px;
-  height: 9px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: #E7E2DE;
-  opacity: 0.45;
-  transform: scale(0.75);
-  transition: transform var(--vk-motion-fast) var(--vk-ease-enter),
-              opacity var(--vk-motion-fast) var(--vk-ease-enter),
-              background-color var(--vk-motion-fast) ease;
+  background: #DCD7D2;
+  opacity: 0.7;
+  transform: scale(0.8);
+  transition: transform 120ms var(--vk-ease-enter),
+              opacity 120ms var(--vk-ease-enter),
+              background-color 120ms ease;
 }
 
 .vk-pin-dot.is-filled {
@@ -60,16 +60,18 @@ withDefaults(
 :global(.dark) .vk-pin-dot,
 :global(.ion-palette-dark) .vk-pin-dot,
 :global(body.dark-theme) .vk-pin-dot {
-  background: #363636;
+  background: #3A3A3A;
+  opacity: 0.8;
 }
 
 :global(.dark) .vk-pin-dot.is-filled,
 :global(.ion-palette-dark) .vk-pin-dot.is-filled,
 :global(body.dark-theme) .vk-pin-dot.is-filled {
   background: #D3332F;
+  opacity: 1;
 }
 
-/* Precise horizontal shake animation */
+/* Precise horizontal shake animation (dots only) */
 .is-shaking {
   animation: vk-dot-shake 260ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }

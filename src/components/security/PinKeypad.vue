@@ -268,9 +268,9 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 15px;
   width: 100%;
-  max-width: 260px;
+  max-width: 254px;
   margin: 0 auto;
   user-select: none;
 }
@@ -284,17 +284,17 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  gap: 26px;
+  gap: 24px;
 }
 
 .vk-keypad-btn {
-  width: 60px;
-  height: 60px;
-  min-width: 58px;
-  min-height: 58px;
+  width: 58px;
+  height: 58px;
+  min-width: 56px;
+  min-height: 56px;
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  background: #F6F4F1;
+  background: #F5F2EF;
   color: #171717;
   display: flex;
   align-items: center;
@@ -303,16 +303,16 @@ onUnmounted(() => {
   font-weight: 500;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   cursor: pointer;
-  transition: transform var(--vk-motion-instant) var(--vk-ease-press),
-              background-color var(--vk-motion-fast) ease,
-              color var(--vk-motion-fast) ease;
+  transition: transform 90ms var(--vk-ease-press),
+              background-color 100ms ease,
+              color 100ms ease;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
 
 .vk-keypad-btn:active {
-  transform: scale(0.94);
-  background: #ECE9E5;
+  transform: scale(0.95);
+  background: #EBE7E2;
 }
 
 .vk-keypad-action-btn {
@@ -320,8 +320,8 @@ onUnmounted(() => {
   border-color: transparent;
   box-shadow: none;
   color: #171717;
-  transition: transform var(--vk-motion-instant) var(--vk-ease-press),
-              color var(--vk-motion-fast) ease;
+  transition: transform 90ms var(--vk-ease-press),
+              color 100ms ease;
 }
 
 .vk-keypad-action-btn:active {
@@ -334,27 +334,27 @@ onUnmounted(() => {
 }
 
 .vk-keypad-spacer {
-  width: 60px;
-  height: 60px;
-  min-width: 58px;
-  min-height: 58px;
+  width: 58px;
+  height: 58px;
+  min-width: 56px;
+  min-height: 56px;
 }
 
 /* Responsive adjustment for short devices (<= 720px) */
 @media (max-height: 720px) {
   .vk-pin-keypad {
     gap: 12px;
-    max-width: 250px;
+    max-width: 240px;
   }
   .vk-keypad-row {
-    gap: 22px;
+    gap: 20px;
   }
   .vk-keypad-btn,
   .vk-keypad-spacer {
-    width: 56px;
-    height: 56px;
-    min-width: 54px;
-    min-height: 54px;
+    width: 54px;
+    height: 54px;
+    min-width: 52px;
+    min-height: 52px;
     font-size: 1.5rem;
   }
 }
@@ -363,15 +363,15 @@ onUnmounted(() => {
 @media (min-height: 850px) {
   .vk-pin-keypad {
     gap: 16px;
-    max-width: 260px;
+    max-width: 254px;
   }
   .vk-keypad-row {
-    gap: 26px;
+    gap: 24px;
   }
   .vk-keypad-btn,
   .vk-keypad-spacer {
-    width: 60px;
-    height: 60px;
+    width: 58px;
+    height: 58px;
   }
 }
 
