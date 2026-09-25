@@ -19,7 +19,7 @@
           <div class="vk-container vk-onboarding-container">
             <div class="vk-onboarding-top">
               <div class="vk-brand-tag">
-                <img src="/image/vault-key-logo.png" alt="Vaultify Logo" class="vk-hero-logo" />
+                <VaultifyLogo variant="alt" :size="32" class="vk-hero-logo" />
                 <span>Vaultify</span>
               </div>
             </div>
@@ -118,6 +118,7 @@
           subtitle="Enter the Master Password for this backup."
           step="Import"
           hero-size="medium"
+          content-position="center-lower"
           @back="goToStep('choice')"
         >
           <div class="vk-import-auth-cluster">
@@ -172,7 +173,7 @@
           subtitle="Review details before importing to this device."
           step="Import"
           hero-size="medium"
-          content-position="lower"
+          content-position="center-lower"
           @back="goToStep('import_auth')"
         >
           <div class="vk-import-summary-cluster" v-if="importedBundle">
@@ -224,7 +225,7 @@
           subtitle="Create a local profile for your Vaultify experience."
           step="Step 1 of 6"
           hero-size="large"
-          content-position="lower"
+          content-position="center-lower"
           @back="goToStep('choice')"
         >
           <form @submit.prevent="handleProfileContinue" class="vk-setup-form">
@@ -307,7 +308,7 @@
           subtitle="Your Master Password protects the encrypted key to your Vaultify data."
           step="Step 2 of 6"
           hero-size="medium"
-          content-position="lower"
+          content-position="center-lower"
           @back="goToStep(2)"
         >
           <form @submit.prevent="handleMasterPasswordContinue" class="vk-setup-form">
@@ -496,7 +497,7 @@
           subtitle="You can change these anytime in Settings."
           step="Step 6 of 6"
           hero-size="medium"
-          content-position="lower"
+          content-position="center-lower"
           @back="goToStep(biometricAvailability.available ? 6 : 5)"
         >
           <div class="vk-sec-pref-cluster">
@@ -639,6 +640,7 @@ import PinDots from '@/components/security/PinDots.vue';
 import PinKeypad from '@/components/security/PinKeypad.vue';
 import VaultSelect, { SelectOption } from '@/components/common/VaultSelect.vue';
 import VaultToggle from '@/components/common/VaultToggle.vue';
+import VaultifyLogo from '@/components/common/VaultifyLogo.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();

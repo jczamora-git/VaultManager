@@ -5,7 +5,7 @@
       <div class="vk-hero-backdrop vk-unlock-hero">
         <div class="vk-container">
           <div class="vk-unlock-brand-pill">
-            <img src="/image/vault-key-logo.png" alt="Vaultify Logo" class="vk-unlock-brand-logo" />
+            <VaultifyLogo variant="alt" :size="24" class="vk-unlock-brand-logo" />
             <span>Vaultify</span>
           </div>
 
@@ -85,6 +85,7 @@ import {
 import { PinLockoutInfo } from '@/models/pin.model';
 import PinDots from '@/components/security/PinDots.vue';
 import PinKeypad from '@/components/security/PinKeypad.vue';
+import VaultifyLogo from '@/components/common/VaultifyLogo.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();

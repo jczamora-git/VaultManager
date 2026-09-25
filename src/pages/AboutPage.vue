@@ -7,7 +7,7 @@
         <!-- APP BRANDING HEADER -->
         <div class="vk-about-hero">
           <div class="vk-about-logo-wrapper">
-            <img src="/image/vault-key-logo.png" alt="Vaultify Logo" class="vk-about-logo" />
+            <VaultifyLogo :size="72" class="vk-about-logo" />
           </div>
           <h1 class="vk-about-title">{{ APP_NAME }}</h1>
           <div class="vk-about-version">Version {{ APP_VERSION }}</div>
@@ -80,6 +80,7 @@
 <script setup lang="ts">
 import { IonPage, IonContent } from '@ionic/vue';
 import AppHeader from '@/components/common/AppHeader.vue';
+import VaultifyLogo from '@/components/common/VaultifyLogo.vue';
 import { APP_NAME, APP_VERSION } from '@/constants/app';
 </script>
 
