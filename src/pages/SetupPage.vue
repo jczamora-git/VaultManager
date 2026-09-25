@@ -1036,7 +1036,33 @@ function getCategoryCount(credentials?: any[]): number {
 
 <style scoped>
 .vk-setup-page {
-  --background: var(--canvas);
+  --background: linear-gradient(
+    180deg,
+    #C62A27 0%,
+    #B82825 45%,
+    #A92220 100%
+  );
+  background: linear-gradient(
+    180deg,
+    #C62A27 0%,
+    #B82825 45%,
+    #A92220 100%
+  );
+}
+
+.dark .vk-setup-page {
+  --background: linear-gradient(
+    180deg,
+    #181818 0%,
+    #121212 45%,
+    #0D0D0D 100%
+  );
+  background: linear-gradient(
+    180deg,
+    #181818 0%,
+    #121212 45%,
+    #0D0D0D 100%
+  );
 }
 
 /* Thin Top Progress Indicator */
@@ -1057,12 +1083,12 @@ function getCategoryCount(credentials?: any[]): number {
 
 .vk-progress-fill {
   height: 100%;
-  background: var(--brand-red);
+  background: #FFFFFF;
   transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dark .vk-progress-fill {
-  background: #D3332F;
+  background: #E5E7EB;
 }
 
 /* Fullscreen Hero (Steps 1 & 8) */
@@ -1072,6 +1098,21 @@ function getCategoryCount(credentials?: any[]): number {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    #C62A27 0%,
+    #B82825 45%,
+    #A92220 100%
+  );
+}
+
+.dark .vk-onboarding-fullscreen {
+  background: linear-gradient(
+    180deg,
+    #181818 0%,
+    #121212 45%,
+    #0D0D0D 100%
+  );
 }
 
 .vk-onboarding-container {

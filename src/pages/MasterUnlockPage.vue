@@ -110,7 +110,33 @@ async function handleMasterUnlock() {
 
 <style scoped>
 .vk-master-unlock-page {
-  --background: var(--canvas);
+  --background: linear-gradient(
+    180deg,
+    #C62A27 0%,
+    #B82825 45%,
+    #A92220 100%
+  );
+  background: linear-gradient(
+    180deg,
+    #C62A27 0%,
+    #B82825 45%,
+    #A92220 100%
+  );
+}
+
+.dark .vk-master-unlock-page {
+  --background: linear-gradient(
+    180deg,
+    #181818 0%,
+    #121212 45%,
+    #0D0D0D 100%
+  );
+  background: linear-gradient(
+    180deg,
+    #181818 0%,
+    #121212 45%,
+    #0D0D0D 100%
+  );
 }
 
 .vk-master-form {

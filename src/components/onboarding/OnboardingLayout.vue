@@ -79,9 +79,23 @@ defineEmits<{
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: var(--canvas);
+  background: linear-gradient(
+    180deg,
+    #C62A27 0%,
+    #B82825 45%,
+    #A92220 100%
+  );
   overflow: hidden;
   position: relative;
+}
+
+.dark .vk-onboarding-layout {
+  background: linear-gradient(
+    180deg,
+    #181818 0%,
+    #121212 45%,
+    #0D0D0D 100%
+  );
 }
 
 .vk-onboarding-layout.is-scrollable {
@@ -98,6 +112,7 @@ defineEmits<{
   flex-direction: column;
   position: relative;
   z-index: 1;
+  background: transparent !important;
   transition: height 0.2s ease;
 }
 
@@ -226,14 +241,21 @@ defineEmits<{
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--vk-bg-sheet);
+  background: #FFFFFF;
   border-radius: 32px 32px 0 0;
   margin-top: -12px;
   z-index: 2;
   position: relative;
   min-height: 0;
   overflow-y: auto;
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.04);
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
+}
+
+.dark .vk-onboarding-sheet {
+  background: #151515;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.05), 0 -12px 32px rgba(0, 0, 0, 0.3);
 }
 
 .vk-sheet-container {
