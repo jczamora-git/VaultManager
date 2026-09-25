@@ -1,7 +1,7 @@
 <template>
-  <div class="vk-hero-sheet-page" :class="[`hero-${heroSize}`, { 'has-dock': hasDock }]">
-    <!-- RED / DARK HERO HEADER -->
-    <header class="vk-hero-backdrop vk-page-hero">
+  <div class="vk-hero-sheet-page" :class="[`hero-${heroSize}`, { 'has-dock': hasDock, 'is-scrollable': scrollable }]">
+    <!-- RED HERO HEADER (Transparent container inside continuous red root) -->
+    <header class="vk-page-hero">
       <div class="vk-container vk-hero-content-box">
         <!-- Optional Top Navigation / Action Row -->
         <div v-if="showBack || showClose || $slots['top-action']" class="vk-hero-nav-row">
@@ -41,8 +41,8 @@
       </div>
     </header>
 
-    <!-- WHITE / DARK CONTENT SHEET -->
-    <main class="vk-sheet vk-page-sheet" :class="{ 'is-scrollable': scrollable }">
+    <!-- WHITE FOREGROUND SHEET (The only white surface) -->
+    <main class="vk-page-sheet vk-sheet">
       <div class="vk-container vk-sheet-inner">
         <slot></slot>
       </div>
@@ -57,7 +57,7 @@ withDefaults(
     subtitle?: string;
     showBack?: boolean;
     showClose?: boolean;
-    heroSize?: 'standard' | 'compact' | 'pin';
+    heroSize?: 'standard' | 'compact' | 'medium' | 'pin';
     scrollable?: boolean;
     hasDock?: boolean;
   }>(),
@@ -81,22 +81,34 @@ defineEmits<{
 .vk-hero-sheet-page {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  min-height: 100dvh;
+  height: 100dvh;
   width: 100%;
-  background: var(--canvas);
+  background: linear-gradient(
+    180deg,
+    #D02724 0%,
+    #B8201E 100%
+  );
+  overflow: hidden;
+  position: relative;
+  color-scheme: light;
 }
 
+.vk-hero-sheet-page.is-scrollable {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* RED HERO AREA (Context / Identity) - Transparent background */
 .vk-page-hero {
-  padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
-  padding-bottom: clamp(20px, 3dvh, 26px);
-  background: linear-gradient(180deg, #D02A27 0%, #B82321 100%);
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
   position: relative;
   z-index: 1;
-}
-
-.dark .vk-page-hero {
-  background: #0D0D0D;
+  background: transparent !important;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 12px);
+  padding-bottom: 24px;
 }
 
 .hero-compact .vk-page-hero {
@@ -104,13 +116,15 @@ defineEmits<{
 }
 
 .hero-pin .vk-page-hero {
-  padding-bottom: clamp(24px, 3.6dvh, 32px);
+  padding-bottom: 28px;
 }
 
 .vk-hero-content-box {
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 
 .vk-hero-nav-row {
@@ -127,11 +141,11 @@ defineEmits<{
 }
 
 .vk-hero-action-btn {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.14);
+  border: none;
   color: #FFFFFF;
   display: flex;
   align-items: center;
@@ -139,29 +153,29 @@ defineEmits<{
   cursor: pointer;
   outline: none;
   transition: transform var(--vk-motion-instant, 90ms) var(--vk-ease-press, ease),
-              background-color 120ms ease;
+              background-color var(--vk-motion-fast, 120ms) ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
 .vk-hero-action-btn:active {
   transform: scale(0.94);
-  background: rgba(255, 255, 255, 0.28);
-}
-
-.dark .vk-hero-action-btn {
-  background: var(--vk-bg-surface-soft);
-  border-color: var(--vk-border);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.26);
 }
 
 .vk-hero-titles {
   display: flex;
   flex-direction: column;
+  animation: vkFadeUp var(--vk-motion-base) var(--vk-ease-enter) 0ms forwards;
+}
+
+.hero-pin .vk-hero-titles {
+  align-items: center;
+  text-align: center;
 }
 
 .vk-hero-title {
-  font-size: clamp(1.65rem, 5vw, 1.85rem);
+  font-size: clamp(1.65rem, 5.5vw, 1.85rem);
   font-weight: 800;
   color: #FFFFFF;
   margin: 0;
@@ -169,44 +183,41 @@ defineEmits<{
   line-height: 1.15;
 }
 
-.dark .vk-hero-title {
-  color: var(--text-primary);
-}
-
 .vk-hero-subtitle {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
   margin: 4px 0 0 0;
-  line-height: 1.35;
+  line-height: 1.38;
+  max-width: 360px;
 }
 
-.dark .vk-hero-subtitle {
-  color: var(--text-secondary);
+.hero-pin .vk-hero-subtitle {
+  text-align: center;
+  margin: 5px auto 0 auto;
 }
 
-/* White / Dark Content Sheet */
+/* WHITE FOREGROUND SHEET (The only white surface) */
 .vk-page-sheet {
   flex: 1;
-  background: var(--vk-bg-sheet);
-  border-radius: 32px 32px 0 0;
-  margin-top: -12px;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
-  min-height: calc(100dvh - 160px);
-}
-
-.dark .vk-page-sheet {
-  background: #151515;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.4);
+  background: #FFFFFF;
+  border-radius: 36px 36px 0 0;
+  margin-top: -12px;
+  z-index: 2;
+  position: relative;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
 }
 
 .vk-sheet-inner {
-  padding-top: clamp(20px, 3dvh, 26px);
+  padding-top: clamp(18px, 2.8dvh, 26px);
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  padding-left: 24px;
+  padding-right: 24px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -214,6 +225,66 @@ defineEmits<{
 }
 
 .has-dock .vk-sheet-inner {
-  padding-bottom: calc(var(--vk-dock-height, 64px) + var(--vk-dock-offset, 12px) + env(safe-area-inset-bottom, 0px) + 20px);
+  padding-bottom: calc(var(--vk-dock-height, 64px) + var(--vk-dock-offset, 12px) + env(safe-area-inset-bottom, 0px) + 24px);
+}
+
+@keyframes vkFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Short Screens (<= 720px) */
+@media (max-height: 720px) {
+  .vk-page-hero {
+    padding-bottom: 16px;
+  }
+  .vk-hero-content-box {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .vk-hero-title {
+    font-size: 1.55rem;
+  }
+  .vk-hero-subtitle {
+    font-size: 0.815rem;
+  }
+  .vk-sheet-inner {
+    padding-top: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* Keyboard open / very short screens */
+@media (max-height: 560px) {
+  .vk-hero-sheet-page {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+  .vk-page-sheet {
+    overflow: visible;
+  }
+}
+
+/* Dark Mode Architecture */
+:global(.dark) .vk-hero-sheet-page,
+:global(.ion-palette-dark) .vk-hero-sheet-page,
+:global(body.dark-theme) .vk-hero-sheet-page {
+  background: #0D0D0D;
+  color-scheme: dark;
+}
+
+:global(.dark) .vk-page-sheet,
+:global(.ion-palette-dark) .vk-page-sheet,
+:global(body.dark-theme) .vk-page-sheet {
+  background: #151515;
+  border-top-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.04), 0 -12px 32px rgba(0, 0, 0, 0.4);
 }
 </style>

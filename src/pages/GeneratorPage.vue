@@ -123,6 +123,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
+ion-content {
+  --background: transparent;
+}
+
 .vk-generated-pw-card {
   background: #F1EFEC;
   border-radius: 20px;

@@ -1387,6 +1387,8 @@ ion-modal.vk-fullscreen-modal {
   --height: 100%;
   --width: 100%;
   --border-radius: 0;
+  --background: transparent;
+  --box-shadow: none;
 }
 
 .vk-modal-form-wrap {

@@ -240,6 +240,10 @@ function useAsInput() {
 </script>
 
 <style scoped>
+ion-content {
+  --background: transparent;
+}
+
 .vk-mode-segment-pill {
   display: flex;
   background: #F1EFEC;
