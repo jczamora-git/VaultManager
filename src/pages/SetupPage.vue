@@ -567,45 +567,52 @@
         <!-- ========================================== -->
         <!-- STEP 8: YOU'RE READY / COMPLETE            -->
         <!-- ========================================== -->
-        <div v-else-if="step === 8" key="step8" class="vk-onboarding-fullscreen vk-hero-backdrop">
-          <div class="vk-container vk-onboarding-container">
-            <div class="vk-onboarding-top">
-              <div class="vk-ready-avatar-pill" :style="{ backgroundColor: selectedAvatarColor }">
-                {{ previewInitials }}
-              </div>
-            </div>
+        <div v-else-if="step === 8" key="step8" class="vk-onboarding-fullscreen vk-hero-backdrop vk-completion-screen">
+          <div class="vk-container vk-onboarding-container vk-completion-container">
+            <!-- Flexible Top Breathing Room -->
+            <div class="vk-completion-top-spacer"></div>
 
-            <div class="vk-onboarding-hero">
-              <h1 class="vk-onboarding-headline">
-                You're ready,<br/>
-                <span class="vk-headline-accent">{{ displayNameInput.trim() || 'John' }}.</span>
+            <!-- Main Completion Cluster -->
+            <div class="vk-completion-cluster">
+              <h1 class="vk-completion-headline">
+                <template v-if="userDisplayName">
+                  You're ready,<br/>
+                  <span class="vk-headline-accent">{{ userDisplayName }}.</span>
+                </template>
+                <template v-else>
+                  You're ready.
+                </template>
               </h1>
-              <p class="vk-onboarding-body">
+              <p class="vk-completion-body">
                 Your encrypted vault is set up and ready to use.
               </p>
 
-              <!-- Setup Completion Checklist -->
-              <div class="vk-completion-card">
+              <!-- Minimal Inline Completion Checklist -->
+              <div class="vk-completion-checklist">
                 <div class="vk-completion-item">
-                  <div class="vk-check-icon">✓</div>
-                  <span>Local profile {{ isImportFlow ? 'restored' : 'created' }}</span>
+                  <span class="vk-check-icon" aria-hidden="true">✓</span>
+                  <span>Local profile {{ isImportFlow ? 'restored' : 'ready' }}</span>
                 </div>
                 <div class="vk-completion-item">
-                  <div class="vk-check-icon">✓</div>
+                  <span class="vk-check-icon" aria-hidden="true">✓</span>
                   <span>Master Password configured</span>
                 </div>
                 <div class="vk-completion-item">
-                  <div class="vk-check-icon">✓</div>
+                  <span class="vk-check-icon" aria-hidden="true">✓</span>
                   <span>6-digit PIN configured</span>
                 </div>
                 <div class="vk-completion-item" v-if="biometricEnabled">
-                  <div class="vk-check-icon">✓</div>
-                  <span>{{ biometricAvailability.label }} unlock enabled</span>
+                  <span class="vk-check-icon" aria-hidden="true">✓</span>
+                  <span>{{ biometricSuccessLabel }} enabled</span>
                 </div>
               </div>
             </div>
 
-            <div class="vk-onboarding-footer">
+            <!-- Flexible Bottom Breathing Room -->
+            <div class="vk-completion-bottom-spacer"></div>
+
+            <!-- Single Primary CTA -->
+            <div class="vk-onboarding-footer vk-completion-footer">
               <button type="button" class="vk-btn vk-btn-white vk-btn-block" @click="handleFinishOnboarding">
                 <span>Open My Vault</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -665,6 +672,16 @@ const importedBundle = ref<PortableBackupBundle | null>(null);
 const displayNameInput = ref('');
 const selectedAvatarColor = ref('#B82825');
 const profileError = ref('');
+
+const userDisplayName = computed(() => {
+  return displayNameInput.value.trim() || profileStore.displayName?.trim() || '';
+});
+
+const biometricSuccessLabel = computed(() => {
+  if (biometricAvailability.value.type === 'face') return 'Face ID';
+  if (biometricAvailability.value.type === 'fingerprint') return 'Fingerprint';
+  return biometricAvailability.value.label || 'Biometrics';
+});
 
 const previewInitials = computed(() => {
   return generateInitials(displayNameInput.value || 'John');
@@ -1135,20 +1152,6 @@ function getCategoryCount(credentials?: any[]): number {
   object-fit: contain;
 }
 
-.vk-ready-avatar-pill {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-}
-
 .vk-onboarding-hero {
   margin: auto 0;
 }
@@ -1354,15 +1357,58 @@ function getCategoryCount(credentials?: any[]): number {
   color: var(--text-primary);
 }
 
-/* Completion Checklist */
-.vk-completion-card {
-  margin-top: 28px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-lg);
-  padding: 18px 20px;
+/* Minimal Completion Screen Styles */
+.vk-completion-screen {
+  background: linear-gradient(
+    180deg,
+    #C92A27 0%,
+    #B82825 55%,
+    #A8211F 100%
+  ) !important;
+}
+
+.vk-completion-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100dvh - 20px);
+  padding: calc(env(safe-area-inset-top, 0px) + 20px) 24px calc(env(safe-area-inset-bottom, 0px) + 18px) 24px;
+}
+
+.vk-completion-top-spacer {
+  flex: 1;
+  min-height: 20px;
+}
+
+.vk-completion-bottom-spacer {
+  flex: 1.2;
+  min-height: 20px;
+}
+
+.vk-completion-cluster {
+  display: flex;
+  flex-direction: column;
+  animation: vkFadeUp var(--vk-motion-base) var(--vk-ease-enter) forwards;
+}
+
+.vk-completion-headline {
+  font-size: clamp(2.1rem, 7vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin: 0 0 14px 0;
+  color: #FFFFFF;
+}
+
+.vk-completion-body {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.45;
+  margin: 0 0 28px 0;
+  max-width: 330px;
+}
+
+.vk-completion-checklist {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1372,22 +1418,28 @@ function getCategoryCount(credentials?: any[]): number {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #FFFFFF;
-  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.925rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .vk-check-icon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: 0.725rem;
   font-weight: 800;
   color: #FFFFFF;
+  flex-shrink: 0;
+}
+
+.vk-completion-footer {
+  width: 100%;
 }
 
 /* Setup Form */
