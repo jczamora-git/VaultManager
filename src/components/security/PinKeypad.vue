@@ -293,15 +293,15 @@ onUnmounted(() => {
   min-width: 56px;
   min-height: 56px;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  background: #F5F2EF;
-  color: #171717;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #F7F5F2;
+  color: #161616;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.65rem;
   font-weight: 500;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: transform 90ms var(--vk-ease-press),
               background-color 100ms ease,
@@ -312,14 +312,14 @@ onUnmounted(() => {
 
 .vk-keypad-btn:active {
   transform: scale(0.95);
-  background: #EBE7E2;
+  background: #EBE8E4;
 }
 
 .vk-keypad-action-btn {
   background: transparent;
   border-color: transparent;
   box-shadow: none;
-  color: #171717;
+  color: #161616;
   transition: transform 90ms var(--vk-ease-press),
               color 100ms ease;
 }
@@ -379,16 +379,16 @@ onUnmounted(() => {
 :global(.dark) .vk-keypad-btn,
 :global(.ion-palette-dark) .vk-keypad-btn,
 :global(body.dark-theme) .vk-keypad-btn {
-  background: #202020;
+  background: #1E1E1E;
   color: #F5F5F5;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
 }
 
 :global(.dark) .vk-keypad-btn:active,
 :global(.ion-palette-dark) .vk-keypad-btn:active,
 :global(body.dark-theme) .vk-keypad-btn:active {
-  background: #2B2B2B;
+  background: #282828;
 }
 
 :global(.dark) .vk-keypad-action-btn,

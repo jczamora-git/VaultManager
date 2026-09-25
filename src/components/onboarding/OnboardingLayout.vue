@@ -242,19 +242,19 @@ defineEmits<{
   display: flex;
   flex-direction: column;
   background: #FFFFFF;
-  border-radius: 32px 32px 0 0;
+  border-radius: 34px 34px 0 0;
   margin-top: -12px;
   z-index: 2;
   position: relative;
   min-height: 0;
   overflow-y: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
 }
 
 .dark .vk-onboarding-sheet {
   background: #151515;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.05), 0 -12px 32px rgba(0, 0, 0, 0.3);
 }
 

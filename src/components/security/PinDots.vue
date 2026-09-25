@@ -39,11 +39,11 @@ withDefaults(
 }
 
 .vk-pin-dot {
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
-  background: #DCD7D2;
-  opacity: 0.7;
+  background: #E4DFDA;
+  opacity: 0.75;
   transform: scale(0.8);
   transition: transform 120ms var(--vk-ease-enter),
               opacity 120ms var(--vk-ease-enter),
@@ -51,7 +51,7 @@ withDefaults(
 }
 
 .vk-pin-dot.is-filled {
-  background: #C52A27;
+  background: #B82825;
   opacity: 1;
   transform: scale(1);
 }

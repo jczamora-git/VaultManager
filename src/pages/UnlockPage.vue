@@ -32,11 +32,19 @@
               :has-error="hasError"
             />
 
-            <!-- Fixed-Height Status / Error Message Banner (Prevents layout jumping) -->
-            <div class="vk-unlock-status-slot">
+            <!-- Middle Action / Status Slot (Between Dots & Keypad) -->
+            <div class="vk-unlock-mid-slot">
               <span v-if="statusMessage" class="vk-unlock-status" :class="{ 'is-lockout': lockoutInfo.isLocked }">
                 {{ statusMessage }}
               </span>
+              <button
+                v-else
+                type="button"
+                class="vk-btn-master-fallback"
+                @click="goToMasterPasswordFallback"
+              >
+                Use Master Password
+              </button>
             </div>
 
             <!-- Custom Numeric Keypad -->
@@ -48,17 +56,6 @@
               @backspace="handleBackspace"
               @biometric="handleBiometricClick"
             />
-
-            <!-- Secondary Quiet "Use master password" fallback -->
-            <div class="vk-unlock-footer">
-              <button
-                type="button"
-                class="vk-btn-master-fallback"
-                @click="goToMasterPasswordFallback"
-              >
-                Use master password
-              </button>
-            </div>
           </div>
         </div>
       </div>
@@ -359,14 +356,14 @@ function goToMasterPasswordFallback() {
   max-width: 254px;
 }
 
-/* Fixed-height error/status slot prevents keypad jumping */
-.vk-unlock-status-slot {
-  min-height: 18px;
-  height: 18px;
+/* Middle Action / Status slot between dots and keypad */
+.vk-unlock-mid-slot {
+  min-height: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 3px 0 3px 0;
+  margin: 6px 0 8px 0;
 }
 
 .vk-unlock-status {
@@ -381,12 +378,6 @@ function goToMasterPasswordFallback() {
   color: #F59E0B;
 }
 
-.vk-unlock-footer {
-  margin-top: 18px;
-  display: flex;
-  justify-content: center;
-}
-
 .vk-unlock-hero-content {
   animation: vkFadeUp var(--vk-motion-base) var(--vk-ease-enter) forwards;
 }
@@ -395,13 +386,15 @@ function goToMasterPasswordFallback() {
   background: transparent;
   border: none;
   color: var(--brand-red);
-  font-size: 0.885rem;
+  font-size: 0.8125rem; /* 13px */
   font-weight: 600;
   cursor: pointer;
-  padding: 8px 16px;
+  padding: 4px 10px;
   border-radius: var(--radius-pill);
+  letter-spacing: -0.01em;
   transition: transform var(--vk-motion-instant) var(--vk-ease-press), opacity var(--vk-motion-fast) ease;
   user-select: none;
+  outline: none;
 }
 
 .vk-btn-master-fallback:hover {
@@ -409,7 +402,7 @@ function goToMasterPasswordFallback() {
 }
 
 .vk-btn-master-fallback:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 
 /* Short screens (<= 720px) */
@@ -419,21 +412,18 @@ function goToMasterPasswordFallback() {
   }
   .vk-unlock-top-spacer {
     min-height: 8px;
-    max-height: 32px;
+    max-height: 28px;
   }
-  .vk-unlock-status-slot {
-    margin: 4px 0 12px 0;
-  }
-  .vk-unlock-footer {
-    margin-top: 16px;
+  .vk-unlock-mid-slot {
+    margin: 4px 0 6px 0;
   }
 }
 
 /* Tall screens (>= 850px) */
 @media (min-height: 850px) {
   .vk-unlock-top-spacer {
-    min-height: 32px;
-    max-height: 120px;
+    min-height: 24px;
+    max-height: 90px;
   }
 }
 
