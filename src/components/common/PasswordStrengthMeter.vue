@@ -72,6 +72,7 @@ const analysis = computed(() => {
   font-size: 0.775rem;
   font-weight: 700;
   text-transform: capitalize;
+  transition: color var(--vk-motion-base) ease;
 }
 
 .vk-strength-bars {
@@ -84,6 +85,8 @@ const analysis = computed(() => {
 .vk-bar-segment {
   flex: 1;
   border-radius: var(--radius-pill);
-  transition: background-color 0.25s ease;
+  transform-origin: left center;
+  transition: transform var(--vk-motion-base) var(--vk-ease-enter),
+              background-color var(--vk-motion-base) ease;
 }
 </style>

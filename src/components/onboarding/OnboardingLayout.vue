@@ -164,7 +164,7 @@ defineEmits<{
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.1s ease, background-color 0.15s ease;
+  transition: transform var(--vk-motion-instant) var(--vk-ease-press), background-color var(--vk-motion-fast) ease;
   touch-action: manipulation;
 }
 
@@ -206,7 +206,7 @@ defineEmits<{
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  animation: vkFadeUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: vkFadeUp var(--vk-motion-base) var(--vk-ease-enter) 0ms forwards;
 }
 
 .vk-hero-title {
@@ -284,7 +284,7 @@ defineEmits<{
   width: 100%;
   display: flex;
   flex-direction: column;
-  animation: vkSheetUp 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: vkSheetUp var(--vk-motion-slow) var(--vk-ease-enter) 40ms forwards;
 }
 
 /* Animations */

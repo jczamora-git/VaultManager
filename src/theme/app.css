@@ -76,7 +76,7 @@ body {
   background: var(--vk-bg-sheet);
   transform: translateY(-50%);
   z-index: 2;
-  transition: background-color 0.2s ease;
+  transition: background-color var(--vk-motion-base) ease;
 }
 
 .vk-ticket-cutout::before {
@@ -109,7 +109,19 @@ body {
   user-select: none;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  transition: all 0.2s ease;
+  animation: vkDockEnter var(--vk-motion-slow) var(--vk-ease-enter) forwards;
+  transition: background-color var(--vk-motion-base) ease, border-color var(--vk-motion-base) ease, box-shadow var(--vk-motion-base) ease;
+}
+
+@keyframes vkDockEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .vk-dock-item {
@@ -126,13 +138,18 @@ body {
   border: none;
   cursor: pointer;
   position: relative;
-  transition: color 0.18s ease;
+  transition: color var(--vk-motion-fast) var(--vk-ease-standard), transform var(--vk-motion-instant) var(--vk-ease-press);
+}
+
+.vk-dock-item:active {
+  transform: scale(0.94);
 }
 
 .vk-dock-label {
   font-size: 0.725rem;
   font-weight: 700;
   letter-spacing: -0.01em;
+  transition: color var(--vk-motion-fast) var(--vk-ease-standard);
 }
 
 .vk-dock-item.is-active {
@@ -146,6 +163,18 @@ body {
   height: 4px;
   border-radius: 50%;
   background-color: var(--brand-red);
+  animation: vkDotPop var(--vk-motion-fast) var(--vk-ease-enter) forwards;
+}
+
+@keyframes vkDotPop {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Custom Search Pill */
@@ -158,7 +187,9 @@ body {
   border-radius: var(--radius-pill);
   padding: 0 18px;
   min-height: 52px;
-  transition: all 0.2s ease;
+  transition: border-color var(--vk-motion-base) var(--vk-ease-enter),
+              background-color var(--vk-motion-base) ease,
+              box-shadow var(--vk-motion-base) var(--vk-ease-enter);
   margin-bottom: 16px;
 }
 
@@ -206,7 +237,9 @@ body {
   border-radius: var(--radius-md);
   padding: 4px 16px;
   min-height: 54px;
-  transition: all 0.2s ease;
+  transition: border-color var(--vk-motion-base) var(--vk-ease-enter),
+              background-color var(--vk-motion-base) ease,
+              box-shadow var(--vk-motion-base) var(--vk-ease-enter);
 }
 
 .vk-input-wrapper:focus-within {
@@ -247,19 +280,24 @@ body {
   border-radius: var(--radius-pill);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--vk-motion-fast) var(--vk-ease-press),
+              background-color var(--vk-motion-base) ease,
+              border-color var(--vk-motion-base) ease,
+              color var(--vk-motion-base) ease,
+              box-shadow var(--vk-motion-base) ease,
+              opacity var(--vk-motion-fast) ease;
   user-select: none;
   text-decoration: none;
   letter-spacing: -0.01em;
 }
 
+.vk-btn:active {
+  transform: scale(0.985);
+}
+
 .vk-btn-primary {
   background: var(--vk-btn-primary-bg);
   color: var(--vk-btn-primary-text);
-}
-
-.vk-btn-primary:active {
-  transform: scale(0.98);
 }
 
 .vk-btn-white {
@@ -310,11 +348,15 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
+  transition: transform var(--vk-motion-instant) var(--vk-ease-press), background-color var(--vk-motion-fast) ease;
 }
 
 .vk-btn-icon-only:hover {
   background: rgba(128, 128, 128, 0.12);
+}
+
+.vk-btn-icon-only:active {
+  transform: scale(0.94);
 }
 
 /* Floating Action Button (FAB) positioned above floating dock */
@@ -329,6 +371,11 @@ body {
   --box-shadow: 0 8px 24px rgba(184, 40, 37, 0.4);
   width: 58px;
   height: 58px;
+  transition: transform var(--vk-motion-fast) var(--vk-ease-press);
+}
+
+.vk-fab-btn:active {
+  transform: scale(0.95);
 }
 
 /* Modal Bottom Sheet Styling */
@@ -356,5 +403,85 @@ ion-modal.vk-bottom-sheet {
   font-weight: 800;
   color: var(--text-primary);
   margin: 0;
+}
+
+/* ========================================= */
+/* GLOBAL REUSABLE MOTION TRANSITIONS        */
+/* ========================================= */
+
+/* Page Step Transition (Forward / Subtle) */
+.vk-slide-fade-enter-active,
+.vk-slide-fade-leave-active {
+  transition: opacity var(--vk-motion-slow) var(--vk-ease-standard),
+              transform var(--vk-motion-slow) var(--vk-ease-enter);
+}
+
+.vk-slide-fade-enter-from {
+  opacity: 0;
+  transform: translateX(12px);
+}
+
+.vk-slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+/* Tab Content Switch Transition */
+.vk-tab-switch-enter-active {
+  transition: opacity var(--vk-motion-base) var(--vk-ease-standard),
+              transform var(--vk-motion-base) var(--vk-ease-enter);
+}
+
+.vk-tab-switch-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+/* Fade Crossfade Transition */
+.vk-fade-enter-active,
+.vk-fade-leave-active {
+  transition: opacity var(--vk-motion-base) var(--vk-ease-standard);
+}
+
+.vk-fade-enter-from,
+.vk-fade-leave-to {
+  opacity: 0;
+}
+
+/* Micro-animations */
+.vk-motion-fade {
+  animation: vkFadeIn var(--vk-motion-base) var(--vk-ease-standard) forwards;
+}
+
+.vk-motion-rise {
+  animation: vkRiseIn var(--vk-motion-base) var(--vk-ease-enter) forwards;
+}
+
+@keyframes vkFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes vkRiseIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 

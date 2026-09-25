@@ -89,8 +89,13 @@ defineEmits<{
   min-height: 70px;
   border-bottom: 1px solid var(--border-light);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: transform var(--vk-motion-fast) var(--vk-ease-press),
+              background-color var(--vk-motion-base) ease;
   user-select: none;
+}
+
+.vk-credential-row:active {
+  transform: scale(0.99);
 }
 
 .vk-credential-row:last-child {
@@ -156,12 +161,18 @@ defineEmits<{
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
+  transition: transform var(--vk-motion-fast) var(--vk-ease-press),
+              color var(--vk-motion-fast) ease,
+              background-color var(--vk-motion-fast) ease;
 }
 
 .vk-star-btn:hover {
   background: var(--surface-light);
   color: var(--text-primary);
+}
+
+.vk-star-btn:active {
+  transform: scale(1.15);
 }
 
 .vk-star-btn.is-favorite {
@@ -170,7 +181,7 @@ defineEmits<{
 
 .vk-chevron-icon {
   color: var(--text-muted);
-  transition: transform 0.15s ease;
+  transition: transform var(--vk-motion-fast) var(--vk-ease-standard), color var(--vk-motion-fast) ease;
 }
 
 .vk-credential-row:hover .vk-chevron-icon {

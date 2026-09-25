@@ -4,6 +4,7 @@
     <button
       type="button"
       class="vk-select-pill"
+      :class="{ 'is-open': isOpen }"
       @click="isOpen = true"
       :title="selectedOption?.label || title"
     >
@@ -139,8 +140,14 @@ function selectOption(val: any) {
   font-size: 0.825rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: transform var(--vk-motion-fast) var(--vk-ease-press),
+              background-color var(--vk-motion-base) ease,
+              border-color var(--vk-motion-base) ease;
   user-select: none;
+}
+
+.vk-select-pill:active {
+  transform: scale(0.97);
 }
 
 .vk-select-pill:hover {
@@ -165,6 +172,11 @@ function selectOption(val: any) {
 .vk-select-chevron {
   color: var(--text-secondary);
   flex-shrink: 0;
+  transition: transform var(--vk-motion-fast) var(--vk-ease-standard);
+}
+
+.is-open .vk-select-chevron {
+  transform: rotate(180deg);
 }
 
 .vk-select-options-list {
@@ -187,7 +199,7 @@ function selectOption(val: any) {
   font-weight: 600;
   cursor: pointer;
   text-align: left;
-  transition: background 0.15s ease;
+  transition: background-color var(--vk-motion-fast) ease, color var(--vk-motion-fast) ease;
   border-radius: var(--radius-md);
 }
 
@@ -199,6 +211,10 @@ function selectOption(val: any) {
   background: var(--vk-bg-surface-soft);
 }
 
+.vk-select-option-item:active {
+  background: var(--vk-bg-surface-elevated);
+}
+
 .vk-select-option-item.is-selected {
   color: var(--brand-red);
   font-weight: 700;
@@ -206,5 +222,17 @@ function selectOption(val: any) {
 
 .vk-check-icon {
   flex-shrink: 0;
+  animation: vkCheckFadeIn var(--vk-motion-fast) var(--vk-ease-enter) forwards;
+}
+
+@keyframes vkCheckFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 </style>

@@ -372,6 +372,7 @@ function useAsInput() {
   background: var(--vk-bg-surface-soft);
   border-radius: var(--radius-lg);
   padding: 18px;
+  animation: vkRiseIn var(--vk-motion-base) var(--vk-ease-enter) forwards;
 }
 
 .vk-output-box {

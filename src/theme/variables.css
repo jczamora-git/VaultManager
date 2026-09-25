@@ -37,6 +37,17 @@
   --radius-xl: 34px;
   --radius-pill: 9999px;
 
+  /* Global Motion Design System Tokens */
+  --vk-motion-instant: 80ms;
+  --vk-motion-fast: 120ms;
+  --vk-motion-base: 180ms;
+  --vk-motion-slow: 240ms;
+
+  --vk-ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --vk-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --vk-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --vk-ease-press: cubic-bezier(0.25, 1, 0.5, 1);
+
   /* Global Layout Variables */
   --vk-page-horizontal: 22px;
   --vk-safe-top: calc(env(safe-area-inset-top, 0px) + 24px);

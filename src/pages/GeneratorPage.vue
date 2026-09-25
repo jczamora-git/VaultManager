@@ -143,6 +143,8 @@ onMounted(() => {
   margin-bottom: 20px;
   text-align: center;
   user-select: all;
+  transition: opacity var(--vk-motion-base) var(--vk-ease-standard),
+              transform var(--vk-motion-base) var(--vk-ease-enter);
 }
 
 .vk-pw-card-footer {
@@ -163,12 +165,14 @@ onMounted(() => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
+  transition: background-color var(--vk-motion-base) ease;
 }
 
 .vk-strength-text {
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-primary);
+  transition: color var(--vk-motion-base) ease;
 }
 
 .vk-gen-copy-btn {
@@ -183,7 +187,9 @@ onMounted(() => {
   font-size: 0.825rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: transform var(--vk-motion-fast) var(--vk-ease-press),
+              background-color var(--vk-motion-base) ease,
+              color var(--vk-motion-base) ease;
   user-select: none;
 }
 

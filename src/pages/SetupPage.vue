@@ -1423,7 +1423,12 @@ function getCategoryCount(credentials?: any[]): number {
   justify-content: center;
   cursor: pointer;
   position: relative;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition: transform var(--vk-motion-base) var(--vk-ease-enter),
+              border-color var(--vk-motion-base) ease;
+}
+
+.vk-palette-btn:active {
+  transform: scale(0.96);
 }
 
 .vk-palette-btn.is-selected {
@@ -1449,6 +1454,7 @@ function getCategoryCount(credentials?: any[]): number {
   align-items: center;
   justify-content: center;
   border: 1.5px solid #FFFFFF;
+  animation: vkCheckFadeIn var(--vk-motion-fast) var(--vk-ease-enter) forwards;
 }
 
 /* Profile Preview Card */

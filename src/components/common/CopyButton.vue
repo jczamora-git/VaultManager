@@ -72,7 +72,7 @@ async function handleCopy() {
     if (timer) window.clearTimeout(timer);
     timer = window.setTimeout(() => {
       isCopied.value = false;
-    }, 2000);
+    }, 1200);
   }
 }
 </script>
@@ -89,9 +89,15 @@ async function handleCopy() {
   color: var(--text-primary);
   padding: 8px 12px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: transform var(--vk-motion-fast) var(--vk-ease-press),
+              background-color var(--vk-motion-base) ease,
+              color var(--vk-motion-base) ease;
   font-size: 0.8rem;
   font-weight: 700;
+}
+
+.vk-copy-btn:active {
+  transform: scale(0.97);
 }
 
 .vk-copy-btn-sm {
@@ -109,14 +115,16 @@ async function handleCopy() {
 }
 
 .vk-check-icon {
-  animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: vkCheckFadeIn var(--vk-motion-fast) var(--vk-ease-enter) forwards;
 }
 
-@keyframes popIn {
+@keyframes vkCheckFadeIn {
   0% {
-    transform: scale(0.6);
+    opacity: 0;
+    transform: scale(0.85);
   }
   100% {
+    opacity: 1;
     transform: scale(1);
   }
 }

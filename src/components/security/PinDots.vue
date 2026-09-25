@@ -43,13 +43,17 @@ withDefaults(
   height: 12px;
   border-radius: 50%;
   background: #E2DED9;
-  transition: all 0.16s ease;
-  transform: scale(1);
+  opacity: 0.45;
+  transform: scale(0.75);
+  transition: transform var(--vk-motion-base) var(--vk-ease-enter),
+              opacity var(--vk-motion-base) var(--vk-ease-enter),
+              background-color var(--vk-motion-base) ease;
 }
 
 .vk-pin-dot.is-filled {
   background: #B82825;
-  transform: scale(1.15);
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* Dark theme dots */
@@ -65,15 +69,17 @@ withDefaults(
   background: #D3332F;
 }
 
-/* Subtle horizontal shake animation */
+/* Precise horizontal shake animation */
 .is-shaking {
-  animation: vk-dot-shake 0.38s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: vk-dot-shake 280ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 @keyframes vk-dot-shake {
-  10%, 90% { transform: translate3d(-3px, 0, 0); }
-  20%, 80% { transform: translate3d(5px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
-  40%, 60% { transform: translate3d(6px, 0, 0); }
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(3px); }
+  100% { transform: translateX(0); }
 }
 </style>

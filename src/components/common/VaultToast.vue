@@ -260,11 +260,13 @@ const { currentToast, dismissToast } = useToast();
 
 /* Subtle Motion Animation (180-220ms) */
 .vk-toast-anim-enter-active {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity var(--vk-motion-base) var(--vk-ease-enter),
+              transform var(--vk-motion-base) var(--vk-ease-enter);
 }
 
 .vk-toast-anim-leave-active {
-  transition: all 0.18s cubic-bezier(0.7, 0, 0.84, 0);
+  transition: opacity var(--vk-motion-base) var(--vk-ease-exit),
+              transform var(--vk-motion-base) var(--vk-ease-exit);
 }
 
 .vk-toast-anim-enter-from {

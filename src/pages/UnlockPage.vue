@@ -386,6 +386,10 @@ function goToMasterPasswordFallback() {
   justify-content: center;
 }
 
+.vk-unlock-hero-content {
+  animation: vkFadeUp var(--vk-motion-base) var(--vk-ease-enter) forwards;
+}
+
 .vk-btn-master-fallback {
   background: transparent;
   border: none;
@@ -395,7 +399,7 @@ function goToMasterPasswordFallback() {
   cursor: pointer;
   padding: 8px 16px;
   border-radius: var(--radius-pill);
-  transition: opacity 0.15s ease;
+  transition: transform var(--vk-motion-instant) var(--vk-ease-press), opacity var(--vk-motion-fast) ease;
   user-select: none;
 }
 

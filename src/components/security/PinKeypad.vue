@@ -301,14 +301,13 @@ onUnmounted(() => {
   font-size: 1.65rem;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
-  transition: transform 0.1s ease, background-color 0.1s ease;
+  transition: transform var(--vk-motion-instant) var(--vk-ease-press), background-color var(--vk-motion-fast) ease;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
 
 .vk-keypad-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.94);
   background: #EBE8E3;
 }
 
@@ -317,9 +316,11 @@ onUnmounted(() => {
   border-color: transparent;
   box-shadow: none;
   color: var(--text-primary);
+  transition: transform var(--vk-motion-instant) var(--vk-ease-press), color var(--vk-motion-fast) ease;
 }
 
 .vk-keypad-action-btn:active {
+  transform: scale(0.92);
   background: rgba(0, 0, 0, 0.05);
 }
 
