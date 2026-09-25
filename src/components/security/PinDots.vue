@@ -8,9 +8,11 @@
     <div
       v-for="index in length"
       :key="index"
-      class="vk-pin-dot"
+      class="vk-pin-circle"
       :class="{ 'is-filled': index <= filledCount }"
-    ></div>
+    >
+      <div class="vk-pin-inner-dot"></div>
+    </div>
   </div>
 </template>
 
@@ -33,55 +35,64 @@ withDefaults(
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 13px;
+  gap: clamp(8px, 2.5vw, 12px);
   margin: 0 auto;
   user-select: none;
 }
 
-.vk-pin-dot {
-  width: 13px;
-  height: 13px;
+.vk-pin-circle {
+  width: clamp(34px, 9vw, 40px);
+  height: clamp(34px, 9vw, 40px);
   border-radius: 50%;
-  background: #E4DFDA;
-  opacity: 0.75;
-  transform: scale(0.8);
+  background: #FFFFFF;
+  border: 1.5px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
   transition: transform 120ms var(--vk-ease-enter),
-              opacity 120ms var(--vk-ease-enter),
-              background-color 120ms ease;
+              box-shadow 120ms ease;
 }
 
-.vk-pin-dot.is-filled {
-  background: #B82825;
-  opacity: 1;
+.vk-pin-inner-dot {
+  width: clamp(10px, 2.8vw, 12px);
+  height: clamp(10px, 2.8vw, 12px);
+  border-radius: 50%;
+  background: var(--brand-red, #B82825);
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 140ms var(--vk-ease-enter),
+              opacity 140ms var(--vk-ease-enter);
+}
+
+.vk-pin-circle.is-filled .vk-pin-inner-dot {
   transform: scale(1);
-}
-
-/* Dark theme dots */
-:global(.dark) .vk-pin-dot,
-:global(.ion-palette-dark) .vk-pin-dot,
-:global(body.dark-theme) .vk-pin-dot {
-  background: #3A3A3A;
-  opacity: 0.8;
-}
-
-:global(.dark) .vk-pin-dot.is-filled,
-:global(.ion-palette-dark) .vk-pin-dot.is-filled,
-:global(body.dark-theme) .vk-pin-dot.is-filled {
-  background: #D3332F;
   opacity: 1;
 }
 
-/* Precise horizontal shake animation (dots only) */
+/* Shake animation (PIN indicators only) */
 .is-shaking {
-  animation: vk-dot-shake 260ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: vk-dot-shake 320ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 @keyframes vk-dot-shake {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(5px); }
-  60% { transform: translateX(-3px); }
-  80% { transform: translateX(2px); }
-  100% { transform: translateX(0); }
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-9px); }
+  30% { transform: translateX(8px); }
+  45% { transform: translateX(-6px); }
+  60% { transform: translateX(5px); }
+  75% { transform: translateX(-2px); }
+}
+
+@media (max-height: 720px) {
+  .vk-pin-circle {
+    width: 32px;
+    height: 32px;
+  }
+  .vk-pin-inner-dot {
+    width: 9px;
+    height: 9px;
+  }
 }
 </style>

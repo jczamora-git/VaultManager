@@ -31,11 +31,12 @@
           <slot name="hero-extra"></slot>
           <h1 class="vk-hero-title">{{ title }}</h1>
           <p v-if="subtitle" class="vk-hero-subtitle">{{ subtitle }}</p>
+          <slot name="hero-bottom"></slot>
         </div>
       </div>
     </header>
 
-    <!-- MAIN WHITE / DARK SHEET (Interaction Area) -->
+    <!-- MAIN WHITE SHEET (Interaction Area) -->
     <main class="vk-onboarding-sheet vk-sheet">
       <div class="vk-container vk-sheet-container">
         <!-- Main Interactive Content Slot -->
@@ -54,7 +55,7 @@ withDefaults(
     subtitle?: string;
     step?: string;
     showBack?: boolean;
-    heroSize?: 'large' | 'medium' | 'compact';
+    heroSize?: 'pin' | 'large' | 'medium' | 'compact';
     contentPosition?: 'center' | 'thumb-zone' | 'lower' | 'center-lower' | 'natural';
     scrollable?: boolean;
   }>(),
@@ -81,21 +82,12 @@ defineEmits<{
   flex-direction: column;
   background: linear-gradient(
     180deg,
-    #C62A27 0%,
-    #B82825 45%,
-    #A92220 100%
+    #D02724 0%,
+    #B8201E 100%
   );
   overflow: hidden;
   position: relative;
-}
-
-.dark .vk-onboarding-layout {
-  background: linear-gradient(
-    180deg,
-    #181818 0%,
-    #121212 45%,
-    #0D0D0D 100%
-  );
+  color-scheme: light;
 }
 
 .vk-onboarding-layout.is-scrollable {
@@ -117,6 +109,10 @@ defineEmits<{
 }
 
 /* Hero Height Variants */
+.hero-pin .vk-onboarding-hero {
+  height: clamp(330px, 47dvh, 430px);
+}
+
 .hero-large .vk-onboarding-hero {
   height: clamp(280px, 43dvh, 390px);
 }
@@ -173,12 +169,6 @@ defineEmits<{
   background: rgba(255, 255, 255, 0.28);
 }
 
-.dark .vk-hero-circle-btn {
-  background: var(--vk-bg-surface-soft);
-  color: var(--text-primary);
-  border: 1px solid var(--vk-border);
-}
-
 .vk-step-badge {
   font-size: 0.775rem;
   font-weight: 700;
@@ -187,12 +177,6 @@ defineEmits<{
   padding: 5px 14px;
   border-radius: var(--radius-pill);
   letter-spacing: -0.01em;
-}
-
-.dark .vk-step-badge {
-  background: var(--vk-bg-surface-soft);
-  color: var(--text-secondary);
-  border: 1px solid var(--vk-border);
 }
 
 /* Intentional Large Empty Space */
@@ -218,20 +202,12 @@ defineEmits<{
   margin: 0;
 }
 
-.dark .vk-hero-title {
-  color: var(--text-primary);
-}
-
 .vk-hero-subtitle {
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.9);
   line-height: 1.38;
   margin: 4px 0 0 0;
   max-width: 340px;
-}
-
-.dark .vk-hero-subtitle {
-  color: var(--text-secondary);
 }
 
 /* ========================================= */
@@ -242,7 +218,7 @@ defineEmits<{
   display: flex;
   flex-direction: column;
   background: #FFFFFF;
-  border-radius: 34px 34px 0 0;
+  border-radius: 36px 36px 0 0;
   margin-top: -12px;
   z-index: 2;
   position: relative;
@@ -250,12 +226,6 @@ defineEmits<{
   overflow-y: auto;
   border-top: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
-}
-
-.dark .vk-onboarding-sheet {
-  background: #151515;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.05), 0 -12px 32px rgba(0, 0, 0, 0.3);
 }
 
 .vk-sheet-container {
@@ -321,6 +291,9 @@ defineEmits<{
 
 /* Responsive Short Screens (<= 720px) */
 @media (max-height: 720px) {
+  .hero-pin .vk-onboarding-hero {
+    height: clamp(280px, 44dvh, 330px);
+  }
   .hero-large .vk-onboarding-hero {
     height: clamp(230px, 38dvh, 290px);
   }

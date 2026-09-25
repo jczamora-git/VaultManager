@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-content :fullscreen="true" :scroll-y="false" class="vk-setup-page">
+    <ion-content :fullscreen="true" :scroll-y="false" class="vk-setup-page vaultify-onboarding">
       <!-- Top Progress Indicator (Active numbered steps) -->
       <div v-if="typeof step === 'number' && step > 1 && step < 8" class="vk-onboarding-progress-bar">
         <div class="vk-progress-track">
@@ -382,17 +382,20 @@
           title="Create your PIN"
           subtitle="Use six digits for quick everyday access."
           :step="isImportFlow ? 'Security Setup' : 'Step 3 of 6'"
-          hero-size="compact"
-          content-position="thumb-zone"
+          hero-size="pin"
+          content-position="center"
           @back="handleStep4Back"
         >
-          <div class="vk-pin-interaction-group">
-            <PinDots :filled-count="createdPin.length" :has-error="hasPinError" />
-
-            <div class="vk-pin-status-slot">
-              <span v-if="pinErrorText" class="vk-pin-error-text">{{ pinErrorText }}</span>
+          <template #hero-bottom>
+            <div class="vk-pin-hero-slot">
+              <PinDots :filled-count="createdPin.length" :has-error="hasPinError" />
+              <div class="vk-pin-status-slot">
+                <span v-if="pinErrorText" class="vk-pin-error-text">{{ pinErrorText }}</span>
+              </div>
             </div>
+          </template>
 
+          <div class="vk-pin-keypad-container">
             <PinKeypad
               @digit="handleCreatedPinDigit"
               @backspace="handleCreatedPinBackspace"
@@ -409,17 +412,20 @@
           title="Confirm your PIN"
           subtitle="Enter your six digits again to make sure."
           :step="isImportFlow ? 'Security Setup' : 'Step 4 of 6'"
-          hero-size="compact"
-          content-position="thumb-zone"
+          hero-size="pin"
+          content-position="center"
           @back="resetToCreatePin"
         >
-          <div class="vk-pin-interaction-group">
-            <PinDots :filled-count="confirmedPin.length" :has-error="hasConfirmPinError" />
-
-            <div class="vk-pin-status-slot">
-              <span v-if="confirmPinErrorText" class="vk-pin-error-text">{{ confirmPinErrorText }}</span>
+          <template #hero-bottom>
+            <div class="vk-pin-hero-slot">
+              <PinDots :filled-count="confirmedPin.length" :has-error="hasConfirmPinError" />
+              <div class="vk-pin-status-slot">
+                <span v-if="confirmPinErrorText" class="vk-pin-error-text">{{ confirmPinErrorText }}</span>
+              </div>
             </div>
+          </template>
 
+          <div class="vk-pin-keypad-container">
             <PinKeypad
               @digit="handleConfirmedPinDigit"
               @backspace="handleConfirmedPinBackspace"
@@ -1049,33 +1055,20 @@ function getCategoryCount(credentials?: any[]): number {
 </script>
 
 <style scoped>
+.vaultify-onboarding {
+  color-scheme: light;
+}
+
 .vk-setup-page {
   --background: linear-gradient(
     180deg,
-    #C62A27 0%,
-    #B82825 45%,
-    #A92220 100%
+    #D02724 0%,
+    #B8201E 100%
   );
   background: linear-gradient(
     180deg,
-    #C62A27 0%,
-    #B82825 45%,
-    #A92220 100%
-  );
-}
-
-.dark .vk-setup-page {
-  --background: linear-gradient(
-    180deg,
-    #181818 0%,
-    #121212 45%,
-    #0D0D0D 100%
-  );
-  background: linear-gradient(
-    180deg,
-    #181818 0%,
-    #121212 45%,
-    #0D0D0D 100%
+    #D02724 0%,
+    #B8201E 100%
   );
 }
 
@@ -1101,10 +1094,6 @@ function getCategoryCount(credentials?: any[]): number {
   transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.dark .vk-progress-fill {
-  background: #E5E7EB;
-}
-
 /* Fullscreen Hero (Steps 1 & 8) */
 .vk-onboarding-fullscreen {
   min-height: 100dvh;
@@ -1114,18 +1103,8 @@ function getCategoryCount(credentials?: any[]): number {
   overflow: hidden;
   background: linear-gradient(
     180deg,
-    #C62A27 0%,
-    #B82825 45%,
-    #A92220 100%
-  );
-}
-
-.dark .vk-onboarding-fullscreen {
-  background: linear-gradient(
-    180deg,
-    #181818 0%,
-    #121212 45%,
-    #0D0D0D 100%
+    #D02724 0%,
+    #B8201E 100%
   );
 }
 
@@ -1585,30 +1564,44 @@ function getCategoryCount(credentials?: any[]): number {
   margin-top: 0;
 }
 
-/* PIN Step Unified Cluster */
-.vk-pin-interaction-group {
+/* PIN Hero Slot (Placed below subtitle inside Red Hero) */
+.vk-pin-hero-slot {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: min(100%, 254px);
-  margin: 0 auto;
+  margin-top: clamp(22px, 3.2dvh, 28px);
+  width: 100%;
 }
 
 .vk-pin-status-slot {
-  min-height: 18px;
-  height: 18px;
+  min-height: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 3px 0 3px 0;
+  margin-top: 6px;
 }
 
 .vk-pin-error-text {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--brand-red);
+  font-size: 0.775rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: rgba(0, 0, 0, 0.28);
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  letter-spacing: -0.01em;
   text-align: center;
   line-height: 1.2;
+}
+
+/* PIN White Sheet Keypad Container */
+.vk-pin-keypad-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
 }
 
 /* Biometrics Step */

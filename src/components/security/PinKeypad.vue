@@ -268,9 +268,9 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: clamp(14px, 2.2dvh, 18px);
   width: 100%;
-  max-width: 254px;
+  max-width: 244px;
   margin: 0 auto;
   user-select: none;
 }
@@ -284,24 +284,24 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  gap: 24px;
+  gap: clamp(18px, 4.5vw, 24px);
 }
 
 .vk-keypad-btn {
-  width: 58px;
-  height: 58px;
-  min-width: 56px;
-  min-height: 56px;
+  width: clamp(54px, 15vw, 62px);
+  height: clamp(54px, 15vw, 62px);
+  min-width: 52px;
+  min-height: 52px;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  background: #F7F5F2;
-  color: #161616;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  background: #F1EFEC;
+  color: #151515;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.65rem;
+  font-size: clamp(1.5rem, 4.5vw, 1.7rem);
   font-weight: 500;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
   cursor: pointer;
   transition: transform 90ms var(--vk-ease-press),
               background-color 100ms ease,
@@ -311,15 +311,15 @@ onUnmounted(() => {
 }
 
 .vk-keypad-btn:active {
-  transform: scale(0.95);
-  background: #EBE8E4;
+  transform: scale(0.94);
+  background: #E5E2DC;
 }
 
 .vk-keypad-action-btn {
   background: transparent;
   border-color: transparent;
   box-shadow: none;
-  color: #161616;
+  color: #151515;
   transition: transform 90ms var(--vk-ease-press),
               color 100ms ease;
 }
@@ -334,75 +334,51 @@ onUnmounted(() => {
 }
 
 .vk-keypad-spacer {
-  width: 58px;
-  height: 58px;
-  min-width: 56px;
-  min-height: 56px;
+  width: clamp(54px, 15vw, 62px);
+  height: clamp(54px, 15vw, 62px);
+  min-width: 52px;
+  min-height: 52px;
 }
 
 /* Responsive adjustment for short devices (<= 720px) */
 @media (max-height: 720px) {
   .vk-pin-keypad {
     gap: 12px;
-    max-width: 240px;
+    max-width: 236px;
   }
   .vk-keypad-row {
-    gap: 20px;
-  }
-  .vk-keypad-btn,
-  .vk-keypad-spacer {
-    width: 54px;
-    height: 54px;
-    min-width: 52px;
-    min-height: 52px;
-    font-size: 1.5rem;
+    gap: 18px;
   }
 }
 
-/* Responsive adjustment for tall devices (>= 850px) */
-@media (min-height: 850px) {
-  .vk-pin-keypad {
-    gap: 16px;
-    max-width: 254px;
-  }
-  .vk-keypad-row {
-    gap: 24px;
-  }
-  .vk-keypad-btn,
-  .vk-keypad-spacer {
-    width: 58px;
-    height: 58px;
-  }
-}
-
-/* Dark Theme Keypad */
-:global(.dark) .vk-keypad-btn,
-:global(.ion-palette-dark) .vk-keypad-btn,
-:global(body.dark-theme) .vk-keypad-btn {
+/* Dark Theme Keypad - Scoped strictly to non-onboarding screens */
+:global(.dark:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *),
+:global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *),
+:global(body.dark-theme:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *) {
   background: #1E1E1E;
   color: #F5F5F5;
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
 }
 
-:global(.dark) .vk-keypad-btn:active,
-:global(.ion-palette-dark) .vk-keypad-btn:active,
-:global(body.dark-theme) .vk-keypad-btn:active {
+:global(.dark:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *):active,
+:global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *):active,
+:global(body.dark-theme:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *):active {
   background: #282828;
 }
 
-:global(.dark) .vk-keypad-action-btn,
-:global(.ion-palette-dark) .vk-keypad-action-btn,
-:global(body.dark-theme) .vk-keypad-action-btn {
+:global(.dark:not(.vaultify-onboarding)) .vk-keypad-action-btn:not(.vaultify-onboarding *),
+:global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-keypad-action-btn:not(.vaultify-onboarding *),
+:global(body.dark-theme:not(.vaultify-onboarding)) .vk-keypad-action-btn:not(.vaultify-onboarding *) {
   background: transparent;
   border-color: transparent;
   box-shadow: none;
   color: #F5F5F5;
 }
 
-:global(.dark) .vk-biometric-btn,
-:global(.ion-palette-dark) .vk-biometric-btn,
-:global(body.dark-theme) .vk-biometric-btn {
+:global(.dark:not(.vaultify-onboarding)) .vk-biometric-btn:not(.vaultify-onboarding *),
+:global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-biometric-btn:not(.vaultify-onboarding *),
+:global(body.dark-theme:not(.vaultify-onboarding)) .vk-biometric-btn:not(.vaultify-onboarding *) {
   color: #D3332F;
 }
 </style>
