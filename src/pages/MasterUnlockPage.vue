@@ -6,7 +6,7 @@
         subtitle="Enter your Master Password to unlock Vaultify or recover PIN access."
         :show-back="true"
         hero-size="medium"
-        content-position="center-lower"
+        content-position="center"
         @back="goBackToPin"
       >
         <form @submit.prevent="handleMasterUnlock" class="vk-master-form" :class="{ 'is-shaking': hasError }">

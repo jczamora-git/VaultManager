@@ -55,7 +55,7 @@ withDefaults(
     step?: string;
     showBack?: boolean;
     heroSize?: 'large' | 'medium' | 'compact';
-    contentPosition?: 'lower' | 'center-lower' | 'center' | 'natural';
+    contentPosition?: 'center' | 'thumb-zone' | 'lower' | 'center-lower' | 'natural';
     scrollable?: boolean;
   }>(),
   {
@@ -63,7 +63,7 @@ withDefaults(
     step: '',
     showBack: true,
     heroSize: 'large',
-    contentPosition: 'natural',
+    contentPosition: 'center',
     scrollable: false,
   }
 );
@@ -263,8 +263,8 @@ defineEmits<{
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: clamp(24px, 3.5dvh, 36px);
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  padding-top: clamp(16px, 2.5dvh, 26px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(16px, 2.5dvh, 26px));
   padding-left: 24px;
   padding-right: 24px;
   width: 100%;
@@ -272,25 +272,21 @@ defineEmits<{
   margin: 0 auto;
 }
 
-.pos-lower .vk-sheet-container {
-  justify-content: flex-end;
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(24px, 3.6dvh, 36px));
-}
-
-.pos-center .vk-sheet-container {
-  justify-content: center;
-}
-
+.pos-center .vk-sheet-container,
 .pos-center-lower .vk-sheet-container {
   justify-content: center;
-  padding-top: clamp(16px, 2.2dvh, 24px);
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(18px, 3.2dvh, 32px));
 }
 
+.pos-center .vk-sheet-content,
 .pos-center-lower .vk-sheet-content {
   margin-top: auto;
   margin-bottom: auto;
-  transform: translateY(6px);
+}
+
+.pos-thumb-zone .vk-sheet-container,
+.pos-lower .vk-sheet-container {
+  justify-content: flex-end;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(24px, 3.6dvh, 36px));
 }
 
 .vk-sheet-content {
@@ -323,13 +319,6 @@ defineEmits<{
   }
 }
 
-/* Tall Screen Adaptations (>= 850px) */
-@media (min-height: 850px) {
-  .pos-center-lower .vk-sheet-content {
-    transform: translateY(8px);
-  }
-}
-
 /* Responsive Short Screens (<= 720px) */
 @media (max-height: 720px) {
   .hero-large .vk-onboarding-hero {
@@ -353,13 +342,10 @@ defineEmits<{
     font-size: 0.815rem;
   }
   .vk-sheet-container {
-    padding-top: 16px;
-    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+    padding-top: 14px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
     padding-left: 20px;
     padding-right: 20px;
-  }
-  .pos-center-lower .vk-sheet-content {
-    transform: translateY(0);
   }
 }
 

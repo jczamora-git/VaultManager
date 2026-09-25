@@ -62,6 +62,7 @@
           subtitle="Choose how you want to set up Vaultify."
           step="Setup"
           hero-size="large"
+          content-position="center"
           @back="goToStep(1)"
         >
           <div class="vk-choice-cluster">
@@ -118,7 +119,7 @@
           subtitle="Enter the Master Password for this backup."
           step="Import"
           hero-size="medium"
-          content-position="center-lower"
+          content-position="center"
           @back="goToStep('choice')"
         >
           <div class="vk-import-auth-cluster">
@@ -137,7 +138,7 @@
             <form @submit.prevent="handleOnboardingDecryptImport" class="vk-setup-form">
               <div class="vk-input-group">
                 <label class="vk-label">Master Password</label>
-                <div class="vk-input-wrapper">
+                <div class="vk-input-wrapper" :class="{ 'is-invalid': importMasterPassword && isImportDecrypting }">
                   <input
                     type="password"
                     v-model="importMasterPassword"
@@ -173,7 +174,7 @@
           subtitle="Review details before importing to this device."
           step="Import"
           hero-size="medium"
-          content-position="center-lower"
+          content-position="center"
           @back="goToStep('import_auth')"
         >
           <div class="vk-import-summary-cluster" v-if="importedBundle">
@@ -225,7 +226,7 @@
           subtitle="Create a local profile for your Vaultify experience."
           step="Step 1 of 6"
           hero-size="large"
-          content-position="center-lower"
+          content-position="center"
           @back="goToStep('choice')"
         >
           <form @submit.prevent="handleProfileContinue" class="vk-setup-form">
@@ -307,8 +308,8 @@
           title="Protect your vault."
           subtitle="Your Master Password protects the encrypted key to your Vaultify data."
           step="Step 2 of 6"
-          hero-size="medium"
-          content-position="center-lower"
+          hero-size="large"
+          content-position="center"
           @back="goToStep(2)"
         >
           <form @submit.prevent="handleMasterPasswordContinue" class="vk-setup-form">
@@ -382,7 +383,7 @@
           subtitle="Use six digits for quick everyday access."
           :step="isImportFlow ? 'Security Setup' : 'Step 3 of 6'"
           hero-size="compact"
-          content-position="lower"
+          content-position="thumb-zone"
           @back="handleStep4Back"
         >
           <div class="vk-pin-interaction-group">
@@ -409,7 +410,7 @@
           subtitle="Enter your six digits again to make sure."
           :step="isImportFlow ? 'Security Setup' : 'Step 4 of 6'"
           hero-size="compact"
-          content-position="lower"
+          content-position="thumb-zone"
           @back="resetToCreatePin"
         >
           <div class="vk-pin-interaction-group">
@@ -497,7 +498,7 @@
           subtitle="You can change these anytime in Settings."
           step="Step 6 of 6"
           hero-size="medium"
-          content-position="center-lower"
+          content-position="center"
           @back="goToStep(biometricAvailability.available ? 6 : 5)"
         >
           <div class="vk-sec-pref-cluster">
@@ -1449,6 +1450,14 @@ function getCategoryCount(credentials?: any[]): number {
   width: 100%;
 }
 
+.vk-setup-form .vk-input-group {
+  margin-bottom: 16px;
+}
+
+.vk-setup-form .vk-label {
+  margin-bottom: 6px;
+}
+
 .vk-field-hint {
   font-size: 0.8rem;
   color: var(--text-muted);
@@ -1558,7 +1567,7 @@ function getCategoryCount(credentials?: any[]): number {
   font-size: 0.775rem;
   line-height: 1.45;
   color: #7A7A7A;
-  margin-top: 10px;
+  margin-top: -4px;
   margin-bottom: 18px;
   font-weight: 400;
 }
