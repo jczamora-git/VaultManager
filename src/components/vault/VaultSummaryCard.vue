@@ -1,178 +1,224 @@
 <template>
-  <div class="vk-summary-banner">
-    <!-- Stat pills -->
-    <div class="vk-summary-stats">
-      <div class="vk-stat-item">
-        <div class="vk-stat-icon-wrap vk-stat-blue">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          </svg>
-        </div>
-        <div>
-          <div class="vk-stat-value">{{ summary.totalCount }}</div>
-          <div class="vk-stat-label">Saved Accounts</div>
-        </div>
-      </div>
-
-      <div class="vk-stat-item">
-        <div class="vk-stat-icon-wrap vk-stat-amber">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-          </svg>
-        </div>
-        <div>
-          <div class="vk-stat-value">{{ summary.favoriteCount }}</div>
-          <div class="vk-stat-label">Favorites</div>
-        </div>
-      </div>
-
-      <div class="vk-stat-item" v-if="summary.weakPasswordCount > 0">
-        <div class="vk-stat-icon-wrap vk-stat-red">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
-            <line x1="12" y1="9" x2="12" y2="13"/>
-            <line x1="12" y1="17" x2="12.01" y2="17"/>
-          </svg>
-        </div>
-        <div>
-          <div class="vk-stat-value">{{ summary.weakPasswordCount }}</div>
-          <div class="vk-stat-label">Weak / At Risk</div>
-        </div>
-      </div>
+  <div class="vk-kpi-card" role="region" aria-label="Vault Summary">
+    <!-- Top Row: My Vault Heading -->
+    <div class="vk-kpi-header">
+      <span class="vk-kpi-title">My Vault</span>
     </div>
 
-    <!-- Quick Action Pills -->
-    <div class="vk-quick-actions">
-      <button type="button" class="vk-quick-btn vk-quick-btn-primary" @click="$emit('add-login')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Primary Metric: Large Count + Label -->
+    <div class="vk-kpi-metric">
+      <span class="vk-kpi-count">{{ count }}</span>
+      <span class="vk-kpi-label">Saved accounts</span>
+    </div>
+
+    <!-- Action Buttons Grid -->
+    <div class="vk-kpi-actions">
+      <button
+        type="button"
+        class="vk-kpi-btn vk-kpi-btn-primary"
+        @click="$emit('add-login')"
+        aria-label="Add new login"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <path d="M5 12h14"/><path d="M12 5v14"/>
         </svg>
         <span>Add Login</span>
       </button>
 
-      <button type="button" class="vk-quick-btn" @click="$emit('open-generator')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <button
+        type="button"
+        class="vk-kpi-btn vk-kpi-btn-secondary"
+        @click="$emit('generate')"
+        aria-label="Generate strong password"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <path d="m13 2-2 2.5h3L11 8h3l-5 8 2-5H8l2-4.5H7Z"/>
         </svg>
-        <span>Generator</span>
+        <span>Generate</span>
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { VaultStateSummary } from '@/models/vault.model';
-
 defineProps<{
-  summary: VaultStateSummary;
+  count: number;
 }>();
 
 defineEmits<{
   (e: 'add-login'): void;
-  (e: 'open-generator'): void;
+  (e: 'generate'): void;
 }>();
 </script>
 
 <style scoped>
-.vk-summary-banner {
-  background: var(--vk-bg-card);
-  border: 1px solid var(--vk-border);
-  border-radius: var(--vk-radius-xl);
-  padding: 16px;
-  margin-bottom: 16px;
-  box-shadow: var(--vk-shadow-sm);
-}
-
-.vk-summary-stats {
+.vk-kpi-card {
+  width: 100%;
+  background: linear-gradient(145deg, #A8201E 0%, #8F1918 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 26px;
+  box-shadow: 0 10px 24px rgba(90, 0, 0, 0.14);
+  padding: 20px 22px;
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
+  flex-direction: column;
+  user-select: none;
+  animation: vkKpiFadeIn 200ms var(--vk-ease-enter, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.vk-stat-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-  min-width: 120px;
+@keyframes vkKpiFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.vk-stat-icon-wrap {
-  width: 38px;
-  height: 38px;
-  border-radius: var(--vk-radius-md);
+.vk-kpi-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-.vk-stat-blue {
-  background: rgba(37, 99, 235, 0.12);
-  color: #3b82f6;
+.vk-kpi-title {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: -0.01em;
+  text-transform: none;
 }
 
-.vk-stat-amber {
-  background: rgba(245, 158, 11, 0.12);
-  color: #f59e0b;
+.vk-kpi-metric {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
-.vk-stat-red {
-  background: rgba(239, 68, 68, 0.12);
-  color: #ef4444;
-}
-
-.vk-stat-value {
-  font-size: 1.25rem;
+.vk-kpi-count {
+  font-size: clamp(2.5rem, 9vw, 2.85rem); /* ~40px-46px */
   font-weight: 800;
+  color: #FFFFFF;
   line-height: 1;
-  color: var(--vk-text-primary);
-  margin-bottom: 2px;
+  letter-spacing: -0.04em;
+  transition: transform 120ms ease;
 }
 
-.vk-stat-label {
-  font-size: 0.75rem;
-  color: var(--vk-text-secondary);
+.vk-kpi-label {
+  font-size: 0.8125rem; /* ~13px */
   font-weight: 500;
+  color: rgba(255, 255, 255, 0.82);
+  margin-top: 4px;
 }
 
-.vk-quick-actions {
-  display: flex;
-  gap: 10px;
-  border-top: 1px solid var(--vk-border-subtle);
-  padding-top: 12px;
+.vk-kpi-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
 }
 
-.vk-quick-btn {
-  flex: 1;
+.vk-kpi-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border-radius: var(--vk-radius-md);
-  font-size: 0.825rem;
-  font-weight: 600;
+  gap: 7px;
+  height: 48px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   cursor: pointer;
-  background: var(--vk-bg-card-subtle);
-  border: 1px solid var(--vk-border);
-  color: var(--vk-text-primary);
-  transition: all 0.15s ease;
+  outline: none;
+  transition: transform var(--vk-motion-instant, 90ms) var(--vk-ease-press, ease),
+              opacity var(--vk-motion-fast, 120ms) ease,
+              background-color 120ms ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
 }
 
-.vk-quick-btn:hover {
-  background: var(--vk-border);
+.vk-kpi-btn:active {
+  transform: scale(0.96);
 }
 
-.vk-quick-btn-primary {
-  background: var(--vk-accent);
-  border-color: var(--vk-accent);
-  color: #ffffff;
+.vk-kpi-btn-primary {
+  background: #FFFFFF;
+  color: #151515;
+  border: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
 
-.vk-quick-btn-primary:hover {
-  background: #1d4ed8;
+.vk-kpi-btn-primary:hover {
+  opacity: 0.94;
+}
+
+.vk-kpi-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+}
+
+.vk-kpi-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Dark Mode Appearance */
+:global(.dark) .vk-kpi-card,
+:global(.ion-palette-dark) .vk-kpi-card,
+:global(body.dark-theme) .vk-kpi-card {
+  background: #1B1B1B;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+:global(.dark) .vk-kpi-title,
+:global(.ion-palette-dark) .vk-kpi-title,
+:global(body.dark-theme) .vk-kpi-title {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+:global(.dark) .vk-kpi-label,
+:global(.ion-palette-dark) .vk-kpi-label,
+:global(body.dark-theme) .vk-kpi-label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+:global(.dark) .vk-kpi-btn-primary,
+:global(.ion-palette-dark) .vk-kpi-btn-primary,
+:global(body.dark-theme) .vk-kpi-btn-primary {
+  background: #F4F4F2;
+  color: #101010;
+}
+
+:global(.dark) .vk-kpi-btn-secondary,
+:global(.ion-palette-dark) .vk-kpi-btn-secondary,
+:global(body.dark-theme) .vk-kpi-btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #F5F5F5;
 }
 </style>
