@@ -5,18 +5,22 @@
       <div class="vk-container vk-hero-container">
         <!-- Top Navigation Row (Back Button & Step Badge) -->
         <div class="vk-nav-top-row">
-          <button
-            v-if="showBack"
-            type="button"
-            class="vk-hero-circle-btn"
-            @click="$emit('back')"
-            title="Back"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m15 18-6-6 6-6"/>
-            </svg>
-          </button>
-          <div v-else class="vk-nav-spacer"></div>
+          <slot name="top-left">
+            <button
+              v-if="showBack"
+              type="button"
+              class="vk-hero-circle-btn"
+              @click="$emit('back')"
+              title="Back"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 18-6-6 6-6"/>
+              </svg>
+            </button>
+            <div v-else class="vk-nav-spacer"></div>
+          </slot>
+
+          <slot name="top-brand"></slot>
 
           <slot name="top-right">
             <span v-if="step" class="vk-step-badge">{{ step }}</span>
@@ -348,5 +352,21 @@ defineEmits<{
   .vk-onboarding-sheet {
     overflow: visible;
   }
+}
+
+/* Dark mode support when used outside forced onboarding */
+:global(.dark:not(.vaultify-onboarding)) .vk-onboarding-layout,
+:global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-onboarding-layout,
+:global(body.dark-theme:not(.vaultify-onboarding)) .vk-onboarding-layout {
+  background: #0D0D0D;
+  color-scheme: dark;
+}
+
+:global(.dark:not(.vaultify-onboarding)) .vk-onboarding-sheet,
+:global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-onboarding-sheet,
+:global(body.dark-theme:not(.vaultify-onboarding)) .vk-onboarding-sheet {
+  background: #151515;
+  border-top-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.04), 0 -12px 32px rgba(0, 0, 0, 0.4);
 }
 </style>
