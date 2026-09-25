@@ -1,154 +1,147 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-      <!-- HERO HEADER -->
-      <div class="vk-hero-backdrop">
-        <div class="vk-container">
-          <h1 class="vk-hero-title">Cipher</h1>
-          <p class="vk-hero-subtitle">Convert text securely.</p>
+      <VaultifyHeroSheetLayout
+        title="Cipher"
+        subtitle="Convert text securely."
+        :has-dock="true"
+      >
+        <!-- Large Segmented Control -->
+        <div class="vk-mode-segment-pill">
+          <button
+            type="button"
+            class="vk-segment-choice"
+            :class="{ 'is-active': mode === 'encrypt' }"
+            @click="mode = 'encrypt'"
+          >
+            <span>Encrypt / Encode</span>
+          </button>
+          <button
+            type="button"
+            class="vk-segment-choice"
+            :class="{ 'is-active': mode === 'decrypt' }"
+            @click="mode = 'decrypt'"
+          >
+            <span>Decrypt / Decode</span>
+          </button>
         </div>
-      </div>
 
-      <!-- MAIN WHITE / DARK CONTENT SHEET -->
-      <div class="vk-sheet">
-        <div class="vk-container">
-          <!-- Large Segmented Control -->
-          <div class="vk-mode-segment-pill">
-            <button
-              type="button"
-              class="vk-segment-choice"
-              :class="{ 'is-active': mode === 'encrypt' }"
-              @click="mode = 'encrypt'"
-            >
-              <span>Encrypt / Encode</span>
-            </button>
-            <button
-              type="button"
-              class="vk-segment-choice"
-              :class="{ 'is-active': mode === 'decrypt' }"
-              @click="mode = 'decrypt'"
-            >
-              <span>Decrypt / Decode</span>
-            </button>
+        <!-- Algorithm Selector Scroller -->
+        <div class="vk-algo-scroller">
+          <button
+            v-for="algo in CIPHER_ALGORITHMS"
+            :key="algo.id"
+            type="button"
+            class="vk-algo-pill"
+            :class="{ 'is-active': selectedAlgoId === algo.id }"
+            @click="selectedAlgoId = algo.id"
+          >
+            <span>{{ algo.name }}</span>
+          </button>
+        </div>
+
+        <!-- Badge Info -->
+        <CipherAlgorithmBadge :algorithm="currentAlgoInfo" />
+
+        <!-- Input Area -->
+        <div class="vk-cipher-fields">
+          <div class="vk-input-group">
+            <div class="vk-label-row">
+              <label class="vk-label">{{ mode === 'encrypt' ? 'Plaintext Input' : 'Ciphertext Input' }}</label>
+              <span class="vk-char-counter">{{ inputText.length }} chars</span>
+            </div>
+            <div class="vk-input-wrapper vk-textarea-wrapper">
+              <textarea
+                v-model="inputText"
+                :placeholder="mode === 'encrypt' ? 'Paste or type text to encrypt...' : 'Paste ciphertext to decrypt...'"
+                rows="4"
+                class="vk-input vk-textarea font-mono"
+              ></textarea>
+            </div>
           </div>
 
-          <!-- Algorithm Selector Scroller -->
-          <div class="vk-algo-scroller">
-            <button
-              v-for="algo in CIPHER_ALGORITHMS"
-              :key="algo.id"
-              type="button"
-              class="vk-algo-pill"
-              :class="{ 'is-active': selectedAlgoId === algo.id }"
-              @click="selectedAlgoId = algo.id"
-            >
-              <span>{{ algo.name }}</span>
-            </button>
-          </div>
-
-          <!-- Badge Info -->
-          <CipherAlgorithmBadge :algorithm="currentAlgoInfo" />
-
-          <!-- Input Area -->
-          <div class="vk-cipher-fields">
-            <div class="vk-input-group">
-              <div class="vk-label-row">
-                <label class="vk-label">{{ mode === 'encrypt' ? 'Plaintext Input' : 'Ciphertext Input' }}</label>
-                <span class="vk-char-counter">{{ inputText.length }} chars</span>
-              </div>
-              <div class="vk-input-wrapper vk-textarea-wrapper">
-                <textarea
-                  v-model="inputText"
-                  :placeholder="mode === 'encrypt' ? 'Paste or type text to encrypt...' : 'Paste ciphertext to decrypt...'"
-                  rows="4"
-                  class="vk-input vk-textarea font-mono"
-                ></textarea>
-              </div>
-            </div>
-
-            <!-- AES Passphrase -->
-            <div v-if="selectedAlgoId === 'AES-GCM'" class="vk-input-group">
-              <label class="vk-label">Encryption Passphrase</label>
-              <div class="vk-input-wrapper">
-                <input
-                  :type="showPassphrase ? 'text' : 'password'"
-                  v-model="aesPassphrase"
-                  placeholder="Enter secret passphrase..."
-                  class="vk-input"
-                />
-                <button type="button" class="vk-btn-icon-only" @click="showPassphrase = !showPassphrase" tabindex="-1">
-                  <svg v-if="!showPassphrase" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
-                  </svg>
-                  <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Caesar Shift -->
-            <div v-if="selectedAlgoId === 'Caesar'" class="vk-input-group">
-              <div class="vk-label-row">
-                <label class="vk-label">Shift Amount (1 to 25)</label>
-                <span class="vk-shift-number">{{ caesarShift }}</span>
-              </div>
+          <!-- AES Passphrase -->
+          <div v-if="selectedAlgoId === 'AES-GCM'" class="vk-input-group">
+            <label class="vk-label">Encryption Passphrase</label>
+            <div class="vk-input-wrapper">
               <input
-                type="range"
-                min="1"
-                max="25"
-                v-model.number="caesarShift"
-                class="vk-custom-range"
+                :type="showPassphrase ? 'text' : 'password'"
+                v-model="aesPassphrase"
+                placeholder="Enter secret passphrase..."
+                class="vk-input"
+              />
+              <button type="button" class="vk-btn-icon-only" @click="showPassphrase = !showPassphrase" tabindex="-1">
+                <svg v-if="!showPassphrase" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+                <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Caesar Shift -->
+          <div v-if="selectedAlgoId === 'Caesar'" class="vk-input-group">
+            <div class="vk-label-row">
+              <label class="vk-label">Shift Amount (1 to 25)</label>
+              <span class="vk-shift-number">{{ caesarShift }}</span>
+            </div>
+            <input
+              type="range"
+              min="1"
+              max="25"
+              v-model.number="caesarShift"
+              class="vk-custom-range"
+            />
+          </div>
+
+          <!-- Vigenere Key -->
+          <div v-if="selectedAlgoId === 'Vigenere'" class="vk-input-group">
+            <label class="vk-label">Secret Keyword</label>
+            <div class="vk-input-wrapper">
+              <input
+                type="text"
+                v-model="vigenereKey"
+                placeholder="e.g. SECRETKEY"
+                class="vk-input font-mono"
               />
             </div>
-
-            <!-- Vigenere Key -->
-            <div v-if="selectedAlgoId === 'Vigenere'" class="vk-input-group">
-              <label class="vk-label">Secret Keyword</label>
-              <div class="vk-input-wrapper">
-                <input
-                  type="text"
-                  v-model="vigenereKey"
-                  placeholder="e.g. SECRETKEY"
-                  class="vk-input font-mono"
-                />
-              </div>
-            </div>
-
-            <!-- Primary Action Button -->
-            <button
-              type="button"
-              class="vk-btn vk-btn-primary vk-btn-block"
-              :disabled="isProcessing || !inputText"
-              @click="processCipher"
-            >
-              <span v-if="!isProcessing">{{ mode === 'encrypt' ? 'Transform / Encrypt' : 'Process / Decrypt' }}</span>
-              <span v-else>Processing...</span>
-            </button>
-
-            <!-- Error Notice -->
-            <div v-if="errorMessage" class="vk-error-notice">
-              {{ errorMessage }}
-            </div>
           </div>
 
-          <!-- OUTPUT RESULT SECTION -->
-          <div v-if="outputText" class="vk-output-section">
-            <SectionHeader title="Output Result" />
-            <div class="vk-output-card">
-              <div class="vk-output-box font-mono">
-                {{ outputText }}
-              </div>
-              <div class="vk-output-footer">
-                <button type="button" class="vk-btn vk-btn-secondary vk-btn-sm" @click="useAsInput">
-                  Use as Input
-                </button>
-                <CopyButton :text="outputText" :show-text="true" toast-message="Result copied" />
-              </div>
+          <!-- Primary Action Button -->
+          <button
+            type="button"
+            class="vk-btn vk-btn-primary vk-btn-block"
+            :disabled="isProcessing || !inputText"
+            @click="processCipher"
+          >
+            <span v-if="!isProcessing">{{ mode === 'encrypt' ? 'Transform / Encrypt' : 'Process / Decrypt' }}</span>
+            <span v-else>Processing...</span>
+          </button>
+
+          <!-- Error Notice -->
+          <div v-if="errorMessage" class="vk-error-notice">
+            {{ errorMessage }}
+          </div>
+        </div>
+
+        <!-- OUTPUT RESULT SECTION -->
+        <div v-if="outputText" class="vk-output-section">
+          <SectionHeader title="Output Result" />
+          <div class="vk-output-card">
+            <div class="vk-output-box font-mono">
+              {{ outputText }}
+            </div>
+            <div class="vk-output-footer">
+              <button type="button" class="vk-btn vk-btn-secondary vk-btn-sm" @click="useAsInput">
+                Use as Input
+              </button>
+              <CopyButton :text="outputText" :show-text="true" toast-message="Result copied" />
             </div>
           </div>
         </div>
-      </div>
+      </VaultifyHeroSheetLayout>
     </ion-content>
   </ion-page>
 </template>
@@ -159,6 +152,7 @@ import { IonPage, IonContent } from '@ionic/vue';
 import { CIPHER_ALGORITHMS, CipherAlgorithm, CipherAlgorithmInfo } from '@/models/cipher.model';
 import { CipherService } from '@/services/cipher.service';
 import { useToast } from '@/composables/useToast';
+import VaultifyHeroSheetLayout from '@/components/layout/VaultifyHeroSheetLayout.vue';
 import SectionHeader from '@/components/common/SectionHeader.vue';
 import CipherAlgorithmBadge from '@/components/cipher/CipherAlgorithmBadge.vue';
 import CopyButton from '@/components/common/CopyButton.vue';
@@ -248,33 +242,41 @@ function useAsInput() {
 <style scoped>
 .vk-mode-segment-pill {
   display: flex;
-  background: var(--vk-bg-surface-soft);
-  border-radius: var(--radius-pill);
+  background: #F1EFEC;
+  border-radius: var(--radius-pill, 999px);
   padding: 4px;
   margin-bottom: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.dark .vk-mode-segment-pill {
+  background: #1E1E1E;
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .vk-segment-choice {
   flex: 1;
-  padding: 10px 16px;
+  padding: 9px 16px;
   border: none;
   background: transparent;
   color: var(--text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.825rem;
   font-weight: 700;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-pill, 999px);
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.16s ease;
+  outline: none;
 }
 
 .vk-segment-choice.is-active {
-  background: var(--black);
+  background: #0A0A0A;
   color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .dark .vk-segment-choice.is-active {
-  background: #FFFFFF;
-  color: var(--black);
+  background: #F4F4F2;
+  color: #101010;
 }
 
 .vk-algo-scroller {
@@ -293,18 +295,19 @@ function useAsInput() {
 .vk-algo-pill {
   display: inline-flex;
   align-items: center;
-  padding: 8px 16px;
-  height: 38px;
-  background: var(--vk-bg-surface-soft);
-  border: none;
-  border-radius: var(--radius-pill);
-  font-size: 0.825rem;
+  padding: 7px 16px;
+  height: 36px;
+  background: #F1EFEC;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-pill, 999px);
+  font-size: 0.8125rem;
   font-weight: 700;
   color: var(--text-secondary);
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: all 0.18s ease;
+  transition: all 0.16s ease;
+  outline: none;
 }
 
 .vk-algo-pill:hover {
@@ -312,13 +315,19 @@ function useAsInput() {
   color: var(--text-primary);
 }
 
+.dark .vk-algo-pill {
+  background: #1E1E1E;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
 .dark .vk-algo-pill:hover {
-  background: var(--vk-bg-surface-elevated);
+  background: #252525;
 }
 
 .vk-algo-pill.is-active {
-  background: var(--brand-red);
+  background: var(--brand-red, #B82825);
   color: #FFFFFF;
+  border-color: transparent;
 }
 
 .vk-cipher-fields {
@@ -350,7 +359,7 @@ function useAsInput() {
   accent-color: var(--brand-red);
   cursor: pointer;
   height: 6px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-pill, 999px);
   background: var(--vk-slider-track);
 }
 
@@ -369,10 +378,16 @@ function useAsInput() {
 }
 
 .vk-output-card {
-  background: var(--vk-bg-surface-soft);
-  border-radius: var(--radius-lg);
+  background: #F1EFEC;
+  border-radius: 20px;
   padding: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
   animation: vkRiseIn var(--vk-motion-base) var(--vk-ease-enter) forwards;
+}
+
+.dark .vk-output-card {
+  background: #1E1E1E;
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .vk-output-box {

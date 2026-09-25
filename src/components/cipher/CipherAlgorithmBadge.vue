@@ -20,10 +20,16 @@ defineProps<{
 
 <style scoped>
 .vk-cipher-info-box {
-  background: var(--surface-light);
-  border-radius: var(--radius-md);
+  background: #F1EFEC;
+  border-radius: 18px;
   padding: 14px 16px;
   margin-bottom: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.dark .vk-cipher-info-box {
+  background: #1E1E1E;
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .vk-cipher-badge-row {

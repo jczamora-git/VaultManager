@@ -193,15 +193,15 @@
       </div>
 
       <!-- Export Backup Re-auth Modal -->
-      <ion-modal :is-open="showExportModal" @didDismiss="showExportModal = false">
-        <div class="vk-modal-page">
-          <AppHeader title="Export Vaultify Backup" :show-back="false">
-            <template #actions>
-              <button type="button" class="vk-btn-icon-only" @click="showExportModal = false">✕</button>
-            </template>
-          </AppHeader>
-
-          <div class="vk-container ion-padding">
+      <ion-modal :is-open="showExportModal" @didDismiss="showExportModal = false" class="vk-fullscreen-modal">
+        <VaultifyHeroSheetLayout
+          title="Export Backup"
+          subtitle="Create an encrypted Vaultify backup."
+          :show-close="true"
+          hero-size="compact"
+          @close="showExportModal = false"
+        >
+          <div class="vk-export-sheet-content">
             <div class="vk-export-summary-box">
               <h4 class="vk-export-box-title">Create an encrypted backup containing:</h4>
               <ul class="vk-export-includes">
@@ -222,7 +222,7 @@
               Your backup remains encrypted and requires your Master Password to restore.
             </p>
 
-            <form @submit.prevent="handleConfirmExport">
+            <form @submit.prevent="handleConfirmExport" class="vk-modal-form">
               <div class="vk-input-group">
                 <label class="vk-label">Confirm Master Password</label>
                 <div class="vk-input-wrapper">
@@ -248,7 +248,7 @@
               </div>
             </form>
           </div>
-        </div>
+        </VaultifyHeroSheetLayout>
       </ion-modal>
 
       <!-- Import Modal -->
@@ -392,91 +392,132 @@
       </ion-modal>
 
       <!-- Change Vault PIN Modal -->
-      <ion-modal :is-open="showChangePinModal" @didDismiss="closeChangePinModal">
-        <div class="vk-modal-page">
-          <AppHeader title="Change Vault PIN" :show-back="false">
-            <template #actions>
-              <button type="button" class="vk-btn-icon-only" @click="closeChangePinModal">✕</button>
-            </template>
-          </AppHeader>
-
-          <div class="vk-container ion-padding">
-            <!-- Step 1: Confirm Master Password -->
-            <div v-if="changePinStep === 1">
-              <p class="vk-modal-desc">
-                For your security, confirm your Master Password before changing your 6-digit PIN.
-              </p>
-              <form @submit.prevent="handleConfirmChangePinAuth">
-                <div class="vk-input-group">
-                  <label class="vk-label">Master Password</label>
-                  <div class="vk-input-wrapper">
-                    <input
-                      type="password"
-                      v-model="changePinMasterPassword"
-                      placeholder="Master Password..."
-                      class="vk-input"
-                      required
-                      autofocus
-                    />
-                  </div>
+      <ion-modal :is-open="showChangePinModal" @didDismiss="closeChangePinModal" class="vk-fullscreen-modal">
+        <!-- Step 1: Confirm Master Password -->
+        <VaultifyHeroSheetLayout
+          v-if="changePinStep === 1"
+          title="Change Vault PIN"
+          subtitle="Confirm your Master Password to continue."
+          :show-close="true"
+          hero-size="compact"
+          @close="closeChangePinModal"
+        >
+          <div class="vk-modal-form-wrap">
+            <p class="vk-modal-desc">
+              For your security, confirm your Master Password before changing your 6-digit PIN.
+            </p>
+            <form @submit.prevent="handleConfirmChangePinAuth" class="vk-modal-form">
+              <div class="vk-input-group">
+                <label class="vk-label">Master Password</label>
+                <div class="vk-input-wrapper">
+                  <input
+                    type="password"
+                    v-model="changePinMasterPassword"
+                    placeholder="Master Password..."
+                    class="vk-input"
+                    required
+                    autofocus
+                  />
                 </div>
-                <div class="vk-modal-form-actions">
-                  <button
-                    type="submit"
-                    class="vk-btn vk-btn-primary vk-btn-block"
-                    :disabled="isVerifyingMasterPass || !changePinMasterPassword"
-                  >
-                    {{ isVerifyingMasterPass ? 'Verifying...' : 'Continue' }}
-                  </button>
-                </div>
-              </form>
-            </div>
+              </div>
+              <div class="vk-modal-form-actions">
+                <button
+                  type="submit"
+                  class="vk-btn vk-btn-primary vk-btn-block"
+                  :disabled="isVerifyingMasterPass || !changePinMasterPassword"
+                >
+                  {{ isVerifyingMasterPass ? 'Verifying...' : 'Continue' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </VaultifyHeroSheetLayout>
 
-            <!-- Step 2: Enter New PIN -->
-            <div v-else-if="changePinStep === 2" class="vk-pin-step-container">
-              <h3 class="vk-modal-step-title">Enter new 6-digit PIN</h3>
+        <!-- Step 2: Enter New PIN -->
+        <VaultifyHeroSheetLayout
+          v-else-if="changePinStep === 2"
+          title="Enter new PIN"
+          subtitle="Use six digits for quick everyday access."
+          :show-close="true"
+          hero-size="pin"
+          @close="closeChangePinModal"
+        >
+          <template #hero-bottom>
+            <div class="vk-pin-hero-slot">
               <PinDots :filled-count="newPinInput.length" :has-error="hasNewPinError" />
               <div class="vk-pin-status-slot">
                 <span v-if="newPinErrorText" class="vk-pin-error-text">{{ newPinErrorText }}</span>
               </div>
-              <PinKeypad @digit="handleNewPinDigit" @backspace="handleNewPinBackspace" />
             </div>
+          </template>
 
-            <!-- Step 3: Confirm New PIN -->
-            <div v-else-if="changePinStep === 3" class="vk-pin-step-container">
-              <h3 class="vk-modal-step-title">Confirm new 6-digit PIN</h3>
+          <div class="vk-pin-keypad-container">
+            <PinKeypad @digit="handleNewPinDigit" @backspace="handleNewPinBackspace" />
+          </div>
+        </VaultifyHeroSheetLayout>
+
+        <!-- Step 3: Confirm New PIN -->
+        <VaultifyHeroSheetLayout
+          v-else-if="changePinStep === 3"
+          title="Confirm new PIN"
+          subtitle="Enter your six digits again to make sure."
+          :show-close="true"
+          hero-size="pin"
+          @close="closeChangePinModal"
+        >
+          <template #hero-bottom>
+            <div class="vk-pin-hero-slot">
               <PinDots :filled-count="confirmNewPinInput.length" :has-error="hasConfirmNewPinError" />
               <div class="vk-pin-status-slot">
                 <span v-if="confirmNewPinErrorText" class="vk-pin-error-text">{{ confirmNewPinErrorText }}</span>
               </div>
-              <PinKeypad @digit="handleConfirmNewPinDigit" @backspace="handleConfirmNewPinBackspace" />
             </div>
+          </template>
+
+          <div class="vk-pin-keypad-container">
+            <PinKeypad @digit="handleConfirmNewPinDigit" @backspace="handleConfirmNewPinBackspace" />
           </div>
-        </div>
+        </VaultifyHeroSheetLayout>
       </ion-modal>
 
       <!-- Change Master Password Modal -->
-      <ion-modal :is-open="showChangePasswordModal" @didDismiss="showChangePasswordModal = false">
-        <div class="vk-modal-page">
-          <AppHeader title="Change Password" :show-back="false">
-            <template #actions>
-              <button type="button" class="vk-btn-icon-only" @click="showChangePasswordModal = false">✕</button>
-            </template>
-          </AppHeader>
+      <ion-modal :is-open="showChangePasswordModal" @didDismiss="showChangePasswordModal = false" class="vk-fullscreen-modal">
+        <VaultifyHeroSheetLayout
+          title="Change Password"
+          subtitle="Update your Master Password securely."
+          :show-close="true"
+          hero-size="compact"
+          @close="showChangePasswordModal = false"
+        >
+          <div class="vk-modal-form-wrap">
+            <p class="vk-modal-desc">
+              Your Master Password protects your encrypted vault. Make sure it is memorable and secure.
+            </p>
 
-          <div class="vk-container ion-padding">
-            <form @submit.prevent="handleChangePassword">
+            <form @submit.prevent="handleChangePassword" class="vk-modal-form">
               <div class="vk-input-group">
                 <label class="vk-label">Current Master Password</label>
                 <div class="vk-input-wrapper">
-                  <input type="password" v-model="currentPasswordInput" placeholder="Current password..." class="vk-input" required />
+                  <input
+                    type="password"
+                    v-model="currentPasswordInput"
+                    placeholder="Current password..."
+                    class="vk-input"
+                    required
+                  />
                 </div>
               </div>
 
               <div class="vk-input-group">
                 <label class="vk-label">New Master Password</label>
                 <div class="vk-input-wrapper">
-                  <input type="password" v-model="newPasswordInput" placeholder="New Master Password..." class="vk-input" required />
+                  <input
+                    type="password"
+                    v-model="newPasswordInput"
+                    placeholder="New Master Password..."
+                    class="vk-input"
+                    required
+                  />
                 </div>
                 <PasswordStrengthMeter :password="newPasswordInput" />
               </div>
@@ -484,18 +525,28 @@
               <div class="vk-input-group">
                 <label class="vk-label">Confirm New Password</label>
                 <div class="vk-input-wrapper">
-                  <input type="password" v-model="confirmNewPasswordInput" placeholder="Confirm new password..." class="vk-input" required />
+                  <input
+                    type="password"
+                    v-model="confirmNewPasswordInput"
+                    placeholder="Confirm new password..."
+                    class="vk-input"
+                    required
+                  />
                 </div>
               </div>
 
               <div class="vk-modal-form-actions">
-                <button type="submit" class="vk-btn vk-btn-primary vk-btn-block" :disabled="isChangingPassword">
+                <button
+                  type="submit"
+                  class="vk-btn vk-btn-primary vk-btn-block"
+                  :disabled="isChangingPassword"
+                >
                   {{ isChangingPassword ? 'Re-encrypting...' : 'Update Master Password' }}
                 </button>
               </div>
             </form>
           </div>
-        </div>
+        </VaultifyHeroSheetLayout>
       </ion-modal>
 
       <!-- Wipe Confirmation Modal -->
@@ -634,6 +685,7 @@ import SettingsRow from '@/components/common/SettingsRow.vue';
 import SettingsSection from '@/components/common/SettingsSection.vue';
 import PinDots from '@/components/security/PinDots.vue';
 import PinKeypad from '@/components/security/PinKeypad.vue';
+import VaultifyHeroSheetLayout from '@/components/layout/VaultifyHeroSheetLayout.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -1330,20 +1382,50 @@ function getCategoryCount(credentials?: any[]): number {
   flex: 1;
 }
 
+/* Fullscreen Hero Modals */
+ion-modal.vk-fullscreen-modal {
+  --height: 100%;
+  --width: 100%;
+  --border-radius: 0;
+}
+
+.vk-modal-form-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.vk-modal-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.vk-export-sheet-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Export Summary Styles */
 .vk-export-summary-box {
-  background: var(--vk-bg-surface-soft);
-  border: 1px solid var(--vk-border);
-  border-radius: var(--radius-md);
-  padding: 16px;
+  background: #F1EFEC;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+  padding: 18px 20px;
   margin-bottom: 16px;
+}
+
+.dark .vk-export-summary-box {
+  background: #1E1E1E;
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .vk-export-box-title {
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 10px 0;
+  margin: 0 0 12px 0;
 }
 
 .vk-export-includes,
@@ -1351,7 +1433,7 @@ function getCategoryCount(credentials?: any[]): number {
   list-style: none;
   padding: 0;
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.825rem;
   color: var(--text-secondary);
 }
 
@@ -1370,12 +1452,12 @@ function getCategoryCount(credentials?: any[]): number {
 
 .vk-export-divider {
   height: 1px;
-  background: var(--vk-border);
+  background: var(--vk-divider);
   margin: 12px 0;
 }
 
 .vk-export-not-included-title {
-  font-size: 0.775rem;
+  font-size: 0.725rem;
   font-weight: 700;
   color: var(--text-muted);
   margin: 0 0 6px 0;
@@ -1384,8 +1466,9 @@ function getCategoryCount(credentials?: any[]): number {
 }
 
 .vk-export-security-note {
-  font-size: 0.825rem;
+  font-size: 0.8125rem;
   color: var(--text-muted);
+  margin-bottom: 20px;
 }
 
 /* Import Meta & Summary */
