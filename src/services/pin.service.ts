@@ -85,7 +85,8 @@ export class PinService {
     const encoder = new TextEncoder();
     const encodedVaultKey = encoder.encode(vaultKeyBase64);
 
-    const encryptedBuffer = await window.crypto.subtle.encrypt(
+    const subtle = CryptoService.getSubtle();
+    const encryptedBuffer = await subtle.encrypt(
       { name: 'AES-GCM', iv: iv as BufferSource },
       pinDerivedKey,
       encodedVaultKey as BufferSource
@@ -131,7 +132,8 @@ export class PinService {
     const pinDerivedKey = await CryptoService.deriveKey(pin, salt, envelope.iterations || PIN_PBKDF2_ITERATIONS);
 
     try {
-      const decryptedBuffer = await window.crypto.subtle.decrypt(
+      const subtle = CryptoService.getSubtle();
+      const decryptedBuffer = await subtle.decrypt(
         { name: 'AES-GCM', iv: iv as BufferSource },
         pinDerivedKey,
         ciphertext as BufferSource

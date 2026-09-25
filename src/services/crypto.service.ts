@@ -28,10 +28,28 @@ export function base64ToBuffer(base64: string): Uint8Array {
 
 export class CryptoService {
   /**
+   * Safe access to Web Cryptography subtle API with descriptive error for insecure contexts
+   */
+  static getSubtle(): SubtleCrypto {
+    const subtle = window?.crypto?.subtle;
+    if (!subtle) {
+      throw new Error(
+        'Web Cryptography API (crypto.subtle) is unavailable. ' +
+        'Modern browsers require a Secure Context (HTTPS or localhost) to perform cryptographic operations. ' +
+        'Please access the application using HTTPS (e.g. https://<IP>:5173).'
+      );
+    }
+    return subtle;
+  }
+
+  /**
    * Generates cryptographically secure random bytes
    */
   static getRandomBytes(length: number): Uint8Array {
     const bytes = new Uint8Array(length);
+    if (!window?.crypto?.getRandomValues) {
+      throw new Error('window.crypto.getRandomValues is not supported in this browser.');
+    }
     window.crypto.getRandomValues(bytes);
     return bytes;
   }
@@ -48,7 +66,7 @@ export class CryptoService {
    */
   static async importAesKey(rawKeyBase64: string): Promise<CryptoKey> {
     const rawBuffer = base64ToBuffer(rawKeyBase64);
-    return await window.crypto.subtle.importKey(
+    return await this.getSubtle().importKey(
       'raw',
       rawBuffer as BufferSource,
       { name: 'AES-GCM', length: KEY_LENGTH },
@@ -64,7 +82,7 @@ export class CryptoService {
     const encoder = new TextEncoder();
     const passwordBuffer = encoder.encode(password);
 
-    const baseKey = await window.crypto.subtle.importKey(
+    const baseKey = await this.getSubtle().importKey(
       'raw',
       passwordBuffer as BufferSource,
       { name: 'PBKDF2' },
@@ -72,7 +90,7 @@ export class CryptoService {
       ['deriveKey']
     );
 
-    return await window.crypto.subtle.deriveKey(
+    return await this.getSubtle().deriveKey(
       {
         name: 'PBKDF2',
         salt: salt as BufferSource,
@@ -106,7 +124,7 @@ export class CryptoService {
     const jsonString = JSON.stringify(payload);
     const encodedData = new TextEncoder().encode(jsonString);
 
-    const encryptedPayloadBuffer = await window.crypto.subtle.encrypt(
+    const encryptedPayloadBuffer = await this.getSubtle().encrypt(
       { name: 'AES-GCM', iv: payloadIv as BufferSource },
       aesVaultKey,
       encodedData as BufferSource
@@ -118,7 +136,7 @@ export class CryptoService {
     const masterDerivedKey = await this.deriveKey(masterPassword, masterSalt, PBKDF2_ITERATIONS);
 
     const encodedVaultKey = new TextEncoder().encode(vaultKeyBase64);
-    const wrappedKeyBuffer = await window.crypto.subtle.encrypt(
+    const wrappedKeyBuffer = await this.getSubtle().encrypt(
       { name: 'AES-GCM', iv: masterIv as BufferSource },
       masterDerivedKey,
       encodedVaultKey as BufferSource
@@ -187,7 +205,7 @@ export class CryptoService {
 
       let vaultKeyBase64 = '';
       try {
-        const unwrappedBuffer = await window.crypto.subtle.decrypt(
+        const unwrappedBuffer = await this.getSubtle().decrypt(
           { name: 'AES-GCM', iv: masterIvBuffer as BufferSource },
           masterDerivedKey,
           wrappedKeyBuffer as BufferSource
@@ -200,7 +218,7 @@ export class CryptoService {
       const aesVaultKey = await this.importAesKey(vaultKeyBase64);
 
       try {
-        const decryptedBuffer = await window.crypto.subtle.decrypt(
+        const decryptedBuffer = await this.getSubtle().decrypt(
           { name: 'AES-GCM', iv: payloadIv as BufferSource },
           aesVaultKey,
           ciphertextPayload as BufferSource
@@ -217,7 +235,7 @@ export class CryptoService {
 
     // Case 2: Legacy Envelope (encrypted directly with master derived key)
     try {
-      const decryptedBuffer = await window.crypto.subtle.decrypt(
+      const decryptedBuffer = await this.getSubtle().decrypt(
         { name: 'AES-GCM', iv: payloadIv as BufferSource },
         masterDerivedKey,
         ciphertextPayload as BufferSource
@@ -249,7 +267,7 @@ export class CryptoService {
     const aesVaultKey = await this.importAesKey(vaultKeyBase64);
 
     try {
-      const decryptedBuffer = await window.crypto.subtle.decrypt(
+      const decryptedBuffer = await this.getSubtle().decrypt(
         { name: 'AES-GCM', iv: payloadIv as BufferSource },
         aesVaultKey,
         ciphertextPayload as BufferSource
@@ -276,7 +294,7 @@ export class CryptoService {
     const jsonString = JSON.stringify(payload);
     const encodedData = new TextEncoder().encode(jsonString);
 
-    const encryptedBuffer = await window.crypto.subtle.encrypt(
+    const encryptedBuffer = await this.getSubtle().encrypt(
       { name: 'AES-GCM', iv: payloadIv as BufferSource },
       aesVaultKey,
       encodedData as BufferSource
@@ -304,7 +322,7 @@ export class CryptoService {
     const key = await this.deriveKey(passphrase, salt, 100000);
 
     const encoded = new TextEncoder().encode(text);
-    const encrypted = await window.crypto.subtle.encrypt(
+    const encrypted = await this.getSubtle().encrypt(
       { name: 'AES-GCM', iv: iv as BufferSource },
       key,
       encoded as BufferSource
@@ -329,7 +347,7 @@ export class CryptoService {
     const key = await this.deriveKey(passphrase, salt, 100000);
 
     try {
-      const decrypted = await window.crypto.subtle.decrypt(
+      const decrypted = await this.getSubtle().decrypt(
         { name: 'AES-GCM', iv: iv as BufferSource },
         key,
         ciphertext as BufferSource
