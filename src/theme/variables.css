@@ -1,0 +1,161 @@
+/* VaultKey Red / Black / White Design System & Layout Tokens */
+
+:root {
+  /* Font Families */
+  --vk-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --vk-font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
+
+  /* Brand Palette */
+  --brand-red: #B82825;
+  --brand-red-dark: #8F1F1D;
+  --brand-red-deep: #721816;
+  --brand-red-subtle: rgba(184, 40, 37, 0.08);
+  --brand-red-glow: rgba(184, 40, 37, 0.2);
+
+  --black: #080808;
+  --black-soft: #111111;
+  --black-card: #181818;
+
+  --white: #FFFFFF;
+  --off-white: #F7F6F3;
+  --surface-light: #EFEEEA;
+  --canvas: #F4F2EE;
+
+  --text-primary: #101010;
+  --text-secondary: #6F6F6F;
+  --text-muted: #999999;
+
+  --border-light: rgba(0, 0, 0, 0.07);
+  --border-dark: rgba(255, 255, 255, 0.10);
+  --divider-light: rgba(0, 0, 0, 0.06);
+
+  /* Radius Tokens */
+  --radius-xs: 10px;
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 34px;
+  --radius-pill: 9999px;
+
+  /* Global Layout Variables */
+  --vk-page-horizontal: 22px;
+  --vk-safe-top: calc(env(safe-area-inset-top, 0px) + 24px);
+  --vk-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --vk-dock-height: 70px;
+  --vk-dock-offset: 12px;
+  --vk-content-bottom-padding: calc(var(--vk-dock-height) + var(--vk-dock-offset) + var(--vk-safe-bottom) + 24px);
+
+  /* Ionic Theme Tokens - Light Mode */
+  --ion-font-family: var(--vk-font-sans);
+  --ion-background-color: var(--canvas);
+  --ion-background-color-rgb: 244, 242, 238;
+  --ion-text-color: var(--text-primary);
+  --ion-text-color-rgb: 16, 16, 16;
+
+  --ion-color-primary: var(--brand-red);
+  --ion-color-primary-rgb: 184, 40, 37;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: var(--brand-red-dark);
+  --ion-color-primary-tint: #c93d3a;
+
+  --ion-color-success: #15803d;
+  --ion-color-warning: #b45309;
+  --ion-color-danger: var(--brand-red);
+  --ion-color-medium: var(--text-secondary);
+
+  /* Functional Component Tokens - Light */
+  --vk-bg-hero: var(--brand-red);
+  --vk-bg-hero-text: #FFFFFF;
+  --vk-bg-hero-subtitle: rgba(255, 255, 255, 0.85);
+
+  --vk-bg-sheet: #FFFFFF;
+  --vk-bg-card: #FFFFFF;
+  --vk-bg-surface-soft: #EFEEEA;
+  --vk-bg-surface-elevated: #F8F8F6;
+  --vk-bg-input: #F1F1EF;
+  --vk-border: var(--border-light);
+  --vk-divider: var(--divider-light);
+  --vk-border-focus: var(--brand-red);
+
+  --vk-dock-bg: #FFFFFF;
+  --vk-dock-text: #888888;
+  --vk-dock-text-active: var(--brand-red);
+  --vk-dock-border: rgba(0, 0, 0, 0.06);
+  --vk-dock-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+
+  --vk-btn-primary-bg: #0A0A0A;
+  --vk-btn-primary-text: #FFFFFF;
+  --vk-btn-secondary-bg: #EFEEEA;
+  --vk-btn-secondary-text: #101010;
+
+  --vk-gen-card-bg: #EFEEEA;
+  --vk-gen-card-text: #101010;
+  --vk-gen-copy-bg: #0A0A0A;
+  --vk-gen-copy-text: #FFFFFF;
+
+  --vk-slider-track: #D9D9D6;
+  --vk-slider-thumb: var(--brand-red);
+
+  --vk-toggle-off-track: #D4D4D4;
+  --vk-toggle-on-track: var(--brand-red);
+
+  --vk-shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.06);
+  --vk-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Intentional Dark Mode Palette */
+.dark,
+.ion-palette-dark,
+body.dark-theme {
+  --canvas: #0D0D0D;
+  --ion-background-color: #0D0D0D;
+  --ion-background-color-rgb: 13, 13, 13;
+  --ion-text-color: #F5F5F5;
+  --ion-text-color-rgb: 245, 245, 245;
+
+  --text-primary: #F5F5F5;
+  --text-secondary: #A5A5A5;
+  --text-muted: #737373;
+
+  --brand-red: #C52A27;
+  --brand-red-subtle: rgba(197, 42, 39, 0.15);
+  --brand-red-glow: rgba(197, 42, 39, 0.3);
+
+  --vk-bg-hero: #0D0D0D;
+  --vk-bg-hero-text: #FFFFFF;
+  --vk-bg-hero-subtitle: #A6A6A6;
+
+  --vk-bg-sheet: #151515;
+  --vk-bg-card: #181818;
+  --vk-bg-surface-soft: #1C1C1C;
+  --vk-bg-surface-elevated: #222222;
+  --vk-bg-input: #1F1F1F;
+  --vk-border: rgba(255, 255, 255, 0.08);
+  --vk-divider: rgba(255, 255, 255, 0.07);
+  --vk-border-focus: #C52A27;
+
+  --vk-dock-bg: #181818;
+  --vk-dock-text: #737373;
+  --vk-dock-text-active: #C52A27;
+  --vk-dock-border: rgba(255, 255, 255, 0.08);
+  --vk-dock-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+
+  --vk-btn-primary-bg: #F4F4F2;
+  --vk-btn-primary-text: #101010;
+  --vk-btn-secondary-bg: #202020;
+  --vk-btn-secondary-text: #F4F4F4;
+
+  --vk-gen-card-bg: #1D1D1D;
+  --vk-gen-card-text: #FFFFFF;
+  --vk-gen-copy-bg: #F4F4F2;
+  --vk-gen-copy-text: #101010;
+
+  --vk-slider-track: #383838;
+  --vk-slider-thumb: #C52A27;
+
+  --vk-toggle-off-track: #363636;
+  --vk-toggle-on-track: #C52A27;
+
+  --vk-shadow-soft: 0 14px 40px rgba(0, 0, 0, 0.6);
+  --vk-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+}

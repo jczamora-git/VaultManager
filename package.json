@@ -1,0 +1,35 @@
+{
+  "name": "vaultkey",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/haptics": "^6.0.0",
+    "@capacitor/keyboard": "^6.0.0",
+    "@capacitor/preferences": "^6.0.0",
+    "@capacitor/status-bar": "^6.0.0",
+    "@capgo/capacitor-native-biometric": "^6.0.4",
+    "@ionic/vue": "^8.0.0",
+    "@ionic/vue-router": "^8.0.0",
+    "ionicons": "^7.4.0",
+    "lucide-vue-next": "^0.363.0",
+    "pinia": "^2.1.7",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "typescript": "^5.4.3",
+    "vite": "^5.1.6",
+    "vue-tsc": "^2.0.7"
+  }
+}

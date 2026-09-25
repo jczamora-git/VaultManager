@@ -1,0 +1,360 @@
+/* VaultKey Red/Black/White UI Refined System */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--vk-font-sans);
+  background-color: var(--canvas);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Max Width Responsive Shell for Desktop / Mobile */
+.vk-container {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 0 var(--vk-page-horizontal);
+}
+
+/* Page Header Structure with proper safe-area top breathing room */
+.vk-hero-backdrop {
+  background-color: var(--vk-bg-hero);
+  color: var(--vk-bg-hero-text);
+  padding-top: var(--vk-safe-top);
+  padding-bottom: 28px;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+.vk-hero-title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 4px 0;
+  line-height: 1.15;
+  color: var(--vk-bg-hero-text);
+}
+
+.vk-hero-subtitle {
+  font-size: 0.9rem;
+  color: var(--vk-bg-hero-subtitle);
+  margin: 0;
+  line-height: 1.45;
+  font-weight: 400;
+}
+
+/* Main Content Sheet */
+.vk-sheet {
+  background: var(--vk-bg-sheet);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 24px 0 var(--vk-content-bottom-padding) 0;
+  box-shadow: var(--vk-shadow-soft);
+  min-height: calc(100dvh - 160px);
+  position: relative;
+  margin-top: -12px;
+  transition: background-color 0.2s ease;
+}
+
+/* Ticket/Cutout Detail */
+.vk-ticket-cutout {
+  position: relative;
+  overflow: visible;
+}
+
+.vk-ticket-cutout::before,
+.vk-ticket-cutout::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--vk-bg-sheet);
+  transform: translateY(-50%);
+  z-index: 2;
+  transition: background-color 0.2s ease;
+}
+
+.vk-ticket-cutout::before {
+  left: -10px;
+}
+
+.vk-ticket-cutout::after {
+  right: -10px;
+}
+
+/* Floating Navigation Dock System */
+.vk-floating-dock-wrap {
+  position: fixed;
+  bottom: calc(var(--vk-dock-offset) + var(--vk-safe-bottom));
+  left: 12px;
+  right: 12px;
+  width: calc(100% - 24px);
+  max-width: 580px;
+  margin: 0 auto;
+  height: var(--vk-dock-height);
+  background: var(--vk-dock-bg);
+  border: 1px solid var(--vk-dock-border);
+  border-radius: 26px;
+  box-shadow: var(--vk-dock-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 9999;
+  padding: 4px 8px;
+  user-select: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
+}
+
+.vk-dock-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 100%;
+  color: var(--vk-dock-text);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.18s ease;
+}
+
+.vk-dock-label {
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.vk-dock-item.is-active {
+  color: var(--vk-dock-text-active);
+}
+
+.vk-dock-active-dot {
+  position: absolute;
+  bottom: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--brand-red);
+}
+
+/* Custom Search Pill */
+.vk-search-pill-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--vk-bg-input);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-pill);
+  padding: 0 18px;
+  min-height: 52px;
+  transition: all 0.2s ease;
+  margin-bottom: 16px;
+}
+
+.vk-search-pill-wrapper:focus-within {
+  border-color: var(--brand-red);
+  background: var(--vk-bg-surface-elevated);
+  box-shadow: 0 0 0 3px var(--brand-red-glow);
+}
+
+.vk-search-pill-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.925rem;
+  color: var(--text-primary);
+  padding: 12px 0;
+  font-family: inherit;
+}
+
+.vk-search-pill-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Custom Form Input Field */
+.vk-input-group {
+  margin-bottom: 18px;
+}
+
+.vk-label {
+  display: block;
+  font-size: 0.775rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.vk-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: var(--vk-bg-input);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 4px 16px;
+  min-height: 54px;
+  transition: all 0.2s ease;
+}
+
+.vk-input-wrapper:focus-within {
+  border-color: var(--brand-red);
+  background: var(--vk-bg-surface-elevated);
+  box-shadow: 0 0 0 3px var(--brand-red-glow);
+}
+
+.vk-input-wrapper.is-invalid {
+  border-color: var(--brand-red);
+  box-shadow: 0 0 0 3px var(--brand-red-glow);
+}
+
+.vk-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  padding: 10px 0;
+}
+
+.vk-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Button System */
+.vk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.925rem;
+  padding: 14px 22px;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.vk-btn-primary {
+  background: var(--vk-btn-primary-bg);
+  color: var(--vk-btn-primary-text);
+}
+
+.vk-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.vk-btn-white {
+  background: #FFFFFF;
+  color: #101010;
+  box-shadow: var(--vk-shadow-sm);
+}
+
+.vk-btn-brand {
+  background: var(--brand-red);
+  color: #FFFFFF;
+}
+
+.vk-btn-secondary {
+  background: var(--vk-btn-secondary-bg);
+  color: var(--vk-btn-secondary-text);
+  border: 1px solid var(--vk-border);
+}
+
+.vk-btn-outline {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
+}
+
+.vk-btn-danger {
+  background: var(--brand-red);
+  color: #FFFFFF;
+}
+
+.vk-btn-block {
+  width: 100%;
+}
+
+.vk-btn-sm {
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  border-radius: var(--radius-pill);
+}
+
+.vk-btn-icon-only {
+  padding: 8px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.vk-btn-icon-only:hover {
+  background: rgba(128, 128, 128, 0.12);
+}
+
+/* Floating Action Button (FAB) positioned above floating dock */
+.vk-fab {
+  margin-bottom: calc(var(--vk-dock-height) + var(--vk-dock-offset) + var(--vk-safe-bottom) + 10px);
+  margin-right: 16px;
+}
+
+.vk-fab-btn {
+  --background: var(--brand-red);
+  --color: #FFFFFF;
+  --box-shadow: 0 8px 24px rgba(184, 40, 37, 0.4);
+  width: 58px;
+  height: 58px;
+}
+
+/* Modal Bottom Sheet Styling */
+ion-modal.vk-bottom-sheet {
+  --border-radius: 28px 28px 0 0;
+  --background: var(--vk-bg-sheet);
+}
+
+.vk-modal-sheet-content {
+  background: var(--vk-bg-sheet);
+  padding: 16px 20px 32px 20px;
+}
+
+.vk-modal-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 4px 16px 4px;
+  border-bottom: 1px solid var(--vk-divider);
+  margin-bottom: 8px;
+}
+
+.vk-modal-sheet-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
