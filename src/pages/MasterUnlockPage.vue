@@ -5,6 +5,7 @@
         title="Use master password"
         subtitle="Enter your Master Password to unlock Vaultify or recover PIN access."
         :show-back="true"
+        hero-size="medium"
         content-position="lower"
         @back="goBackToPin"
       >

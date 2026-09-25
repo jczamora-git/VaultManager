@@ -1,8 +1,9 @@
 <template>
-  <div class="vk-onboarding-layout" :class="[`pos-${contentPosition}`, { 'is-scrollable': scrollable }]">
-    <!-- RED / DARK COMPACT TOP NAV STRIP -->
-    <header class="vk-onboarding-nav-strip vk-hero-backdrop">
-      <div class="vk-container vk-nav-inner">
+  <div class="vk-onboarding-layout" :class="[`hero-${heroSize}`, `pos-${contentPosition}`, { 'is-scrollable': scrollable }]">
+    <!-- LARGE RED HERO AREA (Context & Identity) -->
+    <header class="vk-onboarding-hero vk-hero-backdrop">
+      <div class="vk-container vk-hero-container">
+        <!-- Top Navigation Row (Back Button & Step Badge) -->
         <div class="vk-nav-top-row">
           <button
             v-if="showBack"
@@ -21,32 +22,26 @@
             <span v-if="step" class="vk-step-badge">{{ step }}</span>
           </slot>
         </div>
+
+        <!-- Intentional Empty Flex Space -->
+        <div class="vk-hero-spacer"></div>
+
+        <!-- Page Title & Subtitle (Positioned near bottom of Red Hero) -->
+        <div class="vk-hero-copy">
+          <slot name="hero-extra"></slot>
+          <h1 class="vk-hero-title">{{ title }}</h1>
+          <p v-if="subtitle" class="vk-hero-subtitle">{{ subtitle }}</p>
+        </div>
       </div>
     </header>
 
-    <!-- MAIN WHITE / DARK SHEET (Unified Title + Interaction Cluster) -->
+    <!-- MAIN WHITE / DARK SHEET (Interaction Area) -->
     <main class="vk-onboarding-sheet vk-sheet">
       <div class="vk-container vk-sheet-container">
-        <!-- Top Breathing Room / Proportional Spacer -->
-        <div class="vk-cluster-top-spacer"></div>
-
-        <!-- Unified Content Group: Title + Subtitle + Main Form/CTA -->
-        <div class="vk-onboarding-cluster" :class="{ 'is-centered': centerTitle }">
-          <!-- Title & Subtitle Block inside the sheet -->
-          <div v-if="title || $slots['title-extra']" class="vk-cluster-title-block">
-            <slot name="title-extra"></slot>
-            <h1 class="vk-cluster-title">{{ title }}</h1>
-            <p v-if="subtitle" class="vk-cluster-subtitle">{{ subtitle }}</p>
-          </div>
-
-          <!-- Main Interactive Content Slot -->
-          <div class="vk-cluster-main-content">
-            <slot></slot>
-          </div>
+        <!-- Main Interactive Content Slot -->
+        <div class="vk-sheet-content">
+          <slot></slot>
         </div>
-
-        <!-- Bottom Breathing Room -->
-        <div class="vk-cluster-bottom-spacer"></div>
       </div>
     </main>
   </div>
@@ -59,16 +54,16 @@ withDefaults(
     subtitle?: string;
     step?: string;
     showBack?: boolean;
+    heroSize?: 'large' | 'medium' | 'compact';
     contentPosition?: 'lower' | 'center' | 'natural';
-    centerTitle?: boolean;
     scrollable?: boolean;
   }>(),
   {
     subtitle: '',
     step: '',
     showBack: true,
-    contentPosition: 'lower',
-    centerTitle: false,
+    heroSize: 'large',
+    contentPosition: 'natural',
     scrollable: false,
   }
 );
@@ -94,16 +89,40 @@ defineEmits<{
   -webkit-overflow-scrolling: touch;
 }
 
-/* Compact Top Nav Strip */
-.vk-onboarding-nav-strip {
+/* ========================================= */
+/* RED HERO AREA (Context / Identity)        */
+/* ========================================= */
+.vk-onboarding-hero {
   flex-shrink: 0;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 10px);
-  padding-bottom: 12px;
-}
-
-.vk-nav-inner {
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
+  transition: height 0.2s ease;
+}
+
+/* Hero Height Variants */
+.hero-large .vk-onboarding-hero {
+  height: clamp(280px, 43dvh, 390px);
+}
+
+.hero-medium .vk-onboarding-hero {
+  height: clamp(235px, 36dvh, 315px);
+}
+
+.hero-compact .vk-onboarding-hero {
+  height: clamp(190px, 28dvh, 240px);
+}
+
+.vk-hero-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 12px);
+  padding-bottom: 26px;
+  padding-left: 24px;
+  padding-right: 24px;
+  width: 100%;
 }
 
 .vk-nav-top-row {
@@ -111,6 +130,7 @@ defineEmits<{
   align-items: center;
   justify-content: space-between;
   min-height: 44px;
+  flex-shrink: 0;
 }
 
 .vk-nav-spacer {
@@ -122,7 +142,7 @@ defineEmits<{
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.16);
   border: none;
   color: #FFFFFF;
   display: flex;
@@ -135,7 +155,7 @@ defineEmits<{
 
 .vk-hero-circle-btn:active {
   transform: scale(0.94);
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .dark .vk-hero-circle-btn {
@@ -160,147 +180,141 @@ defineEmits<{
   border: 1px solid var(--vk-border);
 }
 
-/* White / Dark Content Sheet */
+/* Intentional Large Empty Space */
+.vk-hero-spacer {
+  flex: 1;
+  min-height: 16px;
+}
+
+/* Hero Title & Subtitle at Bottom */
+.vk-hero-copy {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  animation: vkFadeUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.vk-hero-title {
+  font-size: clamp(1.65rem, 5.5vw, 1.85rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.dark .vk-hero-title {
+  color: var(--text-primary);
+}
+
+.vk-hero-subtitle {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.38;
+  margin: 4px 0 0 0;
+  max-width: 340px;
+}
+
+.dark .vk-hero-subtitle {
+  color: var(--text-secondary);
+}
+
+/* ========================================= */
+/* WHITE SHEET (Interaction Area)            */
+/* ========================================= */
 .vk-onboarding-sheet {
   flex: 1;
   display: flex;
   flex-direction: column;
   background: var(--vk-bg-sheet);
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  min-height: 0;
+  border-radius: 32px 32px 0 0;
+  margin-top: -12px;
+  z-index: 2;
   position: relative;
+  min-height: 0;
   overflow-y: auto;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.04);
 }
 
 .vk-sheet-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding-top: 8px;
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  justify-content: flex-start;
+  padding-top: clamp(24px, 3.5dvh, 36px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  padding-left: 24px;
+  padding-right: 24px;
   width: 100%;
   max-width: 360px;
   margin: 0 auto;
 }
 
-/* Unified Vertical Content Cluster */
-.vk-onboarding-cluster {
+.pos-lower .vk-sheet-container {
+  justify-content: flex-end;
+}
+
+.pos-center .vk-sheet-container {
+  justify-content: center;
+}
+
+.vk-sheet-content {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  animation: vkSheetUp 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.vk-onboarding-cluster.is-centered .vk-cluster-title-block {
-  text-align: center;
+/* Animations */
+@keyframes vkFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.vk-onboarding-cluster.is-centered .vk-cluster-subtitle {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Title Block inside Sheet */
-.vk-cluster-title-block {
-  margin-bottom: 24px;
-}
-
-.vk-cluster-title {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: -0.025em;
-  line-height: 1.15;
-  margin: 0 0 6px 0;
-}
-
-.vk-cluster-subtitle {
-  font-size: 0.885rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
-  margin: 0;
-  max-width: 340px;
-}
-
-.vk-cluster-main-content {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-/* Dynamic Vertical Proportions */
-.pos-lower .vk-cluster-top-spacer {
-  flex: 0.6;
-  min-height: 8px;
-  max-height: 50px;
-}
-
-.pos-lower .vk-cluster-bottom-spacer {
-  flex: 1;
-  min-height: 12px;
-  max-height: 80px;
-}
-
-.pos-center .vk-cluster-top-spacer {
-  flex: 1;
-  min-height: 10px;
-  max-height: 60px;
-}
-
-.pos-center .vk-cluster-bottom-spacer {
-  flex: 1;
-  min-height: 10px;
-  max-height: 60px;
-}
-
-.pos-natural .vk-cluster-top-spacer {
-  display: none;
-}
-
-.pos-natural .vk-cluster-bottom-spacer {
-  flex: 1;
+@keyframes vkSheetUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive Short Screens (<= 720px) */
 @media (max-height: 720px) {
-  .vk-onboarding-nav-strip {
-    padding-bottom: 8px;
+  .hero-large .vk-onboarding-hero {
+    height: clamp(230px, 38dvh, 290px);
   }
-  .vk-cluster-title-block {
-    margin-bottom: 16px;
+  .hero-medium .vk-onboarding-hero {
+    height: clamp(195px, 30dvh, 245px);
   }
-  .vk-cluster-title {
-    font-size: 1.5rem;
-    margin-bottom: 4px;
+  .hero-compact .vk-onboarding-hero {
+    height: clamp(165px, 24dvh, 200px);
   }
-  .vk-cluster-subtitle {
-    font-size: 0.825rem;
+  .vk-hero-container {
+    padding-bottom: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
-  .pos-lower .vk-cluster-top-spacer {
-    min-height: 4px;
-    max-height: 24px;
+  .vk-hero-title {
+    font-size: 1.55rem;
   }
-  .pos-lower .vk-cluster-bottom-spacer {
-    min-height: 8px;
-    max-height: 36px;
+  .vk-hero-subtitle {
+    font-size: 0.815rem;
   }
   .vk-sheet-container {
-    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
-  }
-}
-
-/* Tall Phones (>= 850px) */
-@media (min-height: 850px) {
-  .pos-lower .vk-cluster-top-spacer {
-    flex: 0.8;
-    max-height: 70px;
-  }
-  .pos-lower .vk-cluster-bottom-spacer {
-    flex: 1.2;
-    max-height: 100px;
-  }
-  .vk-cluster-title-block {
-    margin-bottom: 28px;
+    padding-top: 20px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }
 

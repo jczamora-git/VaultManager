@@ -61,7 +61,7 @@
           title="Let's get started."
           subtitle="Choose how you want to set up Vaultify."
           step="Setup"
-          content-position="lower"
+          hero-size="large"
           @back="goToStep(1)"
         >
           <div class="vk-choice-cluster">
@@ -117,7 +117,7 @@
           title="Validate backup"
           subtitle="Enter the Master Password for this backup."
           step="Import"
-          content-position="lower"
+          hero-size="medium"
           @back="goToStep('choice')"
         >
           <div class="vk-import-auth-cluster">
@@ -171,6 +171,7 @@
           title="Restore Summary"
           subtitle="Review details before importing to this device."
           step="Import"
+          hero-size="medium"
           content-position="lower"
           @back="goToStep('import_auth')"
         >
@@ -222,6 +223,7 @@
           title="Let's make it yours."
           subtitle="Create a local profile for your Vaultify experience."
           step="Step 1 of 6"
+          hero-size="large"
           content-position="lower"
           @back="goToStep('choice')"
         >
@@ -298,12 +300,16 @@
         <!-- ========================================== -->
         <!-- STEP 3: CREATE MASTER PASSWORD             -->
         <!-- ========================================== -->
+        <!-- ========================================== -->
+        <!-- STEP 3: CREATE MASTER PASSWORD             -->
+        <!-- ========================================== -->
         <OnboardingLayout
           v-else-if="step === 3"
           key="step3"
           title="Protect your vault."
           subtitle="Your Master Password protects the encrypted key to your Vaultify data."
           step="Step 2 of 6"
+          hero-size="medium"
           content-position="lower"
           @back="goToStep(2)"
         >
@@ -380,7 +386,7 @@
           title="Create your PIN"
           subtitle="Use six digits for quick everyday access."
           :step="isImportFlow ? 'Security Setup' : 'Step 3 of 6'"
-          :center-title="true"
+          hero-size="compact"
           content-position="lower"
           @back="handleStep4Back"
         >
@@ -407,7 +413,7 @@
           title="Confirm your PIN"
           subtitle="Enter your six digits again to make sure."
           :step="isImportFlow ? 'Security Setup' : 'Step 4 of 6'"
-          :center-title="true"
+          hero-size="compact"
           content-position="lower"
           @back="resetToCreatePin"
         >
@@ -434,7 +440,7 @@
           :title="`Enable ${biometricAvailability.label}`"
           subtitle="Unlock Vaultify without typing your PIN each time."
           :step="isImportFlow ? 'Security Setup' : 'Step 5 of 6'"
-          :center-title="true"
+          hero-size="medium"
           content-position="center"
           @back="goToStep(5)"
         >
@@ -495,6 +501,7 @@
           title="Security preferences"
           subtitle="You can change these anytime in Settings."
           step="Step 6 of 6"
+          hero-size="medium"
           content-position="lower"
           @back="goToStep(biometricAvailability.available ? 6 : 5)"
         >
@@ -1154,19 +1161,29 @@ function getCategoryCount(credentials?: any[]): number {
   flex-direction: column;
   gap: 14px;
   width: 100%;
+  max-width: 330px;
+  margin: 0 auto;
+  padding-top: clamp(28px, 4.5dvh, 48px);
 }
 
 .vk-choice-card {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: var(--vk-bg-surface-soft);
-  border: 1px solid var(--vk-border);
-  border-radius: var(--radius-lg);
-  padding: 16px 18px;
+  min-height: 60px;
+  background: #F1F0ED;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 18px;
+  padding: 10px 16px;
   text-align: left;
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  width: 100%;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dark .vk-choice-card {
+  background: var(--vk-bg-surface-soft);
+  border-color: var(--vk-border);
 }
 
 .vk-choice-card:active {
@@ -1175,44 +1192,66 @@ function getCategoryCount(credentials?: any[]): number {
 }
 
 .vk-choice-icon-wrap {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: var(--brand-red-subtle);
+  background: rgba(184, 40, 37, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
+.dark .vk-choice-icon-wrap {
+  background: rgba(229, 62, 62, 0.18);
+}
+
 .vk-choice-text {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0;
 }
 
 .vk-choice-title {
-  font-size: 1.05rem;
-  font-weight: 800;
+  font-size: 0.98rem;
+  font-weight: 750;
+  color: #111827;
+  letter-spacing: -0.01em;
+}
+
+.dark .vk-choice-title {
   color: var(--text-primary);
 }
 
 .vk-choice-desc {
-  font-size: 0.8rem;
+  font-size: 0.775rem;
+  color: #6B7280;
+  margin-top: 1px;
+}
+
+.dark .vk-choice-desc {
   color: var(--text-secondary);
-  margin-top: 2px;
 }
 
 .vk-choice-chevron {
+  color: #9CA3AF;
+  flex-shrink: 0;
+}
+
+.dark .vk-choice-chevron {
   color: var(--text-muted);
 }
 
 .vk-choice-footer-desc {
-  font-size: 0.825rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
   color: var(--text-muted);
   text-align: center;
-  margin-top: 12px;
-  line-height: 1.4;
+  margin-top: 20px;
+  margin-bottom: 0;
+  max-width: 290px;
+  margin-inline: auto;
 }
 
 /* Import Meta and Summary */
