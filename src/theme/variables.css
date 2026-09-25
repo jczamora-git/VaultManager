@@ -52,7 +52,7 @@
   --vk-page-horizontal: 22px;
   --vk-safe-top: calc(env(safe-area-inset-top, 0px) + 24px);
   --vk-safe-bottom: env(safe-area-inset-bottom, 0px);
-  --vk-dock-height: 70px;
+  --vk-dock-height: 64px;
   --vk-dock-offset: 12px;
   --vk-content-bottom-padding: calc(var(--vk-dock-height) + var(--vk-dock-offset) + var(--vk-safe-bottom) + 24px);
 
@@ -88,11 +88,12 @@
   --vk-divider: var(--divider-light);
   --vk-border-focus: var(--brand-red);
 
-  --vk-dock-bg: #FFFFFF;
-  --vk-dock-text: #888888;
-  --vk-dock-text-active: var(--brand-red);
+  --vk-dock-bg: rgba(255, 255, 255, 0.96);
+  --vk-dock-text: #8C8C8C;
+  --vk-dock-pill-bg: #B82825;
+  --vk-dock-pill-text: #FFFFFF;
   --vk-dock-border: rgba(0, 0, 0, 0.06);
-  --vk-dock-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+  --vk-dock-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
 
   --vk-btn-primary-bg: #0A0A0A;
   --vk-btn-primary-text: #FFFFFF;
@@ -145,11 +146,12 @@ body.dark-theme {
   --vk-divider: rgba(255, 255, 255, 0.07);
   --vk-border-focus: #C52A27;
 
-  --vk-dock-bg: #181818;
-  --vk-dock-text: #737373;
-  --vk-dock-text-active: #C52A27;
-  --vk-dock-border: rgba(255, 255, 255, 0.08);
-  --vk-dock-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+  --vk-dock-bg: #171717;
+  --vk-dock-text: #777777;
+  --vk-dock-pill-bg: #D3332F;
+  --vk-dock-pill-text: #FFFFFF;
+  --vk-dock-border: rgba(255, 255, 255, 0.07);
+  --vk-dock-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
 
   --vk-btn-primary-bg: #F4F4F2;
   --vk-btn-primary-text: #101010;
