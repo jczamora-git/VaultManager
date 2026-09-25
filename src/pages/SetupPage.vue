@@ -300,9 +300,6 @@
         <!-- ========================================== -->
         <!-- STEP 3: CREATE MASTER PASSWORD             -->
         <!-- ========================================== -->
-        <!-- ========================================== -->
-        <!-- STEP 3: CREATE MASTER PASSWORD             -->
-        <!-- ========================================== -->
         <OnboardingLayout
           v-else-if="step === 3"
           key="step3"
@@ -361,12 +358,9 @@
               <div v-if="errors.confirmPassword" class="vk-error-text">{{ errors.confirmPassword }}</div>
             </div>
 
-            <div class="vk-notice-banner">
-              <div class="vk-notice-icon">⚠️</div>
-              <div>
-                <strong>Your Master Password cannot be recovered.</strong> Keep it somewhere memorable.
-              </div>
-            </div>
+            <p class="vk-form-helper-note">
+              Your Master Password <strong>cannot be recovered</strong>. Keep it somewhere memorable.
+            </p>
 
             <div class="vk-setup-actions">
               <button type="submit" class="vk-btn vk-btn-primary vk-btn-block" :disabled="isLoading">
@@ -1499,26 +1493,27 @@ function getCategoryCount(credentials?: any[]): number {
   color: var(--brand-red);
 }
 
-/* Notice Banner */
-.vk-notice-banner {
-  display: flex;
-  gap: 12px;
-  background: var(--vk-bg-surface-soft);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  font-size: 0.825rem;
-  color: var(--text-secondary);
-  line-height: 1.45;
+/* Form Helper Note */
+.vk-form-helper-note {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #7A7A7A;
+  margin-top: -2px;
   margin-bottom: 20px;
-  border-left: 3px solid var(--brand-red);
+  font-weight: 400;
 }
 
-.vk-notice-icon {
-  font-size: 1.1rem;
+.dark .vk-form-helper-note {
+  color: #9A9A9A;
+}
+
+.vk-form-helper-note strong {
+  font-weight: 600;
+  color: inherit;
 }
 
 .vk-setup-actions {
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 /* PIN Step Unified Cluster */
