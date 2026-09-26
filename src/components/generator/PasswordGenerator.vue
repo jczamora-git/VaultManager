@@ -126,11 +126,11 @@ onMounted(() => {
 
 .vk-generated-pw-card {
   position: relative;
-  background: var(--vk-gen-card-bg, #F2F0ED);
+  background: var(--vk-gen-card-bg, #F1EFEC);
   border-radius: 18px;
   padding: 0;
   margin-bottom: 22px;
-  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.06));
+  border: none;
   box-shadow: none;
   overflow: hidden;
 }
@@ -139,8 +139,8 @@ onMounted(() => {
 :global(.ion-palette-dark) .vk-generated-pw-card,
 :global(body.dark-theme) .vk-generated-pw-card,
 :global([data-theme="dark"]) .vk-generated-pw-card {
-  background: #1F1F1F;
-  border-color: rgba(255, 255, 255, 0.07);
+  background: #202020;
+  border: none;
   box-shadow: none;
 }
 
@@ -165,38 +165,38 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: 13px 18px 15px 18px;
-  border-top: 1.5px dashed rgba(0, 0, 0, 0.10);
+  border-top: 1.5px dashed rgba(0, 0, 0, 0.12);
 }
 
 :global(.dark) .vk-pw-card-footer,
 :global(.ion-palette-dark) .vk-pw-card-footer,
 :global(body.dark-theme) .vk-pw-card-footer,
 :global([data-theme="dark"]) .vk-pw-card-footer {
-  border-top: 1.5px dashed rgba(255, 255, 255, 0.09);
+  border-top: 1.5px dashed rgba(255, 255, 255, 0.12);
 }
 
-/* Subtle Inward Ticket Cutouts (Integrated 11px diameter, clipped cleanly) */
+/* Clearly Defined Inward Ticket Cutouts (18px diameter, seamless carved notch) */
 .vk-pw-card-footer::before,
 .vk-pw-card-footer::after {
   content: '';
   position: absolute;
   top: 0;
-  width: 11px;
-  height: 11px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: var(--vk-sheet-bg, var(--vk-bg-sheet, #FFFFFF));
-  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.06));
+  border: none;
   box-sizing: border-box;
   z-index: 2;
 }
 
 .vk-pw-card-footer::before {
-  left: -1px;
+  left: 0;
   transform: translate(-50%, -50%);
 }
 
 .vk-pw-card-footer::after {
-  right: -1px;
+  right: 0;
   transform: translate(50%, -50%);
 }
 
@@ -209,7 +209,7 @@ onMounted(() => {
 :global([data-theme="dark"]) .vk-pw-card-footer::before,
 :global([data-theme="dark"]) .vk-pw-card-footer::after {
   background: var(--vk-sheet-bg, var(--vk-bg-sheet, #151515));
-  border-color: rgba(255, 255, 255, 0.07);
+  border: none;
 }
 
 .vk-pw-strength-tag {

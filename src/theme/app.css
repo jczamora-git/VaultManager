@@ -114,34 +114,6 @@ body.dark-theme .vk-page-sheet,
   box-shadow: none;
 }
 
-/* Ticket/Cutout Detail */
-.vk-ticket-cutout {
-  position: relative;
-  overflow: visible;
-}
-
-.vk-ticket-cutout::before,
-.vk-ticket-cutout::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--vk-bg-sheet);
-  transform: translateY(-50%);
-  z-index: 2;
-  transition: background-color var(--vk-motion-base) ease;
-}
-
-.vk-ticket-cutout::before {
-  left: -10px;
-}
-
-.vk-ticket-cutout::after {
-  right: -10px;
-}
-
 /* Floating Navigation Dock System */
 .vk-floating-dock-wrap {
   position: fixed;
@@ -567,5 +539,70 @@ body.dark-theme .vk-backspace-btn svg,
   stroke: #FFFFFF !important;
   color: #FFFFFF !important;
 }
+
+/* Global Credential Cards Dark Surface */
+.dark .vk-credential-card,
+.ion-palette-dark .vk-credential-card,
+body.dark-theme .vk-credential-card,
+[data-theme="dark"] .vk-credential-card,
+.dark .vk-credential-row-card,
+.ion-palette-dark .vk-credential-row-card,
+body.dark-theme .vk-credential-row-card,
+[data-theme="dark"] .vk-credential-row-card {
+  background: #181818 !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+  box-shadow: none !important;
+}
+
+.dark .vk-card-title,
+.ion-palette-dark .vk-card-title,
+body.dark-theme .vk-card-title,
+[data-theme="dark"] .vk-card-title {
+  color: #F5F5F5 !important;
+}
+
+.dark .vk-card-subtext,
+.ion-palette-dark .vk-card-subtext,
+body.dark-theme .vk-card-subtext,
+[data-theme="dark"] .vk-card-subtext {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.dark .vk-card-chevron,
+.ion-palette-dark .vk-card-chevron,
+body.dark-theme .vk-card-chevron,
+[data-theme="dark"] .vk-card-chevron {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.dark .vk-card-star-btn,
+.ion-palette-dark .vk-card-star-btn,
+body.dark-theme .vk-card-star-btn,
+[data-theme="dark"] .vk-card-star-btn {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+@media (hover: hover) {
+  .dark .vk-credential-card:hover,
+  .ion-palette-dark .vk-credential-card:hover,
+  body.dark-theme .vk-credential-card:hover,
+  [data-theme="dark"] .vk-credential-card:hover,
+  .dark .vk-credential-row-card:hover,
+  .ion-palette-dark .vk-credential-row-card:hover,
+  body.dark-theme .vk-credential-row-card:hover,
+  [data-theme="dark"] .vk-credential-row-card:hover {
+    background: #202020 !important;
+  }
+}
+
+/* Layout Seam & Bleed Prevention */
+.vk-hero-sheet-page,
+.vk-onboarding-layout,
+.vk-vault-white-body {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 
 

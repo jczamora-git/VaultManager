@@ -41,6 +41,10 @@
     <div
       ref="cardRef"
       class="vk-credential-card"
+      :class="{
+        'is-open-edit': isEditActive,
+        'is-open-delete': isDeleteActive
+      }"
       :style="cardStyle"
       @pointerdown="onPointerDown"
       @pointermove="onPointerMove"
@@ -169,6 +173,9 @@ const showDeleteAction = computed(() => {
   if (isAnimatingClose.value && closingSide.value === 'delete') return true;
   return false;
 });
+
+const isEditActive = computed(() => translateX.value > 0 || (props.isOpen && props.openSide === 'edit'));
+const isDeleteActive = computed(() => translateX.value < 0 || (props.isOpen && props.openSide === 'delete'));
 
 const cardStyle = computed(() => {
   return {
@@ -425,6 +432,7 @@ defineExpose({
 
 .vk-swipe-action-edit {
   left: 0;
+  border-radius: 16px 0 0 16px;
   background: #F5F1EE;
   color: #C62825;
 }
@@ -439,6 +447,7 @@ defineExpose({
 
 .vk-swipe-action-delete {
   right: 0;
+  border-radius: 0 16px 16px 0;
   background: #C62825;
   color: #FFFFFF;
 }
@@ -483,8 +492,16 @@ defineExpose({
   gap: 12px;
   padding: 12px 14px;
   cursor: pointer;
-  will-change: transform;
-  transition: background-color 140ms ease, border-color 140ms ease;
+  will-change: transform, border-radius;
+  transition: background-color 140ms ease, border-color 140ms ease, border-radius 120ms ease;
+}
+
+.vk-credential-card.is-open-edit {
+  border-radius: 0 16px 16px 0 !important;
+}
+
+.vk-credential-card.is-open-delete {
+  border-radius: 16px 0 0 16px !important;
 }
 
 @media (hover: hover) {
@@ -571,7 +588,7 @@ defineExpose({
 :global(.ion-palette-dark) .vk-card-subtext,
 :global(body.dark-theme) .vk-card-subtext,
 :global([data-theme="dark"]) .vk-card-subtext {
-  color: #8F8F8F !important;
+  color: rgba(255, 255, 255, 0.55) !important;
 }
 
 .vk-card-muted {
@@ -604,7 +621,7 @@ defineExpose({
 :global(.ion-palette-dark) .vk-card-star-btn,
 :global(body.dark-theme) .vk-card-star-btn,
 :global([data-theme="dark"]) .vk-card-star-btn {
-  color: rgba(255, 255, 255, 0.42) !important;
+  color: rgba(255, 255, 255, 0.45) !important;
 }
 
 .vk-card-star-btn:hover {

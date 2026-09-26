@@ -184,7 +184,7 @@ defineEmits<{
 :global(.ion-palette-dark) .vk-card-subtext,
 :global(body.dark-theme) .vk-card-subtext,
 :global([data-theme="dark"]) .vk-card-subtext {
-  color: #8F8F8F !important;
+  color: rgba(255, 255, 255, 0.55) !important;
 }
 
 .vk-card-muted {
@@ -216,7 +216,7 @@ defineEmits<{
 :global(.ion-palette-dark) .vk-card-star-btn,
 :global(body.dark-theme) .vk-card-star-btn,
 :global([data-theme="dark"]) .vk-card-star-btn {
-  color: rgba(255, 255, 255, 0.42) !important;
+  color: rgba(255, 255, 255, 0.45) !important;
 }
 
 .vk-card-star-btn:hover {
