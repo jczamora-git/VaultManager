@@ -317,20 +317,46 @@ onUnmounted(() => {
 
 .vk-keypad-action-btn {
   background: transparent;
-  border-color: transparent;
+  border: 1px solid transparent;
   box-shadow: none;
-  color: #171717;
+  color: #1A1A1A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
   transition: transform 90ms var(--vk-ease-press),
-              color 100ms ease;
+              background-color 140ms ease,
+              color 140ms ease;
 }
 
-.vk-keypad-action-btn:active {
+@media (hover: hover) {
+  .vk-keypad-action-btn:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.vk-keypad-action-btn:active:not(:disabled) {
   transform: scale(0.92);
-  background: transparent;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.vk-keypad-action-btn:disabled {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.vk-backspace-btn {
+  color: #1A1A1A;
+}
+
+.vk-backspace-btn svg {
+  stroke: currentColor;
 }
 
 .vk-biometric-btn {
-  color: var(--brand-red);
+  color: var(--brand-red, #D02724);
 }
 
 .vk-keypad-spacer {
@@ -351,34 +377,108 @@ onUnmounted(() => {
   }
 }
 
-/* Dark Theme Keypad - Scoped strictly to non-onboarding screens */
-:global(.dark:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *),
-:global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *),
-:global(body.dark-theme:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *) {
+/* Dark Theme Keypad */
+:global(.dark) .vk-keypad-btn:not(.vk-keypad-action-btn),
+:global(.ion-palette-dark) .vk-keypad-btn:not(.vk-keypad-action-btn),
+:global(body.dark-theme) .vk-keypad-btn:not(.vk-keypad-action-btn),
+:global([data-theme="dark"]) .vk-keypad-btn:not(.vk-keypad-action-btn) {
   background: #1E1E1E;
   color: #F5F5F5;
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
 }
 
-:global(.dark:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *):active,
-:global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *):active,
-:global(body.dark-theme:not(.vaultify-onboarding)) .vk-keypad-btn:not(.vaultify-onboarding *):active {
+:global(.dark) .vk-keypad-btn:not(.vk-keypad-action-btn):active,
+:global(.ion-palette-dark) .vk-keypad-btn:not(.vk-keypad-action-btn):active,
+:global(body.dark-theme) .vk-keypad-btn:not(.vk-keypad-action-btn):active,
+:global([data-theme="dark"]) .vk-keypad-btn:not(.vk-keypad-action-btn):active {
   background: #282828;
 }
 
-:global(.dark:not(.vaultify-onboarding)) .vk-keypad-action-btn:not(.vaultify-onboarding *),
-:global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-keypad-action-btn:not(.vaultify-onboarding *),
-:global(body.dark-theme:not(.vaultify-onboarding)) .vk-keypad-action-btn:not(.vaultify-onboarding *) {
+:global(.dark) .vk-keypad-action-btn,
+:global(.ion-palette-dark) .vk-keypad-action-btn,
+:global(body.dark-theme) .vk-keypad-action-btn,
+:global([data-theme="dark"]) .vk-keypad-action-btn {
   background: transparent;
   border-color: transparent;
   box-shadow: none;
-  color: #F5F5F5;
+  color: #FFFFFF;
 }
 
-:global(.dark:not(.vaultify-onboarding)) .vk-biometric-btn:not(.vaultify-onboarding *),
-:global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-biometric-btn:not(.vaultify-onboarding *),
-:global(body.dark-theme:not(.vaultify-onboarding)) .vk-biometric-btn:not(.vaultify-onboarding *) {
-  color: #D3332F;
+:global(.dark) .vk-backspace-btn,
+:global(.ion-palette-dark) .vk-backspace-btn,
+:global(body.dark-theme) .vk-backspace-btn,
+:global([data-theme="dark"]) .vk-backspace-btn {
+  color: #FFFFFF !important;
+}
+
+:global(.dark) .vk-backspace-btn svg,
+:global(.ion-palette-dark) .vk-backspace-btn svg,
+:global(body.dark-theme) .vk-backspace-btn svg,
+:global([data-theme="dark"]) .vk-backspace-btn svg {
+  stroke: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+@media (hover: hover) {
+  :global(.dark) .vk-keypad-action-btn:hover:not(:disabled),
+  :global(.ion-palette-dark) .vk-keypad-action-btn:hover:not(:disabled),
+  :global(body.dark-theme) .vk-keypad-action-btn:hover:not(:disabled),
+  :global([data-theme="dark"]) .vk-keypad-action-btn:hover:not(:disabled),
+  :global(.dark) .vk-backspace-btn:hover:not(:disabled),
+  :global(.ion-palette-dark) .vk-backspace-btn:hover:not(:disabled),
+  :global(body.dark-theme) .vk-backspace-btn:hover:not(:disabled),
+  :global([data-theme="dark"]) .vk-backspace-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF !important;
+  }
+  :global(.dark) .vk-backspace-btn:hover:not(:disabled) svg,
+  :global(.ion-palette-dark) .vk-backspace-btn:hover:not(:disabled) svg,
+  :global(body.dark-theme) .vk-backspace-btn:hover:not(:disabled) svg,
+  :global([data-theme="dark"]) .vk-backspace-btn:hover:not(:disabled) svg {
+    stroke: #FFFFFF !important;
+  }
+}
+
+:global(.dark) .vk-keypad-action-btn:active:not(:disabled),
+:global(.ion-palette-dark) .vk-keypad-action-btn:active:not(:disabled),
+:global(body.dark-theme) .vk-keypad-action-btn:active:not(:disabled),
+:global([data-theme="dark"]) .vk-keypad-action-btn:active:not(:disabled),
+:global(.dark) .vk-backspace-btn:active:not(:disabled),
+:global(.ion-palette-dark) .vk-backspace-btn:active:not(:disabled),
+:global(body.dark-theme) .vk-backspace-btn:active:not(:disabled),
+:global([data-theme="dark"]) .vk-backspace-btn:active:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF !important;
+}
+:global(.dark) .vk-backspace-btn:active:not(:disabled) svg,
+:global(.ion-palette-dark) .vk-backspace-btn:active:not(:disabled) svg,
+:global(body.dark-theme) .vk-backspace-btn:active:not(:disabled) svg,
+:global([data-theme="dark"]) .vk-backspace-btn:active:not(:disabled) svg {
+  stroke: #FFFFFF !important;
+}
+
+:global(.dark) .vk-keypad-action-btn:disabled,
+:global(.ion-palette-dark) .vk-keypad-action-btn:disabled,
+:global(body.dark-theme) .vk-keypad-action-btn:disabled,
+:global([data-theme="dark"]) .vk-keypad-action-btn:disabled,
+:global(.dark) .vk-backspace-btn:disabled,
+:global(.ion-palette-dark) .vk-backspace-btn:disabled,
+:global(body.dark-theme) .vk-backspace-btn:disabled,
+:global([data-theme="dark"]) .vk-backspace-btn:disabled {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+:global(.dark) .vk-backspace-btn:disabled svg,
+:global(.ion-palette-dark) .vk-backspace-btn:disabled svg,
+:global(body.dark-theme) .vk-backspace-btn:disabled svg,
+:global([data-theme="dark"]) .vk-backspace-btn:disabled svg {
+  stroke: rgba(255, 255, 255, 0.35) !important;
+}
+
+:global(.dark) .vk-biometric-btn,
+:global(.ion-palette-dark) .vk-biometric-btn,
+:global(body.dark-theme) .vk-biometric-btn,
+:global([data-theme="dark"]) .vk-biometric-btn {
+  color: #D3332F !important;
 }
 </style>

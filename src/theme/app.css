@@ -2,6 +2,12 @@
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(211, 51, 47, 0.65);
+  outline-offset: 2px;
 }
 
 html,
@@ -79,8 +85,8 @@ ion-toolbar {
   color: var(--text-primary);
   border-radius: 36px 36px 0 0;
   padding: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
+  border-top: none;
+  box-shadow: none;
   min-height: calc(100dvh - 160px);
   position: relative;
   margin-top: -12px;
@@ -104,8 +110,8 @@ body.dark-theme .vk-page-sheet,
 [data-theme="dark"] .vk-page-sheet {
   background: var(--vk-bg-sheet, var(--vk-sheet-bg, #151515));
   color: var(--text-primary);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.04), 0 -12px 32px rgba(0, 0, 0, 0.4);
+  border-top: none;
+  box-shadow: none;
 }
 
 /* Ticket/Cutout Detail */
@@ -330,6 +336,31 @@ body.dark-theme .vk-page-sheet,
   border: 1px solid var(--vk-border);
 }
 
+@media (hover: hover) {
+  .vk-btn-secondary:hover {
+    background: #E5E4E0;
+    color: var(--text-primary);
+  }
+  .dark .vk-btn-secondary:hover,
+  .ion-palette-dark .vk-btn-secondary:hover,
+  body.dark-theme .vk-btn-secondary:hover,
+  [data-theme="dark"] .vk-btn-secondary:hover {
+    background: #292929;
+    color: #FFFFFF;
+  }
+}
+
+.vk-btn-secondary:active {
+  background: #DBD9D4;
+}
+
+.dark .vk-btn-secondary:active,
+.ion-palette-dark .vk-btn-secondary:active,
+body.dark-theme .vk-btn-secondary:active,
+[data-theme="dark"] .vk-btn-secondary:active {
+  background: #303030;
+}
+
 .vk-btn-outline {
   background: transparent;
   border: 1.5px solid rgba(255, 255, 255, 0.3);
@@ -364,12 +395,28 @@ body.dark-theme .vk-page-sheet,
   transition: transform var(--vk-motion-instant) var(--vk-ease-press), background-color var(--vk-motion-fast) ease;
 }
 
-.vk-btn-icon-only:hover {
-  background: rgba(128, 128, 128, 0.12);
+@media (hover: hover) {
+  .vk-btn-icon-only:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  .dark .vk-btn-icon-only:hover,
+  .ion-palette-dark .vk-btn-icon-only:hover,
+  body.dark-theme .vk-btn-icon-only:hover,
+  [data-theme="dark"] .vk-btn-icon-only:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
 }
 
 .vk-btn-icon-only:active {
   transform: scale(0.94);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.dark .vk-btn-icon-only:active,
+.ion-palette-dark .vk-btn-icon-only:active,
+body.dark-theme .vk-btn-icon-only:active,
+[data-theme="dark"] .vk-btn-icon-only:active {
+  background: rgba(255, 255, 255, 0.10);
 }
 
 /* Floating Action Button (FAB) positioned above floating dock */
@@ -505,15 +552,20 @@ ion-modal.vk-bottom-sheet {
   }
 }
 
-/* Accessibility: Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+/* PIN Keypad Global Dark Overrides */
+.dark .vk-backspace-btn,
+.ion-palette-dark .vk-backspace-btn,
+body.dark-theme .vk-backspace-btn,
+[data-theme="dark"] .vk-backspace-btn {
+  color: #FFFFFF !important;
 }
+
+.dark .vk-backspace-btn svg,
+.ion-palette-dark .vk-backspace-btn svg,
+body.dark-theme .vk-backspace-btn svg,
+[data-theme="dark"] .vk-backspace-btn svg {
+  stroke: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
 

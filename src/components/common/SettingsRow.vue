@@ -52,10 +52,34 @@ function handleClick() {
 
 .vk-settings-row.is-clickable {
   cursor: pointer;
+  border-radius: var(--radius-sm, 14px);
+  padding: 14px 8px;
+  margin: 0 -8px;
+  transition: background-color 140ms ease;
 }
 
-.vk-settings-row.is-clickable:hover {
-  opacity: 0.85;
+@media (hover: hover) {
+  .vk-settings-row.is-clickable:hover {
+    background: rgba(0, 0, 0, 0.025);
+  }
+
+  :global(.dark) .vk-settings-row.is-clickable:hover,
+  :global(.ion-palette-dark) .vk-settings-row.is-clickable:hover,
+  :global(body.dark-theme) .vk-settings-row.is-clickable:hover,
+  :global([data-theme="dark"]) .vk-settings-row.is-clickable:hover {
+    background: rgba(255, 255, 255, 0.035);
+  }
+}
+
+.vk-settings-row.is-clickable:active {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+:global(.dark) .vk-settings-row.is-clickable:active,
+:global(.ion-palette-dark) .vk-settings-row.is-clickable:active,
+:global(body.dark-theme) .vk-settings-row.is-clickable:active,
+:global([data-theme="dark"]) .vk-settings-row.is-clickable:active {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .vk-settings-row-left {

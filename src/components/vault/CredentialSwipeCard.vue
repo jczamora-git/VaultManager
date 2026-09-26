@@ -433,14 +433,22 @@ defineExpose({
 :global(.ion-palette-dark) .vk-swipe-action-edit,
 :global(body.dark-theme) .vk-swipe-action-edit,
 :global([data-theme="dark"]) .vk-swipe-action-edit {
-  background: #242424;
-  color: #D3332F;
+  background: #242424 !important;
+  color: #D3332F !important;
 }
 
 .vk-swipe-action-delete {
   right: 0;
   background: #C62825;
   color: #FFFFFF;
+}
+
+:global(.dark) .vk-swipe-action-delete,
+:global(.ion-palette-dark) .vk-swipe-action-delete,
+:global(body.dark-theme) .vk-swipe-action-delete,
+:global([data-theme="dark"]) .vk-swipe-action-delete {
+  background: #D3332F !important;
+  color: #FFFFFF !important;
 }
 
 .vk-swipe-action-inner {
@@ -476,15 +484,42 @@ defineExpose({
   padding: 12px 14px;
   cursor: pointer;
   will-change: transform;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+@media (hover: hover) {
+  .vk-credential-card:hover {
+    background: #F8F8F6;
+  }
+}
+
+.vk-credential-card:active {
+  background: #EFEFEA;
 }
 
 :global(.dark) .vk-credential-card,
 :global(.ion-palette-dark) .vk-credential-card,
 :global(body.dark-theme) .vk-credential-card,
 :global([data-theme="dark"]) .vk-credential-card {
-  background: #171717;
-  border-color: rgba(255, 255, 255, 0.06);
-  box-shadow: none;
+  background: #181818 !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+  box-shadow: none !important;
+}
+
+@media (hover: hover) {
+  :global(.dark) .vk-credential-card:hover,
+  :global(.ion-palette-dark) .vk-credential-card:hover,
+  :global(body.dark-theme) .vk-credential-card:hover,
+  :global([data-theme="dark"]) .vk-credential-card:hover {
+    background: #202020 !important;
+  }
+}
+
+:global(.dark) .vk-credential-card:active,
+:global(.ion-palette-dark) .vk-credential-card:active,
+:global(body.dark-theme) .vk-credential-card:active,
+:global([data-theme="dark"]) .vk-credential-card:active {
+  background: #252525 !important;
 }
 
 /* CARD INFO */
@@ -515,7 +550,7 @@ defineExpose({
 :global(.ion-palette-dark) .vk-card-title,
 :global(body.dark-theme) .vk-card-title,
 :global([data-theme="dark"]) .vk-card-title {
-  color: #F5F5F5;
+  color: #F5F5F5 !important;
 }
 
 .vk-card-secondary-row {
@@ -536,7 +571,7 @@ defineExpose({
 :global(.ion-palette-dark) .vk-card-subtext,
 :global(body.dark-theme) .vk-card-subtext,
 :global([data-theme="dark"]) .vk-card-subtext {
-  color: #909090;
+  color: #8F8F8F !important;
 }
 
 .vk-card-muted {
@@ -565,6 +600,13 @@ defineExpose({
               color var(--vk-motion-fast) ease;
 }
 
+:global(.dark) .vk-card-star-btn,
+:global(.ion-palette-dark) .vk-card-star-btn,
+:global(body.dark-theme) .vk-card-star-btn,
+:global([data-theme="dark"]) .vk-card-star-btn {
+  color: rgba(255, 255, 255, 0.42) !important;
+}
+
 .vk-card-star-btn:hover {
   color: var(--text-primary);
 }
@@ -573,8 +615,12 @@ defineExpose({
   transform: scale(1.18);
 }
 
-.vk-card-star-btn.is-favorite {
-  color: var(--brand-red, #D3332F);
+.vk-card-star-btn.is-favorite,
+:global(.dark) .vk-card-star-btn.is-favorite,
+:global(.ion-palette-dark) .vk-card-star-btn.is-favorite,
+:global(body.dark-theme) .vk-card-star-btn.is-favorite,
+:global([data-theme="dark"]) .vk-card-star-btn.is-favorite {
+  color: var(--brand-red, #D3332F) !important;
 }
 
 .vk-card-chevron {
@@ -582,8 +628,22 @@ defineExpose({
   transition: transform var(--vk-motion-fast) ease, color var(--vk-motion-fast) ease;
 }
 
+:global(.dark) .vk-card-chevron,
+:global(.ion-palette-dark) .vk-card-chevron,
+:global(body.dark-theme) .vk-card-chevron,
+:global([data-theme="dark"]) .vk-card-chevron {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
 .vk-credential-card:hover .vk-card-chevron {
   transform: translateX(2px);
   color: var(--text-primary);
+}
+
+:global(.dark) .vk-credential-card:hover .vk-card-chevron,
+:global(.ion-palette-dark) .vk-credential-card:hover .vk-card-chevron,
+:global(body.dark-theme) .vk-credential-card:hover .vk-card-chevron,
+:global([data-theme="dark"]) .vk-credential-card:hover .vk-card-chevron {
+  color: #FFFFFF !important;
 }
 </style>

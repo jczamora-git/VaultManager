@@ -125,11 +125,14 @@ onMounted(() => {
 }
 
 .vk-generated-pw-card {
-  background: var(--vk-gen-card-bg, #F1EFEC);
+  position: relative;
+  background: var(--vk-gen-card-bg, #F2F0ED);
   border-radius: 20px;
-  padding: 22px 20px 16px 20px;
+  padding: 0;
   margin-bottom: 22px;
-  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.04));
+  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.06));
+  box-shadow: none;
+  overflow: visible;
 }
 
 :global(.dark) .vk-generated-pw-card,
@@ -138,28 +141,75 @@ onMounted(() => {
 :global([data-theme="dark"]) .vk-generated-pw-card {
   background: #202020;
   border-color: rgba(255, 255, 255, 0.07);
+  box-shadow: none;
 }
 
 .vk-pw-main-text {
-  font-size: 1.45rem;
-  font-weight: 800;
+  padding: 22px 20px 18px 20px;
+  font-size: clamp(17px, 5vw, 22px);
+  font-weight: 700;
   color: var(--text-primary);
-  word-break: break-all;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   line-height: 1.35;
-  margin-bottom: 18px;
   text-align: center;
   user-select: all;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   transition: opacity var(--vk-motion-base) var(--vk-ease-standard),
               transform var(--vk-motion-base) var(--vk-ease-enter);
 }
 
 .vk-pw-card-footer {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid var(--vk-divider);
-  padding-top: 12px;
+  padding: 12px 18px 14px 18px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.12);
+}
+
+:global(.dark) .vk-pw-card-footer,
+:global(.ion-palette-dark) .vk-pw-card-footer,
+:global(body.dark-theme) .vk-pw-card-footer,
+:global([data-theme="dark"]) .vk-pw-card-footer {
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+/* Left & Right Ticket Punch Semicircular Cutouts */
+.vk-pw-card-footer::before,
+.vk-pw-card-footer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--vk-sheet-bg, var(--vk-bg-sheet, #FFFFFF));
+  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.06));
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.vk-pw-card-footer::before {
+  left: -1px;
+  transform: translate(-50%, -50%);
+}
+
+.vk-pw-card-footer::after {
+  right: -1px;
+  transform: translate(50%, -50%);
+}
+
+:global(.dark) .vk-pw-card-footer::before,
+:global(.dark) .vk-pw-card-footer::after,
+:global(.ion-palette-dark) .vk-pw-card-footer::before,
+:global(.ion-palette-dark) .vk-pw-card-footer::after,
+:global(body.dark-theme) .vk-pw-card-footer::before,
+:global(body.dark-theme) .vk-pw-card-footer::after,
+:global([data-theme="dark"]) .vk-pw-card-footer::before,
+:global([data-theme="dark"]) .vk-pw-card-footer::after {
+  background: var(--vk-sheet-bg, var(--vk-bg-sheet, #151515));
+  border-color: rgba(255, 255, 255, 0.07);
 }
 
 .vk-pw-strength-tag {
@@ -172,11 +222,12 @@ onMounted(() => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
+  flex-shrink: 0;
   transition: background-color var(--vk-motion-base) ease;
 }
 
 .vk-strength-text {
-  font-size: 0.825rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   color: var(--text-primary);
   transition: color var(--vk-motion-base) ease;
@@ -196,8 +247,20 @@ onMounted(() => {
   cursor: pointer;
   outline: none;
   transition: transform var(--vk-motion-fast) var(--vk-ease-press),
-              background-color var(--vk-motion-base) ease;
+              background-color var(--vk-motion-base) ease,
+              color var(--vk-motion-base) ease;
   user-select: none;
+}
+
+@media (hover: hover) {
+  .vk-gen-copy-btn:hover {
+    background: #262626;
+  }
+}
+
+.vk-gen-copy-btn:active {
+  transform: scale(0.96);
+  background: #333333;
 }
 
 :global(.dark) .vk-gen-copy-btn,
@@ -208,13 +271,25 @@ onMounted(() => {
   color: #101010;
 }
 
-.vk-gen-copy-btn:active {
-  transform: scale(0.96);
+@media (hover: hover) {
+  :global(.dark) .vk-gen-copy-btn:hover,
+  :global(.ion-palette-dark) .vk-gen-copy-btn:hover,
+  :global(body.dark-theme) .vk-gen-copy-btn:hover,
+  :global([data-theme="dark"]) .vk-gen-copy-btn:hover {
+    background: #FFFFFF;
+  }
+}
+
+:global(.dark) .vk-gen-copy-btn:active,
+:global(.ion-palette-dark) .vk-gen-copy-btn:active,
+:global(body.dark-theme) .vk-gen-copy-btn:active,
+:global([data-theme="dark"]) .vk-gen-copy-btn:active {
+  background: #E0E0E0;
 }
 
 .vk-gen-copy-btn.is-copied {
-  background: var(--brand-red, #D3332F);
-  color: #FFFFFF;
+  background: var(--brand-red, #D3332F) !important;
+  color: #FFFFFF !important;
 }
 
 .vk-section-header-block {

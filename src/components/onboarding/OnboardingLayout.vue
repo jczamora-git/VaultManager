@@ -272,8 +272,8 @@ defineEmits<{
   position: relative;
   min-height: 0;
   overflow-y: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
+  border-top: none;
+  box-shadow: none;
 }
 
 .vk-sheet-container {

@@ -96,17 +96,38 @@ async function handleCopy() {
   font-weight: 700;
 }
 
+.dark .vk-copy-btn,
+.ion-palette-dark .vk-copy-btn,
+body.dark-theme .vk-copy-btn {
+  background: #202020;
+  color: #F5F5F5;
+}
+
+@media (hover: hover) {
+  .vk-copy-btn:hover {
+    background: #E5E4E0;
+  }
+  .dark .vk-copy-btn:hover,
+  .ion-palette-dark .vk-copy-btn:hover,
+  body.dark-theme .vk-copy-btn:hover {
+    background: #292929;
+    color: #FFFFFF;
+  }
+}
+
 .vk-copy-btn:active {
   transform: scale(0.97);
+}
+
+.dark .vk-copy-btn:active,
+.ion-palette-dark .vk-copy-btn:active,
+body.dark-theme .vk-copy-btn:active {
+  background: #303030;
 }
 
 .vk-copy-btn-sm {
   padding: 6px 10px;
   font-size: 0.75rem;
-}
-
-.vk-copy-btn:hover {
-  background: #E5E4E0;
 }
 
 .vk-copy-btn.is-copied {

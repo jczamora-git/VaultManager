@@ -69,15 +69,40 @@ defineEmits<{
   color: var(--text-secondary);
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.18s ease;
+  transition: background-color 140ms ease, color 140ms ease, transform 140ms ease;
   user-select: none;
   flex-shrink: 0;
   letter-spacing: -0.01em;
 }
 
-.vk-category-pill:hover {
-  background: #E5E4E0;
-  color: var(--text-primary);
+.dark .vk-category-pill,
+.ion-palette-dark .vk-category-pill,
+body.dark-theme .vk-category-pill {
+  background: #202020;
+  color: #A0A0A0;
+}
+
+@media (hover: hover) {
+  .vk-category-pill:hover {
+    background: #E5E4E0;
+    color: var(--text-primary);
+  }
+  .dark .vk-category-pill:hover,
+  .ion-palette-dark .vk-category-pill:hover,
+  body.dark-theme .vk-category-pill:hover {
+    background: #292929;
+    color: #F5F5F5;
+  }
+}
+
+.vk-category-pill:active {
+  transform: scale(0.96);
+}
+
+.dark .vk-category-pill:active,
+.ion-palette-dark .vk-category-pill:active,
+body.dark-theme .vk-category-pill:active {
+  background: #303030;
 }
 
 .vk-category-pill.is-active {
@@ -85,7 +110,9 @@ defineEmits<{
   color: #FFFFFF;
 }
 
-.dark .vk-category-pill.is-active {
+.dark .vk-category-pill.is-active,
+.ion-palette-dark .vk-category-pill.is-active,
+body.dark-theme .vk-category-pill.is-active {
   background: #FFFFFF;
   color: var(--black);
 }

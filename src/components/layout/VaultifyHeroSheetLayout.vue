@@ -212,8 +212,8 @@ defineEmits<{
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  border-top: 1px solid var(--border-light, rgba(255, 255, 255, 0.4));
-  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
+  border-top: none;
+  box-shadow: none;
   transition: background-color var(--vk-motion-base) ease;
 }
 
@@ -287,7 +287,7 @@ defineEmits<{
 :global([data-theme="dark"]) .vk-sheet {
   background: var(--vk-bg-sheet, var(--vk-sheet-bg, #151515));
   color: var(--text-primary, #F5F5F5);
-  border-top-color: var(--vk-border, rgba(255, 255, 255, 0.08));
-  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.04), 0 -12px 32px rgba(0, 0, 0, 0.4);
+  border-top: none;
+  box-shadow: none;
 }
 </style>

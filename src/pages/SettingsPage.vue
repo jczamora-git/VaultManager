@@ -1140,8 +1140,25 @@ body.dark-theme .vk-settings-profile-card {
   border-color: rgba(255, 255, 255, 0.06);
 }
 
+@media (hover: hover) {
+  .vk-settings-profile-card:hover {
+    background: var(--vk-bg-surface-hover, #ECEAE5);
+  }
+  .dark .vk-settings-profile-card:hover,
+  .ion-palette-dark .vk-settings-profile-card:hover,
+  body.dark-theme .vk-settings-profile-card:hover {
+    background: #222222;
+  }
+}
+
 .vk-settings-profile-card:active {
   transform: scale(0.985);
+}
+
+.dark .vk-settings-profile-card:active,
+.ion-palette-dark .vk-settings-profile-card:active,
+body.dark-theme .vk-settings-profile-card:active {
+  background: #262626;
 }
 
 .vk-settings-profile-avatar {

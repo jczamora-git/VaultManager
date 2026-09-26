@@ -148,10 +148,21 @@ function selectOption(val: any) {
 
 .vk-select-pill:active {
   transform: scale(0.97);
+  background: #E0DED8;
 }
 
-.vk-select-pill:hover {
-  background: #E5E4E0;
+@media (hover: hover) {
+  .vk-select-pill:hover {
+    background: #E8E6E2;
+  }
+
+  :global(.dark) .vk-select-pill:hover,
+  :global(.ion-palette-dark) .vk-select-pill:hover,
+  :global(body.dark-theme) .vk-select-pill:hover,
+  :global([data-theme="dark"]) .vk-select-pill:hover {
+    background: #282828 !important;
+    color: #FFFFFF !important;
+  }
 }
 
 :global(.dark) .vk-select-pill,
@@ -160,14 +171,20 @@ function selectOption(val: any) {
 :global([data-theme="dark"]) .vk-select-pill {
   background: #202020;
   color: #F5F5F5;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-:global(.dark) .vk-select-pill:hover,
-:global(.ion-palette-dark) .vk-select-pill:hover,
-:global(body.dark-theme) .vk-select-pill:hover,
-:global([data-theme="dark"]) .vk-select-pill:hover {
-  background: #282828;
+:global(.dark) .vk-select-pill:active,
+:global(.ion-palette-dark) .vk-select-pill:active,
+:global(body.dark-theme) .vk-select-pill:active,
+:global([data-theme="dark"]) .vk-select-pill:active {
+  background: #303030 !important;
+  color: #FFFFFF !important;
+}
+
+.vk-select-pill:focus-visible {
+  outline: 2px solid rgba(208, 39, 36, 0.65);
+  outline-offset: 2px;
 }
 
 .vk-select-pill-text {
