@@ -275,38 +275,7 @@ defineEmits<{
   }
 }
 
-/* Dark Mode Architecture */
-:global(.dark) .vk-hero-sheet-page,
-:global(.ion-palette-dark) .vk-hero-sheet-page,
-:global(body.dark-theme) .vk-hero-sheet-page,
-:global([data-theme="dark"]) .vk-hero-sheet-page {
-  background: var(--canvas, #0D0D0D);
-  color-scheme: dark;
-}
-
-:global(.dark) .vk-hero-title,
-:global(.ion-palette-dark) .vk-hero-title,
-:global(body.dark-theme) .vk-hero-title,
-:global([data-theme="dark"]) .vk-hero-title {
-  color: var(--text-primary, #F5F5F5);
-}
-
-:global(.dark) .vk-hero-subtitle,
-:global(.ion-palette-dark) .vk-hero-subtitle,
-:global(body.dark-theme) .vk-hero-subtitle,
-:global([data-theme="dark"]) .vk-hero-subtitle {
-  color: var(--text-secondary, #A0A0A0);
-}
-
-:global(.dark) .vk-hero-action-btn,
-:global(.ion-palette-dark) .vk-hero-action-btn,
-:global(body.dark-theme) .vk-hero-action-btn,
-:global([data-theme="dark"]) .vk-hero-action-btn {
-  background: var(--vk-bg-surface-soft, #202020);
-  border: 1px solid var(--vk-border, rgba(255, 255, 255, 0.08));
-  color: var(--text-primary, #F5F5F5);
-}
-
+/* Dark Mode Architecture - ONLY FOREGROUND SHEET CHANGES */
 :global(.dark) .vk-page-sheet,
 :global(.dark) .vk-sheet,
 :global(.ion-palette-dark) .vk-page-sheet,

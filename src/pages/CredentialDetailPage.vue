@@ -318,14 +318,6 @@ ion-content {
   background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
 }
 
-:global(.dark) ion-content,
-:global(.ion-palette-dark) ion-content,
-:global(body.dark-theme) ion-content,
-:global([data-theme="dark"]) ion-content {
-  --background: #0D0D0D;
-  background: #0D0D0D;
-}
-
 .vk-detail-hero {
   text-align: center;
   padding-bottom: 28px;
@@ -350,15 +342,6 @@ ion-content {
   justify-content: center;
   cursor: pointer;
   transition: all 0.15s ease;
-}
-
-:global(.dark) .vk-hero-circle-btn,
-:global(.ion-palette-dark) .vk-hero-circle-btn,
-:global(body.dark-theme) .vk-hero-circle-btn,
-:global([data-theme="dark"]) .vk-hero-circle-btn {
-  background: #202020;
-  color: #F5F5F5;
-  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .vk-hero-circle-btn:hover {

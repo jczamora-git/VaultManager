@@ -6,12 +6,17 @@
   --vk-font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
 
   /* Brand Palette */
-  --brand-red: #B82825;
-  --brand-red-dark: #8F1F1D;
+  --brand-red: #D02724;
+  --brand-red-dark: #B8201E;
   --brand-red-deep: #721816;
-  --brand-red-subtle: rgba(184, 40, 37, 0.08);
-  --brand-red-glow: rgba(184, 40, 37, 0.2);
+  --brand-red-subtle: rgba(208, 39, 36, 0.08);
+  --brand-red-glow: rgba(208, 39, 36, 0.2);
+  --vk-brand-red: #D02724;
   --vk-brand-gradient: linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%);
+  --vk-hero-bg: var(--vk-brand-gradient);
+  --vk-bg-hero: var(--vk-brand-gradient);
+  --vk-hero-title-color: #FFFFFF;
+  --vk-hero-subtitle-color: rgba(255, 255, 255, 0.78);
 
   --black: #080808;
   --black-soft: #111111;
@@ -149,16 +154,18 @@ body.dark-theme,
   --text-secondary: #A0A0A0;
   --text-muted: #777777;
 
-  --brand-red: #D3332F;
-  --brand-red-dark: #A91F1D;
+  --brand-red: #D02724;
+  --brand-red-dark: #B8201E;
   --brand-red-deep: #721816;
-  --brand-red-subtle: rgba(211, 51, 47, 0.15);
-  --brand-red-glow: rgba(211, 51, 47, 0.3);
-  --vk-brand-gradient: linear-gradient(180deg, #181818 0%, #121212 45%, #0D0D0D 100%);
+  --brand-red-subtle: rgba(208, 39, 36, 0.15);
+  --brand-red-glow: rgba(208, 39, 36, 0.3);
+  --vk-brand-red: #D02724;
+  --vk-brand-gradient: linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%);
 
-  --vk-bg-hero: #0D0D0D;
+  --vk-bg-hero: var(--vk-brand-gradient);
+  --vk-hero-bg: var(--vk-brand-gradient);
   --vk-bg-hero-text: #FFFFFF;
-  --vk-bg-hero-subtitle: #A0A0A0;
+  --vk-bg-hero-subtitle: rgba(255, 255, 255, 0.78);
 
   --vk-border: rgba(255, 255, 255, 0.07);
   --vk-divider: rgba(255, 255, 255, 0.06);

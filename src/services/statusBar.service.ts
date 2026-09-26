@@ -75,22 +75,10 @@ export const StatusBarService = {
 
   /**
    * Automatically updates status bar and dynamic web/PWA theme-color based on current route and theme mode.
+   * Vaultify design standard: Top status bar and hero header are ALWAYS Vaultify Brand Red (#D02724)
+   * with light (white) status icons across all themes (Light, Dark, System).
    */
-  async updateForRoute(path: string, isDark: boolean): Promise<void> {
-    const cleanPath = (path || '').toLowerCase();
-
-    // 1. In Dark Mode, Home and all other dark-mode screens use dark surface (#0D0D0D)
-    if (isDark) {
-      // Onboarding & Setup always force light branded red theme
-      if (cleanPath.startsWith('/onboarding') || cleanPath.startsWith('/setup')) {
-        await this.setBrand();
-        return;
-      }
-      await this.setDark();
-      return;
-    }
-
-    // 2. In Light Mode: All screens with red hero header (Home, Onboarding, Setup, Unlock, Generator, Cipher, Settings, Form) use brand red (#D02724)
+  async updateForRoute(_path?: string, _isDark?: boolean): Promise<void> {
     await this.setBrand();
   },
 };

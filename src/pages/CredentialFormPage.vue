@@ -346,13 +346,6 @@ function handleCancel() {
   flex-shrink: 0;
 }
 
-:global(.dark) .vk-form-hero-header,
-:global(.ion-palette-dark) .vk-form-hero-header,
-:global(body.dark-theme) .vk-form-hero-header,
-:global([data-theme="dark"]) .vk-form-hero-header {
-  background: #0D0D0D;
-}
-
 .vk-form-top-nav {
   margin-bottom: 12px;
 }
@@ -368,15 +361,6 @@ function handleCancel() {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-}
-
-:global(.dark) .vk-hero-circle-btn,
-:global(.ion-palette-dark) .vk-hero-circle-btn,
-:global(body.dark-theme) .vk-hero-circle-btn,
-:global([data-theme="dark"]) .vk-hero-circle-btn {
-  background: #202020;
-  color: #F5F5F5;
-  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .vk-form-hero-body {
