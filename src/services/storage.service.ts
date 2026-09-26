@@ -12,6 +12,7 @@ const STORAGE_KEYS = {
   PIN_LOCKOUT_STATE: 'vaultkey_pin_lockout_v1',
   LOCAL_PROFILE: 'vaultkey_local_profile_v1',
   ONBOARDING_COMPLETE: 'vaultkey_onboarding_complete_v1',
+  LAST_WEBSITE_ICON_SYNC_AT: 'vaultkey_last_website_icon_sync_at_v1',
 };
 
 /**
@@ -253,6 +254,35 @@ export class StorageService {
   }
 
   /**
+   * Get last website icon daily sync timestamp
+   */
+  static async getLastWebsiteIconSyncAt(): Promise<number> {
+    const { value } = await Preferences.get({ key: STORAGE_KEYS.LAST_WEBSITE_ICON_SYNC_AT });
+    if (value) {
+      const parsed = parseInt(value, 10);
+      if (!isNaN(parsed)) return parsed;
+    }
+    const local = localStorage.getItem(STORAGE_KEYS.LAST_WEBSITE_ICON_SYNC_AT);
+    if (local) {
+      const parsed = parseInt(local, 10);
+      if (!isNaN(parsed)) return parsed;
+    }
+    return 0;
+  }
+
+  /**
+   * Set last website icon daily sync timestamp
+   */
+  static async setLastWebsiteIconSyncAt(timestamp: number): Promise<void> {
+    const val = String(timestamp);
+    await Preferences.set({
+      key: STORAGE_KEYS.LAST_WEBSITE_ICON_SYNC_AT,
+      value: val,
+    });
+    localStorage.setItem(STORAGE_KEYS.LAST_WEBSITE_ICON_SYNC_AT, val);
+  }
+
+  /**
    * Reset / Wipe all vault data
    */
   static async clearAllVaultData(): Promise<void> {
@@ -263,6 +293,7 @@ export class StorageService {
     await Preferences.remove({ key: STORAGE_KEYS.PIN_LOCKOUT_STATE });
     await Preferences.remove({ key: STORAGE_KEYS.LOCAL_PROFILE });
     await Preferences.remove({ key: STORAGE_KEYS.ONBOARDING_COMPLETE });
+    await Preferences.remove({ key: STORAGE_KEYS.LAST_WEBSITE_ICON_SYNC_AT });
 
     localStorage.removeItem(STORAGE_KEYS.VAULT_ENVELOPE);
     localStorage.removeItem(STORAGE_KEYS.VAULT_EXISTS_FLAG);
@@ -271,5 +302,6 @@ export class StorageService {
     localStorage.removeItem(STORAGE_KEYS.PIN_LOCKOUT_STATE);
     localStorage.removeItem(STORAGE_KEYS.LOCAL_PROFILE);
     localStorage.removeItem(STORAGE_KEYS.ONBOARDING_COMPLETE);
+    localStorage.removeItem(STORAGE_KEYS.LAST_WEBSITE_ICON_SYNC_AT);
   }
 }

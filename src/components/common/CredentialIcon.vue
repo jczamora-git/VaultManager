@@ -7,26 +7,30 @@
       minWidth: `${size}px`,
       minHeight: `${size}px`,
       borderRadius: `${radius || Math.round(size * 0.3)}px`,
-      ...(hasImageError || !faviconUrl ? fallbackStyle : {}),
+      ...(hasImageError || !cachedIcon ? fallbackStyle : {}),
     }"
   >
-    <img
-      v-if="faviconUrl && !hasImageError"
-      :src="faviconUrl"
-      :alt="title"
-      class="vk-icon-img"
-      @error="onImageError"
-      loading="lazy"
-    />
-    <span v-else class="vk-icon-letter" :style="{ fontSize: `${Math.round(size * 0.44)}px` }">
-      {{ letter }}
-    </span>
+    <transition name="vk-icon-fade" mode="out-in">
+      <img
+        v-if="cachedIcon && !hasImageError"
+        :key="cachedIcon"
+        :src="cachedIcon"
+        :alt="title"
+        class="vk-icon-img"
+        @error="onImageError"
+        loading="lazy"
+      />
+      <span v-else key="fallback" class="vk-icon-letter" :style="{ fontSize: `${Math.round(size * 0.44)}px` }">
+        {{ letter }}
+      </span>
+    </transition>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { FaviconService } from '@/services/favicon.service';
+import { WebsiteIconCacheService } from '@/services/websiteIconCache.service';
 
 const props = withDefaults(
   defineProps<{
@@ -47,12 +51,13 @@ const props = withDefaults(
 const hasImageError = ref(false);
 
 const cleanDomain = computed(() => {
-  return props.domain || FaviconService.extractDomain(props.website);
+  return props.domain || WebsiteIconCacheService.normalizeDomain(props.website);
 });
 
-const faviconUrl = computed(() => {
-  if (!cleanDomain.value) return '';
-  return FaviconService.getFaviconUrl(cleanDomain.value);
+// Cache First: Read strictly from local reactive cache (dataUrl). Never remote URL directly.
+const cachedIcon = computed(() => {
+  if (!cleanDomain.value) return null;
+  return WebsiteIconCacheService.getCachedIcon(cleanDomain.value);
 });
 
 const letter = computed(() => {
@@ -66,9 +71,6 @@ const fallbackStyle = computed(() => {
 
 function onImageError() {
   hasImageError.value = true;
-  if (cleanDomain.value) {
-    FaviconService.markDomainFailed(cleanDomain.value);
-  }
 }
 
 watch(
@@ -101,5 +103,16 @@ watch(
   font-weight: 800;
   color: #ffffff;
   font-family: var(--vk-font-sans);
+}
+
+/* Subtle crossfade (140ms) when icon updates */
+.vk-icon-fade-enter-active,
+.vk-icon-fade-leave-active {
+  transition: opacity 140ms ease;
+}
+
+.vk-icon-fade-enter-from,
+.vk-icon-fade-leave-to {
+  opacity: 0;
 }
 </style>

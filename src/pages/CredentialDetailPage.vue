@@ -6,7 +6,7 @@
         <div class="vk-container">
           <!-- Top Navigation Row -->
           <div class="vk-detail-top-nav">
-            <button type="button" class="vk-hero-circle-btn" @click="router.replace('/tabs/vault')" title="Back">
+            <button type="button" class="vk-hero-circle-btn" @click="handleBack" title="Back">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m15 18-6-6 6-6"/>
               </svg>
@@ -141,8 +141,8 @@
         </div>
       </div>
 
-      <!-- Not Found Fallback -->
-      <div v-else class="vk-sheet">
+      <!-- Genuine Not Found Fallback (Only shown when genuinely missing and not navigating away) -->
+      <div v-else-if="isNotFound && !isLeaving" class="vk-sheet">
         <div class="vk-container">
           <EmptyState
             title="Account not found"
@@ -153,55 +153,101 @@
         </div>
       </div>
 
-      <!-- Delete Confirmation Modal -->
-      <ion-modal :is-open="showDeleteConfirm" @didDismiss="showDeleteConfirm = false" class="vk-modal">
-        <div class="vk-modal-content">
-          <div class="vk-modal-icon-brand">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--brand-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
-            </svg>
-          </div>
-          <h3 class="vk-modal-title">Delete Login?</h3>
-          <p class="vk-modal-desc">
-            Are you sure you want to delete <strong>"{{ credential?.title }}"</strong>? This action cannot be undone.
-          </p>
-          <div class="vk-modal-actions">
-            <button type="button" class="vk-btn vk-btn-secondary" @click="showDeleteConfirm = false">
-              Cancel
-            </button>
-            <button type="button" class="vk-btn vk-btn-danger" @click="handleDelete">
-              Yes, Delete
-            </button>
-          </div>
-        </div>
-      </ion-modal>
+      <!-- Delete Confirmation Modal (Shared Swipe-to-Delete Modal) -->
+      <DeleteCredentialModal
+        :is-open="showDeleteConfirm"
+        :credential="credential"
+        @close="showDeleteConfirm = false"
+        @confirm="handleDelete"
+      />
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { IonPage, IonContent, IonModal } from '@ionic/vue';
+import { ref, computed, shallowRef, watch, onMounted, onUnmounted } from 'vue';
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router';
+import { IonPage, IonContent, IonModal, onIonViewWillEnter, onIonViewWillLeave } from '@ionic/vue';
+import { Credential } from '@/models/credential.model';
 import { useVaultStore } from '@/stores/vault.store';
 import { useToast } from '@/composables/useToast';
 import CredentialIcon from '@/components/common/CredentialIcon.vue';
 import CopyButton from '@/components/common/CopyButton.vue';
 import PasswordStrengthMeter from '@/components/common/PasswordStrengthMeter.vue';
 import EmptyState from '@/components/common/EmptyState.vue';
+import DeleteCredentialModal from '@/components/vault/DeleteCredentialModal.vue';
 
 const route = useRoute();
 const router = useRouter();
 const vaultStore = useVaultStore();
 const { showToast } = useToast();
 
-const credentialId = computed(() => route.params.id as string);
-const credential = computed(() => vaultStore.getCredentialById(credentialId.value));
+const credential = shallowRef<Credential | null>(null);
+const isNotFound = ref(false);
+const isLeaving = ref(false);
 
 const isPasswordRevealed = ref(false);
 const autoHideCountdown = ref(30);
 let countdownInterval: number | null = null;
 const showDeleteConfirm = ref(false);
+
+function resolveCredential() {
+  if (isLeaving.value) return;
+  const id = (route.params.id as string) || '';
+  if (!id) {
+    if (!credential.value) {
+      isNotFound.value = true;
+    }
+    return;
+  }
+  const found = vaultStore.getCredentialById(id);
+  if (found) {
+    credential.value = found;
+    isNotFound.value = false;
+    vaultStore.recordView(found.id);
+  } else {
+    if (!credential.value) {
+      isNotFound.value = true;
+    }
+  }
+}
+
+watch(
+  () => route.params.id,
+  (newId, oldId) => {
+    if (newId && newId !== oldId && !isLeaving.value) {
+      credential.value = null;
+      isNotFound.value = false;
+      resolveCredential();
+    }
+  }
+);
+
+onMounted(() => {
+  resolveCredential();
+});
+
+onIonViewWillEnter(() => {
+  isLeaving.value = false;
+  resolveCredential();
+});
+
+onIonViewWillLeave(() => {
+  isLeaving.value = true;
+});
+
+onBeforeRouteLeave(() => {
+  isLeaving.value = true;
+});
+
+function handleBack() {
+  isLeaving.value = true;
+  if (window.history.length > 1) {
+    router.back();
+  } else {
+    router.replace('/tabs/vault');
+  }
+}
 
 const formattedWebsiteUrl = computed(() => {
   if (!credential.value?.website) return '';
@@ -240,6 +286,9 @@ function stopAutoHideTimer() {
 async function handleToggleFavorite() {
   if (!credential.value) return;
   const isFav = await vaultStore.toggleFavorite(credential.value.id);
+  if (credential.value) {
+    credential.value = { ...credential.value, favorite: isFav };
+  }
   showToast(isFav ? 'Added to favorites' : 'Removed from favorites', 'primary', 1200);
 }
 
@@ -251,17 +300,12 @@ function goToEdit() {
 async function handleDelete() {
   if (!credential.value) return;
   const title = credential.value.title;
+  isLeaving.value = true;
   await vaultStore.deleteCredential(credential.value.id);
   showDeleteConfirm.value = false;
   showToast(`"${title}" deleted`, 'success');
   router.replace('/tabs/vault');
 }
-
-onMounted(() => {
-  if (credential.value) {
-    vaultStore.recordView(credential.value.id);
-  }
-});
 
 onUnmounted(() => {
   stopAutoHideTimer();
@@ -272,6 +316,14 @@ onUnmounted(() => {
 ion-content {
   --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
   background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+}
+
+:global(.dark) ion-content,
+:global(.ion-palette-dark) ion-content,
+:global(body.dark-theme) ion-content,
+:global([data-theme="dark"]) ion-content {
+  --background: #0D0D0D;
+  background: #0D0D0D;
 }
 
 .vk-detail-hero {
@@ -300,10 +352,13 @@ ion-content {
   transition: all 0.15s ease;
 }
 
-.dark .vk-hero-circle-btn {
-  background: var(--vk-bg-surface-soft);
-  color: var(--text-primary);
-  border: 1px solid var(--vk-border);
+:global(.dark) .vk-hero-circle-btn,
+:global(.ion-palette-dark) .vk-hero-circle-btn,
+:global(body.dark-theme) .vk-hero-circle-btn,
+:global([data-theme="dark"]) .vk-hero-circle-btn {
+  background: #202020;
+  color: #F5F5F5;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .vk-hero-circle-btn:hover {
@@ -425,40 +480,6 @@ ion-content {
   flex-direction: column;
   gap: 12px;
   margin-bottom: 36px;
-}
-
-.vk-modal-icon-brand {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--brand-red-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 16px auto;
-}
-
-.vk-modal-title {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin: 0 0 6px 0;
-}
-
-.vk-modal-desc {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin: 0 0 24px 0;
-}
-
-.vk-modal-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.vk-modal-actions button {
-  flex: 1;
 }
 
 .font-mono {

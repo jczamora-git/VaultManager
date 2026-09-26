@@ -4,12 +4,28 @@
   box-sizing: border-box;
 }
 
-body {
+html,
+body,
+ion-app,
+ion-page,
+ion-content,
+ion-router-outlet {
   font-family: var(--vk-font-sans);
   background-color: var(--canvas);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+ion-content {
+  --background: var(--canvas);
+  --color: var(--text-primary);
+}
+
+ion-toolbar {
+  --background: var(--canvas);
+  --color: var(--text-primary);
+  --border-width: 0;
 }
 
 /* Max Width Responsive Shell for Desktop / Mobile */
@@ -56,10 +72,12 @@ body {
 }
 
 /* Main Content Sheet */
-.vk-sheet {
-  background: var(--vk-bg-sheet);
+.vk-sheet,
+.vk-page-sheet {
+  background: var(--vk-bg-sheet, var(--vk-sheet-bg, #FFFFFF));
+  color: var(--text-primary);
   border-radius: 36px 36px 0 0;
-  padding: 24px 0 var(--vk-content-bottom-padding) 0;
+  padding: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
   min-height: calc(100dvh - 160px);
@@ -69,8 +87,22 @@ body {
   transition: background-color 0.2s ease;
 }
 
-.dark .vk-sheet {
-  background: #151515;
+.vk-sheet-inner {
+  background: transparent;
+  padding-top: var(--vk-sheet-padding-top, 14px);
+  padding-bottom: var(--vk-content-bottom-padding);
+}
+
+.dark .vk-sheet,
+.dark .vk-page-sheet,
+.ion-palette-dark .vk-sheet,
+.ion-palette-dark .vk-page-sheet,
+body.dark-theme .vk-sheet,
+body.dark-theme .vk-page-sheet,
+[data-theme="dark"] .vk-sheet,
+[data-theme="dark"] .vk-page-sheet {
+  background: var(--vk-bg-sheet, var(--vk-sheet-bg, #151515));
+  color: var(--text-primary);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.04), 0 -12px 32px rgba(0, 0, 0, 0.4);
 }
@@ -383,6 +415,25 @@ ion-modal.vk-bottom-sheet {
   font-weight: 800;
   color: var(--text-primary);
   margin: 0;
+}
+
+/* Modal and Content Dark Styles */
+.dark ion-modal,
+.ion-palette-dark ion-modal {
+  --background: var(--vk-bg-sheet);
+  --ion-background-color: var(--vk-bg-sheet);
+}
+
+.dark .vk-modal-content,
+.ion-palette-dark .vk-modal-content {
+  background: var(--vk-bg-sheet, #151515);
+  color: var(--text-primary);
+}
+
+.dark .vk-modal-page,
+.ion-palette-dark .vk-modal-page {
+  background: var(--canvas, #0D0D0D);
+  color: var(--text-primary);
 }
 
 /* ========================================= */

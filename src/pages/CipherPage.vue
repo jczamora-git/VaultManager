@@ -246,16 +246,19 @@ ion-content {
 
 .vk-mode-segment-pill {
   display: flex;
-  background: #F1EFEC;
+  background: var(--vk-bg-surface-soft, #F1EFEC);
   border-radius: var(--radius-pill, 999px);
   padding: 4px;
   margin-bottom: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.04));
 }
 
-.dark .vk-mode-segment-pill {
-  background: #1E1E1E;
-  border-color: rgba(255, 255, 255, 0.06);
+:global(.dark) .vk-mode-segment-pill,
+:global(.ion-palette-dark) .vk-mode-segment-pill,
+:global(body.dark-theme) .vk-mode-segment-pill,
+:global([data-theme="dark"]) .vk-mode-segment-pill {
+  background: #202020;
+  border-color: rgba(255, 255, 255, 0.07);
 }
 
 .vk-segment-choice {
@@ -278,7 +281,10 @@ ion-content {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
-.dark .vk-segment-choice.is-active {
+:global(.dark) .vk-segment-choice.is-active,
+:global(.ion-palette-dark) .vk-segment-choice.is-active,
+:global(body.dark-theme) .vk-segment-choice.is-active,
+:global([data-theme="dark"]) .vk-segment-choice.is-active {
   background: #F4F4F2;
   color: #101010;
 }
@@ -301,8 +307,8 @@ ion-content {
   align-items: center;
   padding: 7px 16px;
   height: 36px;
-  background: #F1EFEC;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: var(--vk-bg-surface-soft, #F1EFEC);
+  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.04));
   border-radius: var(--radius-pill, 999px);
   font-size: 0.8125rem;
   font-weight: 700;
@@ -319,19 +325,33 @@ ion-content {
   color: var(--text-primary);
 }
 
-.dark .vk-algo-pill {
-  background: #1E1E1E;
-  border-color: rgba(255, 255, 255, 0.06);
+:global(.dark) .vk-algo-pill,
+:global(.ion-palette-dark) .vk-algo-pill,
+:global(body.dark-theme) .vk-algo-pill,
+:global([data-theme="dark"]) .vk-algo-pill {
+  background: #202020;
+  border-color: rgba(255, 255, 255, 0.07);
 }
 
-.dark .vk-algo-pill:hover {
-  background: #252525;
+:global(.dark) .vk-algo-pill:hover,
+:global(.ion-palette-dark) .vk-algo-pill:hover,
+:global(body.dark-theme) .vk-algo-pill:hover,
+:global([data-theme="dark"]) .vk-algo-pill:hover {
+  background: #282828;
 }
 
 .vk-algo-pill.is-active {
   background: var(--brand-red, #B82825);
   color: #FFFFFF;
   border-color: transparent;
+}
+
+:global(.dark) .vk-algo-pill.is-active,
+:global(.ion-palette-dark) .vk-algo-pill.is-active,
+:global(body.dark-theme) .vk-algo-pill.is-active,
+:global([data-theme="dark"]) .vk-algo-pill.is-active {
+  background: var(--brand-red, #D3332F);
+  color: #FFFFFF;
 }
 
 .vk-cipher-fields {
@@ -382,16 +402,19 @@ ion-content {
 }
 
 .vk-output-card {
-  background: #F1EFEC;
+  background: var(--vk-bg-surface-soft, #F1EFEC);
   border-radius: 20px;
   padding: 18px;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.04));
   animation: vkRiseIn var(--vk-motion-base) var(--vk-ease-enter) forwards;
 }
 
-.dark .vk-output-card {
-  background: #1E1E1E;
-  border-color: rgba(255, 255, 255, 0.06);
+:global(.dark) .vk-output-card,
+:global(.ion-palette-dark) .vk-output-card,
+:global(body.dark-theme) .vk-output-card,
+:global([data-theme="dark"]) .vk-output-card {
+  background: #202020;
+  border-color: rgba(255, 255, 255, 0.07);
 }
 
 .vk-output-box {

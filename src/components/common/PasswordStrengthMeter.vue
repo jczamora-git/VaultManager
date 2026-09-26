@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { PasswordGeneratorService } from '@/services/password-generator.service';
+import { PasswordStrengthService } from '@/services/passwordStrength.service';
 
 const props = withDefaults(
   defineProps<{
@@ -39,7 +39,7 @@ const props = withDefaults(
 );
 
 const analysis = computed(() => {
-  return PasswordGeneratorService.analyze(props.password || '');
+  return PasswordStrengthService.analyze(props.password || '');
 });
 </script>
 

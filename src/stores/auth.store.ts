@@ -4,6 +4,7 @@ import { StorageService } from '@/services/storage.service';
 import { CryptoService } from '@/services/crypto.service';
 import { PinService } from '@/services/pin.service';
 import { BiometricService } from '@/services/biometric.service';
+import { WebsiteIconCacheService } from '@/services/websiteIconCache.service';
 import { DecryptedVaultPayload, EncryptedVaultEnvelope } from '@/models/vault.model';
 
 export type UnlockMethod = 'pin' | 'biometric' | 'master';
@@ -180,6 +181,7 @@ export const useAuthStore = defineStore('auth', () => {
     await PinService.clearPinProtection();
     await BiometricService.disableBiometricUnlock();
     await StorageService.clearAllVaultData();
+    await WebsiteIconCacheService.clearAll();
     lock();
     hasVault.value = false;
   }

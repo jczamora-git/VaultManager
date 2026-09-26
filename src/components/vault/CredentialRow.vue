@@ -1,33 +1,33 @@
 <template>
-  <div class="vk-credential-row" @click="$emit('select', credential.id)">
-    <!-- 46px Logo Avatar -->
+  <div class="vk-credential-row-card" @click="$emit('select', credential.id)">
+    <!-- 44px Logo Avatar -->
     <CredentialIcon
       :title="credential.title"
       :domain="credential.domain"
       :website="credential.website"
-      :size="46"
-      :radius="14"
+      :size="44"
+      :radius="13"
     />
 
     <!-- Main Credential Info -->
-    <div class="vk-credential-info">
-      <div class="vk-credential-title-row">
-        <span class="vk-credential-title">{{ credential.title }}</span>
+    <div class="vk-card-info">
+      <div class="vk-card-title-row">
+        <span class="vk-card-title">{{ credential.title }}</span>
       </div>
 
-      <div class="vk-credential-secondary">
-        <span v-if="credential.email" class="vk-credential-subtext">{{ credential.email }}</span>
-        <span v-else-if="credential.username" class="vk-credential-subtext">{{ credential.username }}</span>
-        <span v-else-if="credential.domain" class="vk-credential-subtext">{{ credential.domain }}</span>
-        <span v-else class="vk-credential-subtext vk-text-muted">Password account</span>
+      <div class="vk-card-secondary-row">
+        <span v-if="credential.email" class="vk-card-subtext">{{ credential.email }}</span>
+        <span v-else-if="credential.username" class="vk-card-subtext">{{ credential.username }}</span>
+        <span v-else-if="credential.domain" class="vk-card-subtext">{{ credential.domain }}</span>
+        <span v-else class="vk-card-subtext vk-card-muted">Password account</span>
       </div>
     </div>
 
     <!-- Actions & Indicators -->
-    <div class="vk-credential-actions" @click.stop>
+    <div class="vk-card-trailing-actions" @click.stop>
       <button
         type="button"
-        class="vk-star-btn"
+        class="vk-card-star-btn"
         :class="{ 'is-favorite': credential.favorite }"
         :title="credential.favorite ? 'Remove from favorites' : 'Mark as favorite'"
         @click="$emit('toggle-favorite', credential.id)"
@@ -37,8 +37,8 @@
           width="18"
           height="18"
           viewBox="0 0 24 24"
-          :fill="credential.favorite ? 'var(--brand-red)' : 'none'"
-          :stroke="credential.favorite ? 'var(--brand-red)' : 'currentColor'"
+          :fill="credential.favorite ? 'var(--brand-red, #D3332F)' : 'none'"
+          :stroke="credential.favorite ? 'var(--brand-red, #D3332F)' : 'currentColor'"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -50,15 +50,15 @@
       <!-- Chevron -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
+        width="17"
+        height="17"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="2"
+        stroke-width="2.2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="vk-chevron-icon"
+        class="vk-card-chevron"
       >
         <path d="m9 18 6-6-6-6" />
       </svg>
@@ -81,32 +81,38 @@ defineEmits<{
 </script>
 
 <style scoped>
-.vk-credential-row {
+.vk-credential-row-card {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 4px;
-  min-height: 70px;
-  border-bottom: 1px solid var(--border-light);
+  gap: 12px;
+  padding: 12px 14px;
+  min-height: 68px;
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.025);
+  margin-bottom: 9px;
   cursor: pointer;
   transition: transform var(--vk-motion-fast) var(--vk-ease-press),
               background-color var(--vk-motion-base) ease;
   user-select: none;
 }
 
-.vk-credential-row:active {
+:global(.dark) .vk-credential-row-card,
+:global(.ion-palette-dark) .vk-credential-row-card,
+:global(body.dark-theme) .vk-credential-row-card,
+:global([data-theme="dark"]) .vk-credential-row-card {
+  background: #171717;
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+}
+
+.vk-credential-row-card:active {
   transform: scale(0.99);
 }
 
-.vk-credential-row:last-child {
-  border-bottom: none;
-}
-
-.vk-credential-row:hover {
-  background: rgba(0, 0, 0, 0.02);
-}
-
-.vk-credential-info {
+.vk-card-info {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -114,78 +120,93 @@ defineEmits<{
   gap: 2px;
 }
 
-.vk-credential-title-row {
+.vk-card-title-row {
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
-.vk-credential-title {
+.vk-card-title {
   font-weight: 700;
-  font-size: 1.02rem;
-  color: var(--text-primary);
+  font-size: 0.95rem; /* ~15px */
+  color: var(--text-primary, #151515);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   letter-spacing: -0.01em;
 }
 
-.vk-credential-secondary {
+:global(.dark) .vk-card-title,
+:global(.ion-palette-dark) .vk-card-title,
+:global(body.dark-theme) .vk-card-title,
+:global([data-theme="dark"]) .vk-card-title {
+  color: #F5F5F5;
+}
+
+.vk-card-secondary-row {
   display: flex;
   align-items: center;
 }
 
-.vk-credential-subtext {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+.vk-card-subtext {
+  font-size: 0.775rem; /* ~12px */
+  color: var(--text-secondary, #777777);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 400;
 }
 
-.vk-credential-actions {
+:global(.dark) .vk-card-subtext,
+:global(.ion-palette-dark) .vk-card-subtext,
+:global(body.dark-theme) .vk-card-subtext,
+:global([data-theme="dark"]) .vk-card-subtext {
+  color: #909090;
+}
+
+.vk-card-muted {
+  color: var(--text-muted, #9A9A9A);
+}
+
+.vk-card-trailing-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-shrink: 0;
 }
 
-.vk-star-btn {
+.vk-card-star-btn {
   background: transparent;
   border: none;
   padding: 6px;
   border-radius: 50%;
-  color: var(--text-muted);
+  color: var(--text-muted, #9A9A9A);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform var(--vk-motion-fast) var(--vk-ease-press),
-              color var(--vk-motion-fast) ease,
-              background-color var(--vk-motion-fast) ease;
+              color var(--vk-motion-fast) ease;
 }
 
-.vk-star-btn:hover {
-  background: var(--surface-light);
+.vk-card-star-btn:hover {
   color: var(--text-primary);
 }
 
-.vk-star-btn:active {
-  transform: scale(1.15);
+.vk-card-star-btn:active {
+  transform: scale(1.18);
 }
 
-.vk-star-btn.is-favorite {
-  color: var(--brand-red);
+.vk-card-star-btn.is-favorite {
+  color: var(--brand-red, #D3332F);
 }
 
-.vk-chevron-icon {
-  color: var(--text-muted);
-  transition: transform var(--vk-motion-fast) var(--vk-ease-standard), color var(--vk-motion-fast) ease;
+.vk-card-chevron {
+  color: var(--text-muted, #B0B0B0);
+  transition: transform var(--vk-motion-fast) ease, color var(--vk-motion-fast) ease;
 }
 
-.vk-credential-row:hover .vk-chevron-icon {
-  transform: translateX(3px);
+.vk-credential-row-card:hover .vk-card-chevron {
+  transform: translateX(2px);
   color: var(--text-primary);
 }
 </style>

@@ -1,4 +1,5 @@
-import { GeneratorOptions, PasswordAnalysis, PasswordStrengthLevel } from '@/models/generator.model';
+import { GeneratorOptions, PasswordAnalysis } from '@/models/generator.model';
+import { PasswordStrengthService } from '@/services/passwordStrength.service';
 
 const CHAR_SETS = {
   uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
@@ -92,84 +93,9 @@ export class PasswordGeneratorService {
   }
 
   /**
-   * Calculates entropy and analyzes password strength
+   * Calculates entropy and analyzes password strength using pattern-aware strength engine
    */
   static analyze(password: string): PasswordAnalysis {
-    if (!password) {
-      return {
-        score: 0,
-        level: 'very-weak',
-        label: '',
-        color: 'var(--border-light)',
-        entropy: 0,
-        suggestions: [],
-      };
-    }
-
-    let poolSize = 0;
-    if (/[a-z]/.test(password)) poolSize += 26;
-    if (/[A-Z]/.test(password)) poolSize += 26;
-    if (/[0-9]/.test(password)) poolSize += 10;
-    if (/[^a-zA-Z0-9]/.test(password)) poolSize += 32;
-
-    const entropy = poolSize > 0 ? Math.round(password.length * (Math.log(poolSize) / Math.log(2))) : 0;
-    const suggestions: string[] = [];
-
-    if (password.length < 8) {
-      suggestions.push('Make password at least 8 characters long');
-    }
-    if (!/[A-Z]/.test(password)) {
-      suggestions.push('Add uppercase letters (A-Z)');
-    }
-    if (!/[a-z]/.test(password)) {
-      suggestions.push('Add lowercase letters (a-z)');
-    }
-    if (!/[0-9]/.test(password)) {
-      suggestions.push('Add numbers (0-9)');
-    }
-    if (!/[^a-zA-Z0-9]/.test(password)) {
-      suggestions.push('Add symbols (!@#$...)');
-    }
-
-    let score = 0;
-    let level: PasswordStrengthLevel = 'very-weak';
-    let label = 'Very Weak';
-    let color = '#ef4444'; // Red
-
-    if (entropy < 28 || password.length < 6) {
-      score = 0;
-      level = 'very-weak';
-      label = 'Very Weak';
-      color = '#ef4444';
-    } else if (entropy < 45 || password.length < 9) {
-      score = 1;
-      level = 'weak';
-      label = 'Weak';
-      color = '#f97316'; // Orange
-    } else if (entropy < 65 || password.length < 13) {
-      score = 2;
-      level = 'fair';
-      label = 'Fair';
-      color = '#eab308'; // Yellow
-    } else if (entropy < 85 || password.length < 16) {
-      score = 3;
-      level = 'strong';
-      label = 'Strong';
-      color = '#10b981'; // Green
-    } else {
-      score = 4;
-      level = 'very-strong';
-      label = 'Very Strong';
-      color = '#059669'; // Emerald
-    }
-
-    return {
-      score,
-      level,
-      label,
-      color,
-      entropy,
-      suggestions,
-    };
+    return PasswordStrengthService.analyze(password);
   }
 }

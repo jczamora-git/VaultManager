@@ -36,6 +36,12 @@ defineProps<{
   background: transparent;
 }
 
+ion-toolbar {
+  --background: var(--canvas);
+  --color: var(--text-primary);
+  --border-width: 0;
+}
+
 .vk-header-title-wrap {
   display: flex;
   align-items: center;
@@ -46,13 +52,22 @@ defineProps<{
   font-weight: 800;
   font-size: 1.15rem;
   letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
 .vk-back-btn {
-  --color: inherit;
+  --color: var(--text-primary);
 }
 
 .is-contrast {
   color: #ffffff;
+}
+
+.is-contrast .vk-header-title {
+  color: #ffffff;
+}
+
+.is-contrast .vk-back-btn {
+  --color: #ffffff;
 }
 </style>

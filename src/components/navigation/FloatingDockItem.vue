@@ -27,7 +27,7 @@
           <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
         </svg>
 
-        <!-- Generator Icon: flash-outline -->
+        <!-- Generator Icon: cycle / regenerate icon -->
         <svg
           v-else-if="icon === 'generator'"
           xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,10 @@
           stroke-linecap="round"
           stroke-linejoin="round"
         >
-          <path d="m13 2-2 2.5h3L11 8h3l-5 8 2-5H8l2-4.5H7Z"/>
+          <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+          <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+          <path d="M16 21h5v-5"/>
         </svg>
 
         <!-- Cipher Icon: key-outline -->

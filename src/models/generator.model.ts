@@ -21,10 +21,29 @@ export const DEFAULT_GENERATOR_OPTIONS: GeneratorOptions = {
 export type PasswordStrengthLevel = 'very-weak' | 'weak' | 'fair' | 'strong' | 'very-strong';
 
 export interface PasswordAnalysis {
-  score: number; // 0 to 4
+  score: 0 | 1 | 2 | 3 | 4;
   level: PasswordStrengthLevel;
-  label: string;
+  label: 'Very Weak' | 'Weak' | 'Fair' | 'Strong' | 'Very Strong' | '';
   color: string;
-  entropy: number; // in bits
+  entropyBits: number;
+  estimatedGuesses: number;
+  crackTimes: {
+    onlineThrottled: string;
+    onlineUnthrottled: string;
+    offlineSlow: string;
+    offlineFast: string;
+  };
+  headlineCrackTime: string;
+  warnings: string[];
   suggestions: string[];
+  checks: {
+    length: boolean;
+    lengthCount: number;
+    uppercase: boolean;
+    lowercase: boolean;
+    numbers: boolean;
+    symbols: boolean;
+    noCommonPatterns: boolean;
+    noRepeatedSequences: boolean;
+  };
 }

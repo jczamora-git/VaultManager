@@ -10,9 +10,9 @@
       >
         <!-- Top Branding Row -->
         <template #top-brand>
-          <div class="vk-unlock-brand-pill">
-            <VaultifyLogo variant="alt" :size="20" class="vk-unlock-brand-logo" />
-            <span>Vaultify</span>
+          <div class="vk-unlock-brand">
+            <VaultifyLogo variant="alt" :size="32" class="vk-unlock-brand-logo" />
+            <span class="vk-unlock-brand-text">Vaultify</span>
           </div>
         </template>
 
@@ -279,26 +279,28 @@ function goToMasterPasswordFallback() {
   --background: var(--canvas);
 }
 
-/* Subtle Top Brand Header */
-.vk-unlock-brand-pill {
-  display: inline-flex;
+/* Clean Centered Top Brand Header on Red Background */
+.vk-unlock-brand {
+  display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  letter-spacing: -0.01em;
-  padding: 5px 14px;
-  background: rgba(255, 255, 255, 0.14);
-  border-radius: var(--radius-pill, 999px);
+  justify-content: center;
+  gap: clamp(7px, 2vw, 9px);
   user-select: none;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .vk-unlock-brand-logo {
-  width: 18px;
-  height: 18px;
+  width: clamp(28px, 7vw, 34px);
+  height: clamp(28px, 7vw, 34px);
   object-fit: contain;
+}
+
+.vk-unlock-brand-text {
+  font-size: clamp(1rem, 4.2vw, 1.125rem); /* 16px - 18px */
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.02em;
+  line-height: 1;
 }
 
 /* PIN Hero Slot (Positioned inside Red Hero below Subtitle) */

@@ -7,6 +7,7 @@ import { CryptoService } from '@/services/crypto.service';
 import { StorageService } from '@/services/storage.service';
 import { FaviconService } from '@/services/favicon.service';
 import { PasswordGeneratorService } from '@/services/password-generator.service';
+import { WebsiteIconCacheService } from '@/services/websiteIconCache.service';
 
 export const useVaultStore = defineStore('vault', () => {
   const credentials = ref<Credential[]>([]);
@@ -27,6 +28,10 @@ export const useVaultStore = defineStore('vault', () => {
     credentials.value = payload.credentials || [];
     createdAt.value = payload.metadata?.createdAt || new Date().toISOString();
     updatedAt.value = payload.metadata?.updatedAt || new Date().toISOString();
+
+    // Trigger daily background icon refresh sweep if 24h elapsed (non-blocking)
+    const allDomains = credentials.value.map((c) => c.domain || c.website).filter(Boolean) as string[];
+    WebsiteIconCacheService.refreshAllIfDue(allDomains);
   }
 
   /**
@@ -193,7 +198,7 @@ export const useVaultStore = defineStore('vault', () => {
    */
   async function addCredential(formData: CredentialFormData): Promise<Credential> {
     const now = new Date().toISOString();
-    const domain = formData.website ? FaviconService.extractDomain(formData.website) : undefined;
+    const domain = formData.website ? WebsiteIconCacheService.normalizeDomain(formData.website) : undefined;
     const favicon = domain ? FaviconService.getFaviconUrl(domain) : undefined;
 
     // Generate random UUID
@@ -218,6 +223,12 @@ export const useVaultStore = defineStore('vault', () => {
 
     credentials.value.unshift(newCredential);
     await persistVault();
+
+    // If new domain is not cached yet, fetch it once in background if online
+    if (domain) {
+      WebsiteIconCacheService.ensureIcon(domain);
+    }
+
     return newCredential;
   }
 
@@ -234,7 +245,7 @@ export const useVaultStore = defineStore('vault', () => {
     const now = new Date().toISOString();
 
     const website = formData.website !== undefined ? formData.website.trim() : existing.website;
-    const domain = website ? FaviconService.extractDomain(website) : undefined;
+    const domain = website ? WebsiteIconCacheService.normalizeDomain(website) : undefined;
     const favicon = domain ? FaviconService.getFaviconUrl(domain) : undefined;
 
     const updated: Credential = {
@@ -255,6 +266,12 @@ export const useVaultStore = defineStore('vault', () => {
 
     credentials.value[index] = updated;
     await persistVault();
+
+    // If domain changed/added and is uncached, fetch once in background if online
+    if (domain) {
+      WebsiteIconCacheService.ensureIcon(domain);
+    }
+
     return updated;
   }
 
@@ -266,6 +283,9 @@ export const useVaultStore = defineStore('vault', () => {
     credentials.value = credentials.value.filter((c) => c.id !== id);
     if (credentials.value.length !== initialLen) {
       await persistVault();
+      // Clean up orphaned icons
+      const remainingDomains = credentials.value.map((c) => c.domain || c.website).filter(Boolean) as string[];
+      WebsiteIconCacheService.cleanupOrphans(remainingDomains);
     }
   }
 

@@ -22,7 +22,7 @@
       </div>
 
       <!-- MAIN WHITE / DARK FORM SHEET -->
-      <div class="vk-sheet">
+      <div class="vk-sheet" :class="{ 'vk-edit-credential-sheet': isEditMode }">
         <div class="vk-container">
           <form @submit.prevent="handleSubmit" class="vk-clean-form">
             <!-- Account Section -->
@@ -291,6 +291,14 @@ ion-content {
   background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
 }
 
+:global(.dark) ion-content,
+:global(.ion-palette-dark) ion-content,
+:global(body.dark-theme) ion-content,
+:global([data-theme="dark"]) ion-content {
+  --background: #0D0D0D;
+  background: #0D0D0D;
+}
+
 .vk-form-top-nav {
   margin-bottom: 12px;
 }
@@ -308,10 +316,13 @@ ion-content {
   cursor: pointer;
 }
 
-.dark .vk-hero-circle-btn {
-  background: var(--vk-bg-surface-soft);
-  color: var(--text-primary);
-  border: 1px solid var(--vk-border);
+:global(.dark) .vk-hero-circle-btn,
+:global(.ion-palette-dark) .vk-hero-circle-btn,
+:global(body.dark-theme) .vk-hero-circle-btn,
+:global([data-theme="dark"]) .vk-hero-circle-btn {
+  background: #202020;
+  color: #F5F5F5;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .vk-form-group-section {
@@ -326,6 +337,13 @@ ion-content {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 14px;
+}
+
+:global(.dark) .vk-form-section-label,
+:global(.ion-palette-dark) .vk-form-section-label,
+:global(body.dark-theme) .vk-form-section-label,
+:global([data-theme="dark"]) .vk-form-section-label {
+  color: #8E8E8E;
 }
 
 .vk-label-row {
@@ -390,5 +408,10 @@ ion-content {
   gap: 10px;
   margin-top: 16px;
   margin-bottom: 40px;
+}
+
+/* Edit Credential specific top breathing room */
+.vk-edit-credential-sheet > .vk-container {
+  padding-top: 22px;
 }
 </style>

@@ -31,6 +31,13 @@ defineProps<{
   padding: 0 4px;
 }
 
+:global(.dark) .vk-settings-section-header,
+:global(.ion-palette-dark) .vk-settings-section-header,
+:global(body.dark-theme) .vk-settings-section-header,
+:global([data-theme="dark"]) .vk-settings-section-header {
+  color: #8E8E8E;
+}
+
 .vk-settings-section-body {
   display: flex;
   flex-direction: column;

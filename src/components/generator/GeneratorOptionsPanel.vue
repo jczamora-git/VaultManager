@@ -185,4 +185,11 @@ function updateOption<K extends keyof GeneratorOptions>(key: K, value: Generator
   border-radius: 6px;
   cursor: pointer;
 }
+
+:global(.dark) .vk-custom-range,
+:global(.ion-palette-dark) .vk-custom-range,
+:global(body.dark-theme) .vk-custom-range,
+:global([data-theme="dark"]) .vk-custom-range {
+  background: #383838;
+}
 </style>

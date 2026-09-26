@@ -77,6 +77,20 @@ function handleClick() {
   color: var(--text-secondary);
 }
 
+:global(.dark) .vk-settings-row-title,
+:global(.ion-palette-dark) .vk-settings-row-title,
+:global(body.dark-theme) .vk-settings-row-title,
+:global([data-theme="dark"]) .vk-settings-row-title {
+  color: #F0F0F0;
+}
+
+:global(.dark) .vk-settings-row-sub,
+:global(.ion-palette-dark) .vk-settings-row-sub,
+:global(body.dark-theme) .vk-settings-row-sub,
+:global([data-theme="dark"]) .vk-settings-row-sub {
+  color: #8E8E8E;
+}
+
 .vk-settings-row-right {
   display: flex;
   align-items: center;

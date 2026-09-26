@@ -61,8 +61,9 @@
           title="Let's get started."
           subtitle="Choose how you want to set up Vaultify."
           step="Setup"
-          hero-size="large"
-          content-position="center"
+          hero-size="choice"
+          content-position="natural"
+          class="vk-setup-choice-layout"
           @back="goToStep(1)"
         >
           <div class="vk-choice-cluster">
@@ -1113,7 +1114,12 @@ function getCategoryCount(credentials?: any[]): number {
   flex-direction: column;
   justify-content: space-between;
   min-height: calc(100dvh - 20px);
-  padding: calc(env(safe-area-inset-top, 0px) + 24px) 16px calc(env(safe-area-inset-bottom, 0px) + 24px) 16px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 24px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  padding-left: max(var(--vk-onboarding-padding-x, 26px), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--vk-onboarding-padding-x, 26px), env(safe-area-inset-right, 0px));
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .vk-brand-tag {
@@ -1137,7 +1143,7 @@ function getCategoryCount(credentials?: any[]): number {
 }
 
 .vk-onboarding-headline {
-  font-size: 3rem;
+  font-size: clamp(2.35rem, 7.8vw, 3rem);
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.04em;
@@ -1150,7 +1156,7 @@ function getCategoryCount(credentials?: any[]): number {
 }
 
 .vk-onboarding-body {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   opacity: 0.88;
   line-height: 1.45;
   max-width: 330px;
@@ -1179,18 +1185,17 @@ function getCategoryCount(credentials?: any[]): number {
 .vk-choice-cluster {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
-  max-width: 330px;
   margin: 0 auto;
-  padding-top: clamp(28px, 4.5dvh, 48px);
+  padding-top: 0;
 }
 
 .vk-choice-card {
   display: flex;
   align-items: center;
   gap: 14px;
-  min-height: 60px;
+  min-height: 64px;
   background: #F1EFEC;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 18px;
@@ -1247,7 +1252,7 @@ function getCategoryCount(credentials?: any[]): number {
   line-height: 1.45;
   color: #777777;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 28px;
   margin-bottom: 0;
   max-width: 290px;
   margin-inline: auto;
@@ -1331,7 +1336,12 @@ function getCategoryCount(credentials?: any[]): number {
   flex-direction: column;
   justify-content: space-between;
   min-height: calc(100dvh - 20px);
-  padding: calc(env(safe-area-inset-top, 0px) + 20px) 24px calc(env(safe-area-inset-bottom, 0px) + 18px) 24px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 20px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+  padding-left: max(var(--vk-onboarding-padding-x, 26px), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--vk-onboarding-padding-x, 26px), env(safe-area-inset-right, 0px));
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .vk-completion-top-spacer {

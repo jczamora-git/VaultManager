@@ -6,63 +6,41 @@
         subtitle="Generate something stronger."
         :has-dock="true"
       >
-        <!-- DOMINANT GENERATED PASSWORD DISPLAY CARD -->
-        <div class="vk-generated-pw-card">
-          <div class="vk-pw-main-text font-mono">
-            {{ generatedPassword }}
-          </div>
-
-          <!-- Strength & Copy Row -->
-          <div class="vk-pw-card-footer">
-            <div class="vk-pw-strength-tag">
-              <span class="vk-strength-dot" :style="{ backgroundColor: strengthColor }"></span>
-              <span class="vk-strength-text">{{ strengthLabel }}</span>
-            </div>
-
-            <button
-              type="button"
-              class="vk-gen-copy-btn"
-              :class="{ 'is-copied': isCopied }"
-              @click="handleCopy"
-              aria-label="Copy generated password"
-            >
-              <svg v-if="!isCopied" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-              </svg>
-              <svg v-else xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6 9 17l-5-5" />
-              </svg>
-              <span>{{ isCopied ? 'Copied' : 'Copy' }}</span>
-            </button>
-          </div>
+        <!-- SEGMENTED MODE SELECTOR (GENERATE | ANALYZE) -->
+        <div class="vk-mode-segment-pill" role="tablist">
+          <button
+            type="button"
+            role="tab"
+            :aria-selected="activeMode === 'generate'"
+            class="vk-segment-choice"
+            :class="{ 'is-active': activeMode === 'generate' }"
+            @click="setMode('generate')"
+          >
+            <span>Generate</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            :aria-selected="activeMode === 'analyze'"
+            class="vk-segment-choice"
+            :class="{ 'is-active': activeMode === 'analyze' }"
+            @click="setMode('analyze')"
+          >
+            <span>Analyze</span>
+          </button>
         </div>
 
-        <!-- Options Section -->
-        <div class="vk-section-header-block">
-          <span class="vk-section-kicker">CONFIGURATION</span>
+        <!-- GENERATE MODE -->
+        <div v-show="activeMode === 'generate'" class="vk-mode-panel">
+          <PasswordGenerator ref="generatorRef" />
         </div>
 
-        <GeneratorOptionsPanel
-          v-model:options="options"
-          @change="regenerate"
-        />
-
-        <!-- Action Buttons -->
-        <div class="vk-generator-actions">
-          <button type="button" class="vk-btn vk-btn-primary vk-btn-block" @click="regenerate">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-              <path d="M3 3v5h5"/>
-              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
-              <path d="M16 21h5v-5"/>
-            </svg>
-            <span>Generate Password</span>
-          </button>
-
-          <button type="button" class="vk-btn vk-btn-secondary vk-btn-block" @click="saveToVault">
-            Save to New Credential
-          </button>
+        <!-- ANALYZE MODE -->
+        <div v-show="activeMode === 'analyze'" class="vk-mode-panel">
+          <PasswordAnalyzer
+            ref="analyzerRef"
+            @switch-to-generate="handleSwitchToGenerate"
+          />
         </div>
       </VaultifyHeroSheetLayout>
     </ion-content>
@@ -70,55 +48,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { IonPage, IonContent } from '@ionic/vue';
-import { PasswordGeneratorService } from '@/services/password-generator.service';
-import { GeneratorOptions, DEFAULT_GENERATOR_OPTIONS } from '@/models/generator.model';
-import { useClipboard } from '@/composables/useClipboard';
+import { ref } from 'vue';
+import { IonPage, IonContent, onIonViewDidLeave } from '@ionic/vue';
 import VaultifyHeroSheetLayout from '@/components/layout/VaultifyHeroSheetLayout.vue';
-import GeneratorOptionsPanel from '@/components/generator/GeneratorOptionsPanel.vue';
+import PasswordGenerator from '@/components/generator/PasswordGenerator.vue';
+import PasswordAnalyzer from '@/components/generator/PasswordAnalyzer.vue';
 
-const router = useRouter();
-const { copy } = useClipboard();
+type GeneratorMode = 'generate' | 'analyze';
 
-const options = reactive<GeneratorOptions>({ ...DEFAULT_GENERATOR_OPTIONS });
-const generatedPassword = ref('');
-const isCopied = ref(false);
-let copyTimer: number | null = null;
+const activeMode = ref<GeneratorMode>('generate');
+const generatorRef = ref<InstanceType<typeof PasswordGenerator> | null>(null);
+const analyzerRef = ref<InstanceType<typeof PasswordAnalyzer> | null>(null);
 
-const analysis = computed(() => {
-  return PasswordGeneratorService.analyze(generatedPassword.value);
-});
-
-const strengthLabel = computed(() => analysis.value.label);
-const strengthColor = computed(() => analysis.value.color);
-
-function regenerate() {
-  generatedPassword.value = PasswordGeneratorService.generate(options);
-}
-
-async function handleCopy() {
-  if (!generatedPassword.value) return;
-  const success = await copy(generatedPassword.value, 'Password copied to clipboard');
-  if (success) {
-    isCopied.value = true;
-    if (copyTimer) clearTimeout(copyTimer);
-    copyTimer = window.setTimeout(() => {
-      isCopied.value = false;
-    }, 2000);
+function setMode(mode: GeneratorMode) {
+  if (activeMode.value === 'analyze' && mode === 'generate') {
+    // Clear volatile analysis data when switching away from analyze mode
+    analyzerRef.value?.resetVolatileState();
   }
+  activeMode.value = mode;
 }
 
-function saveToVault() {
-  router.push({
-    path: '/credential/new',
-    query: { prefillPassword: generatedPassword.value },
-  });
+function handleSwitchToGenerate() {
+  activeMode.value = 'generate';
+  generatorRef.value?.regenerate();
 }
 
-onMounted(() => {
-  regenerate();
+onIonViewDidLeave(() => {
+  // Clear volatile memory when leaving the generator page
+  analyzerRef.value?.resetVolatileState();
 });
 </script>
 
@@ -127,114 +84,65 @@ ion-content {
   --background: transparent;
 }
 
-.vk-generated-pw-card {
-  background: #F1EFEC;
-  border-radius: 20px;
-  padding: 22px 20px 16px 20px;
-  margin-bottom: 22px;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.dark .vk-generated-pw-card {
-  background: #1E1E1E;
-  border-color: rgba(255, 255, 255, 0.06);
-}
-
-.vk-pw-main-text {
-  font-size: 1.45rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  word-break: break-all;
-  letter-spacing: 0.04em;
-  line-height: 1.35;
-  margin-bottom: 18px;
-  text-align: center;
-  user-select: all;
-  transition: opacity var(--vk-motion-base) var(--vk-ease-standard),
-              transform var(--vk-motion-base) var(--vk-ease-enter);
-}
-
-.vk-pw-card-footer {
+.vk-mode-segment-pill {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid var(--vk-divider);
-  padding-top: 12px;
+  background: var(--vk-bg-surface-soft, #F1EFEC);
+  border-radius: var(--radius-pill, 999px);
+  padding: 4px;
+  margin-bottom: 20px;
+  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.04));
 }
 
-.vk-pw-strength-tag {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+:global(.dark) .vk-mode-segment-pill,
+:global(.ion-palette-dark) .vk-mode-segment-pill,
+:global(body.dark-theme) .vk-mode-segment-pill,
+:global([data-theme="dark"]) .vk-mode-segment-pill {
+  background: #202020;
+  border-color: rgba(255, 255, 255, 0.07);
 }
 
-.vk-strength-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  transition: background-color var(--vk-motion-base) ease;
-}
-
-.vk-strength-text {
+.vk-segment-choice {
+  flex: 1;
+  padding: 9px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
   font-size: 0.825rem;
   font-weight: 700;
-  color: var(--text-primary);
-  transition: color var(--vk-motion-base) ease;
+  border-radius: var(--radius-pill, 999px);
+  cursor: pointer;
+  transition: all 0.16s ease;
+  outline: none;
 }
 
-.vk-gen-copy-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.vk-segment-choice.is-active {
   background: #0A0A0A;
   color: #FFFFFF;
-  border: none;
-  padding: 7px 15px;
-  border-radius: var(--radius-pill, 999px);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  cursor: pointer;
-  outline: none;
-  transition: transform var(--vk-motion-fast) var(--vk-ease-press),
-              background-color var(--vk-motion-base) ease;
-  user-select: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
-.dark .vk-gen-copy-btn {
+:global(.dark) .vk-segment-choice.is-active,
+:global(.ion-palette-dark) .vk-segment-choice.is-active,
+:global(body.dark-theme) .vk-segment-choice.is-active,
+:global([data-theme="dark"]) .vk-segment-choice.is-active {
   background: #F4F4F2;
   color: #101010;
 }
 
-.vk-gen-copy-btn:active {
-  transform: scale(0.96);
-}
-
-.vk-gen-copy-btn.is-copied {
-  background: var(--brand-red, #B82825);
-  color: #FFFFFF;
-}
-
-.vk-section-header-block {
-  margin-top: 4px;
-  margin-bottom: 12px;
-}
-
-.vk-section-kicker {
-  font-size: 0.725rem; /* ~11.5px */
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: var(--text-muted, #9A9A9A);
-  text-transform: uppercase;
-}
-
-.font-mono {
-  font-family: var(--vk-font-mono);
-}
-
-.vk-generator-actions {
+.vk-mode-panel {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 24px;
+  animation: fadeIn 0.18s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.85;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

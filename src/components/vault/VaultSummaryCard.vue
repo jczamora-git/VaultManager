@@ -52,7 +52,10 @@
           stroke-linecap="round"
           stroke-linejoin="round"
         >
-          <path d="m13 2-2 2.5h3L11 8h3l-5 8 2-5H8l2-4.5H7Z"/>
+          <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+          <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+          <path d="M16 21h5v-5"/>
         </svg>
         <span>Generate</span>
       </button>
@@ -74,10 +77,10 @@ defineEmits<{
 <style scoped>
 .vk-kpi-card {
   width: 100%;
-  background: linear-gradient(145deg, #A8201E 0%, #8F1918 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(145deg, #B51F1F 0%, #981918 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 26px;
-  box-shadow: 0 10px 24px rgba(90, 0, 0, 0.14);
+  box-shadow: 0 12px 30px rgba(100, 16, 14, 0.24);
   padding: 20px 22px;
   display: flex;
   flex-direction: column;
@@ -190,9 +193,9 @@ defineEmits<{
 :global(.dark) .vk-kpi-card,
 :global(.ion-palette-dark) .vk-kpi-card,
 :global(body.dark-theme) .vk-kpi-card {
-  background: #1B1B1B;
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(145deg, #A81B1A 0%, #8C1413 100%);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
 }
 
 :global(.dark) .vk-kpi-title,

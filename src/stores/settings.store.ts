@@ -1,11 +1,18 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { AppSettings, DEFAULT_SETTINGS } from '@/models/settings.model';
 import { StorageService } from '@/services/storage.service';
 
 export const useSettingsStore = defineStore('settings', () => {
   const settings = ref<AppSettings>({ ...DEFAULT_SETTINGS });
   const isLoaded = ref(false);
+
+  const isDark = computed(() => {
+    const theme = settings.value.theme;
+    if (typeof window === 'undefined' || !window.matchMedia) return theme === 'dark';
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return theme === 'dark' || (theme === 'system' && prefersDark);
+  });
 
   /**
    * Load settings from storage and apply theme
@@ -34,16 +41,17 @@ export const useSettingsStore = defineStore('settings', () => {
    */
   function applyTheme(theme: AppSettings['theme']) {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isDark = theme === 'dark' || (theme === 'system' && prefersDark);
+    const darkActive = theme === 'dark' || (theme === 'system' && prefersDark);
 
-    document.documentElement.classList.toggle('ion-palette-dark', isDark);
-    document.documentElement.classList.toggle('dark', isDark);
-    document.body.classList.toggle('dark-theme', isDark);
+    document.documentElement.classList.toggle('ion-palette-dark', darkActive);
+    document.documentElement.classList.toggle('dark', darkActive);
+    document.body.classList.toggle('dark-theme', darkActive);
   }
 
   return {
     settings,
     isLoaded,
+    isDark,
     loadSettings,
     updateSettings,
     applyTheme,

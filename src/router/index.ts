@@ -3,6 +3,8 @@ import { RouteRecordRaw } from 'vue-router';
 import TabsPage from '@/pages/TabsPage.vue';
 import { useAuthStore } from '@/stores/auth.store';
 import { useProfileStore } from '@/stores/profile.store';
+import { useSettingsStore } from '@/stores/settings.store';
+import { StatusBarService } from '@/services/statusBar.service';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -141,6 +143,15 @@ router.beforeEach(async (to, from, next) => {
   }
 
   next();
+});
+
+router.afterEach((to) => {
+  try {
+    const settingsStore = useSettingsStore();
+    StatusBarService.updateForRoute(to.path, settingsStore.isDark);
+  } catch (e) {
+    console.warn('Failed to update status bar on route change:', e);
+  }
 });
 
 export default router;

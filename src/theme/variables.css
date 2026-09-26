@@ -19,15 +19,18 @@
 
   --white: #FFFFFF;
   --off-white: #F7F6F3;
-  --surface-light: #EFEEEA;
-  --canvas: #F4F2EE;
+  --surface-light: #F1EFEC;
+  --canvas: #FFFFFF;
+  --vk-page-bg: #FFFFFF;
 
-  --text-primary: #101010;
-  --text-secondary: #6F6F6F;
+  --text-primary: #151515;
+  --text-secondary: #777777;
   --text-muted: #999999;
 
-  --border-light: rgba(0, 0, 0, 0.07);
-  --border-dark: rgba(255, 255, 255, 0.10);
+  --vk-border: rgba(0, 0, 0, 0.06);
+  --vk-divider: rgba(0, 0, 0, 0.06);
+  --border-light: rgba(0, 0, 0, 0.06);
+  --border-dark: rgba(255, 255, 255, 0.08);
   --divider-light: rgba(0, 0, 0, 0.06);
 
   /* Radius Tokens */
@@ -51,18 +54,20 @@
 
   /* Global Layout Variables */
   --vk-page-horizontal: 22px;
+  --vk-onboarding-padding-x: clamp(20px, 6.5vw, 28px);
   --vk-safe-top: calc(env(safe-area-inset-top, 0px) + 24px);
   --vk-safe-bottom: env(safe-area-inset-bottom, 0px);
   --vk-dock-height: 64px;
   --vk-dock-offset: 12px;
+  --vk-sheet-padding-top: 14px;
   --vk-content-bottom-padding: calc(var(--vk-dock-height) + var(--vk-dock-offset) + var(--vk-safe-bottom) + 24px);
 
   /* Ionic Theme Tokens - Light Mode */
   --ion-font-family: var(--vk-font-sans);
-  --ion-background-color: var(--canvas);
-  --ion-background-color-rgb: 244, 242, 238;
-  --ion-text-color: var(--text-primary);
-  --ion-text-color-rgb: 16, 16, 16;
+  --ion-background-color: #FFFFFF;
+  --ion-background-color-rgb: 255, 255, 255;
+  --ion-text-color: #151515;
+  --ion-text-color-rgb: 21, 21, 21;
 
   --ion-color-primary: var(--brand-red);
   --ion-color-primary-rgb: 184, 40, 37;
@@ -81,12 +86,12 @@
   --vk-bg-hero-subtitle: rgba(255, 255, 255, 0.85);
 
   --vk-bg-sheet: #FFFFFF;
+  --vk-sheet-bg: #FFFFFF;
   --vk-bg-card: #FFFFFF;
-  --vk-bg-surface-soft: #EFEEEA;
+  --vk-bg-surface: #FFFFFF;
+  --vk-bg-surface-soft: #F1EFEC;
   --vk-bg-surface-elevated: #F8F8F6;
-  --vk-bg-input: #F1F1EF;
-  --vk-border: var(--border-light);
-  --vk-divider: var(--divider-light);
+  --vk-bg-input: #F1EFEC;
   --vk-border-focus: var(--brand-red);
 
   --vk-dock-bg: rgba(255, 255, 255, 0.96);
@@ -98,11 +103,11 @@
 
   --vk-btn-primary-bg: #0A0A0A;
   --vk-btn-primary-text: #FFFFFF;
-  --vk-btn-secondary-bg: #EFEEEA;
-  --vk-btn-secondary-text: #101010;
+  --vk-btn-secondary-bg: #F1EFEC;
+  --vk-btn-secondary-text: #151515;
 
-  --vk-gen-card-bg: #EFEEEA;
-  --vk-gen-card-text: #101010;
+  --vk-gen-card-bg: #F1EFEC;
+  --vk-gen-card-text: #151515;
   --vk-gen-copy-bg: #0A0A0A;
   --vk-gen-copy-text: #FFFFFF;
 
@@ -116,37 +121,51 @@
   --vk-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-/* Intentional Dark Mode Palette */
+/* ================================================= */
+/* GLOBAL DARK THEME SYSTEM                         */
+/* Source of Truth: Home Dark Theme                 */
+/* ================================================= */
 .dark,
 .ion-palette-dark,
-body.dark-theme {
+body.dark-theme,
+[data-theme="dark"] {
   --canvas: #0D0D0D;
+  --vk-page-bg: #0D0D0D;
+  --vk-surface: #151515;
+  --vk-bg-sheet: #151515;
+  --vk-sheet-bg: #151515;
+  --vk-bg-card: #181818;
+  --vk-bg-surface: #151515;
+  --vk-bg-surface-soft: #202020;
+  --vk-bg-surface-elevated: #262626;
+  --vk-bg-input: #202020;
+
   --ion-background-color: #0D0D0D;
   --ion-background-color-rgb: 13, 13, 13;
   --ion-text-color: #F5F5F5;
   --ion-text-color-rgb: 245, 245, 245;
 
   --text-primary: #F5F5F5;
-  --text-secondary: #A5A5A5;
-  --text-muted: #737373;
+  --text-secondary: #A0A0A0;
+  --text-muted: #777777;
 
-  --brand-red: #C52A27;
-  --brand-red-subtle: rgba(197, 42, 39, 0.15);
-  --brand-red-glow: rgba(197, 42, 39, 0.3);
+  --brand-red: #D3332F;
+  --brand-red-dark: #A91F1D;
+  --brand-red-deep: #721816;
+  --brand-red-subtle: rgba(211, 51, 47, 0.15);
+  --brand-red-glow: rgba(211, 51, 47, 0.3);
   --vk-brand-gradient: linear-gradient(180deg, #181818 0%, #121212 45%, #0D0D0D 100%);
 
   --vk-bg-hero: #0D0D0D;
   --vk-bg-hero-text: #FFFFFF;
-  --vk-bg-hero-subtitle: #A6A6A6;
+  --vk-bg-hero-subtitle: #A0A0A0;
 
-  --vk-bg-sheet: #151515;
-  --vk-bg-card: #181818;
-  --vk-bg-surface-soft: #1C1C1C;
-  --vk-bg-surface-elevated: #222222;
-  --vk-bg-input: #1F1F1F;
-  --vk-border: rgba(255, 255, 255, 0.08);
-  --vk-divider: rgba(255, 255, 255, 0.07);
-  --vk-border-focus: #C52A27;
+  --vk-border: rgba(255, 255, 255, 0.07);
+  --vk-divider: rgba(255, 255, 255, 0.06);
+  --border-light: rgba(255, 255, 255, 0.07);
+  --border-dark: rgba(255, 255, 255, 0.07);
+  --divider-light: rgba(255, 255, 255, 0.06);
+  --vk-border-focus: #D3332F;
 
   --vk-dock-bg: #171717;
   --vk-dock-text: #777777;
@@ -160,19 +179,22 @@ body.dark-theme {
   --vk-btn-secondary-bg: #202020;
   --vk-btn-secondary-text: #F4F4F4;
 
-  --vk-gen-card-bg: #1D1D1D;
-  --vk-gen-card-text: #FFFFFF;
+  --vk-gen-card-bg: #202020;
+  --vk-gen-card-text: #F5F5F5;
   --vk-gen-copy-bg: #F4F4F2;
   --vk-gen-copy-text: #101010;
 
   --vk-slider-track: #383838;
-  --vk-slider-thumb: #C52A27;
+  --vk-slider-thumb: #D3332F;
 
   --vk-toggle-off-track: #363636;
-  --vk-toggle-on-track: #C52A27;
+  --vk-toggle-on-track: #D3332F;
 
   --vk-shadow-soft: 0 14px 40px rgba(0, 0, 0, 0.6);
   --vk-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+  --ion-item-background: transparent;
+  --ion-item-color: #F5F5F5;
 }
 
 /* ================================================= */

@@ -24,6 +24,7 @@
 
           <slot name="top-right">
             <span v-if="step" class="vk-step-badge">{{ step }}</span>
+            <div v-else class="vk-nav-spacer"></div>
           </slot>
         </div>
 
@@ -59,7 +60,7 @@ withDefaults(
     subtitle?: string;
     step?: string;
     showBack?: boolean;
-    heroSize?: 'pin' | 'large' | 'medium' | 'compact';
+    heroSize?: 'pin' | 'large' | 'medium' | 'compact' | 'choice';
     contentPosition?: 'center' | 'thumb-zone' | 'lower' | 'center-lower' | 'natural';
     scrollable?: boolean;
   }>(),
@@ -129,14 +130,36 @@ defineEmits<{
   height: clamp(190px, 28dvh, 240px);
 }
 
+.hero-choice .vk-onboarding-hero {
+  flex: 1 1 auto;
+  min-height: clamp(340px, 53dvh, 470px);
+}
+
+.hero-choice .vk-onboarding-sheet {
+  flex: 0 0 auto;
+  min-height: auto;
+  max-height: 48dvh;
+}
+
+.hero-choice .vk-sheet-container {
+  justify-content: flex-start;
+  padding-top: 28px;
+  padding-bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 20px));
+}
+
+.hero-choice .vk-sheet-content {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .vk-hero-container {
   display: flex;
   flex-direction: column;
   height: 100%;
   padding-top: calc(env(safe-area-inset-top, 0px) + 12px);
   padding-bottom: 26px;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: max(var(--vk-onboarding-padding-x, 26px), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--vk-onboarding-padding-x, 26px), env(safe-area-inset-right, 0px));
   width: 100%;
 }
 
@@ -256,10 +279,10 @@ defineEmits<{
   justify-content: flex-start;
   padding-top: clamp(16px, 2.5dvh, 26px);
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(16px, 2.5dvh, 26px));
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: max(var(--vk-onboarding-padding-x, 26px), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--vk-onboarding-padding-x, 26px), env(safe-area-inset-right, 0px));
   width: 100%;
-  max-width: 360px;
+  max-width: 440px;
   margin: 0 auto;
 }
 
@@ -324,10 +347,13 @@ defineEmits<{
   .hero-compact .vk-onboarding-hero {
     height: clamp(165px, 24dvh, 200px);
   }
+  .hero-choice .vk-onboarding-hero {
+    min-height: clamp(240px, 45dvh, 320px);
+  }
   .vk-hero-container {
     padding-bottom: 18px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: max(var(--vk-onboarding-padding-x, 20px), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--vk-onboarding-padding-x, 20px), env(safe-area-inset-right, 0px));
   }
   .vk-hero-title {
     font-size: 1.55rem;
@@ -338,8 +364,8 @@ defineEmits<{
   .vk-sheet-container {
     padding-top: 14px;
     padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: max(var(--vk-onboarding-padding-x, 20px), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--vk-onboarding-padding-x, 20px), env(safe-area-inset-right, 0px));
   }
 }
 

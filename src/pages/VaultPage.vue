@@ -1,13 +1,12 @@
 <template>
   <ion-page class="vk-vault-ion-page">
-    <ion-content :fullscreen="true" class="vk-vault-ion-content">
-      <!-- RED / DARK HERO HEADER (Transparent content over red backdrop) -->
-      <header class="vk-vault-hero">
+    <ion-content :fullscreen="true" :scroll-events="true" @ionScroll="closeAllSliding" class="vk-vault-ion-content">
+      <!-- RED HOME HEADER -->
+      <header class="vk-vault-red-header">
         <div class="vk-container">
-          <!-- Top Brand & Profile Greeting Row -->
-          <div class="vk-hero-top-row">
+          <div class="vk-vault-header-row">
             <div class="vk-brand-pill">
-              <div class="vk-header-avatar" :style="{ backgroundColor: profileStore.avatarColor }">
+              <div class="vk-header-avatar">
                 {{ profileStore.initials }}
               </div>
               <div class="vk-header-greeting-box">
@@ -16,7 +15,7 @@
               </div>
             </div>
 
-            <button type="button" class="vk-hero-lock-btn" @click="handleLock" title="Lock vault">
+            <button type="button" class="vk-hero-lock-btn" @click.stop="handleLock" title="Lock vault">
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
@@ -24,110 +23,127 @@
               <span>Lock</span>
             </button>
           </div>
+        </div>
+      </header>
 
-          <!-- Distinct Vault Summary KPI Card -->
-          <div class="vk-kpi-card-wrapper">
+      <!-- WHITE/LIGHT BODY CONTAINER WITH OVERLAPPING KPI CARD -->
+      <div class="vk-vault-white-body" @click="closeAllSliding">
+        <div class="vk-container">
+          <!-- Distinct Vault Summary Deep Red KPI Card -->
+          <div class="vk-kpi-card-wrapper" @click.stop>
             <VaultSummaryCard
               :count="vaultStore.summary.totalCount"
               @add-login="goToNewCredential"
               @generate="goToGenerator"
             />
           </div>
-        </div>
-      </header>
 
-      <!-- MAIN WHITE / DARK CONTENT SHEET -->
-      <main class="vk-sheet vk-vault-sheet">
-        <div class="vk-container">
-          <!-- 54px Soft Search Pill -->
-          <div class="vk-search-pill-wrapper">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-            </svg>
-            <input
-              type="text"
-              v-model="vaultStore.searchQuery"
-              placeholder="Search accounts, websites, emails..."
-              class="vk-search-pill-input"
-            />
-            <button
-              v-if="vaultStore.searchQuery"
-              type="button"
-              class="vk-btn-icon-only"
-              @click="vaultStore.searchQuery = ''"
-            >
-              ✕
-            </button>
-          </div>
-
-          <!-- Category Pill Scroller -->
-          <CategorySelector v-model="vaultStore.selectedCategory" />
-
-          <!-- FAVORITES SECTION (When not searching & favorites exist) -->
-          <div
-            v-if="!vaultStore.searchQuery && vaultStore.selectedCategory === 'All' && vaultStore.favoriteCredentials.length > 0"
-            class="vk-vault-section"
-          >
-            <SectionHeader title="Favorites" :count="vaultStore.favoriteCredentials.length" />
-            <div class="vk-list-wrapper">
-              <CredentialRow
-                v-for="item in vaultStore.favoriteCredentials"
-                :key="`fav-${item.id}`"
-                :credential="item"
-                @select="goToCredentialDetail"
-                @toggle-favorite="handleToggleFavorite"
+          <!-- MAIN CONTENT: SEARCH, CATEGORIES, & ACCOUNTS -->
+          <main class="vk-vault-body" @click.stop>
+            <!-- 54px Soft Search Pill -->
+            <div class="vk-search-pill-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+              </svg>
+              <input
+                type="text"
+                v-model="vaultStore.searchQuery"
+                placeholder="Search accounts, websites, emails..."
+                class="vk-search-pill-input"
+                @focus="closeAllSliding"
               />
+              <button
+                v-if="vaultStore.searchQuery"
+                type="button"
+                class="vk-btn-icon-only"
+                @click="vaultStore.searchQuery = ''"
+              >
+                ✕
+              </button>
             </div>
-          </div>
 
-          <!-- ALL ACCOUNTS SECTION -->
-          <div class="vk-vault-section">
-            <SectionHeader
-              :title="vaultStore.searchQuery ? 'Search Results' : 'All Accounts'"
-              :count="vaultStore.filteredCredentials.length"
+            <!-- Category Pill Scroller -->
+            <CategorySelector v-model="vaultStore.selectedCategory" @change="closeAllSliding" />
+
+            <!-- FAVORITES SECTION (When not searching & favorites exist) -->
+            <div
+              v-if="!vaultStore.searchQuery && vaultStore.selectedCategory === 'All' && vaultStore.favoriteCredentials.length > 0"
+              class="vk-vault-section"
             >
-              <template #actions>
-                <!-- Custom Sort Dropdown -->
-                <VaultSelect
-                  :model-value="sortSelection"
-                  :options="sortOptions"
-                  title="Sort Accounts"
-                  @change="onSortChange"
+              <SectionHeader title="Favorites" :count="vaultStore.favoriteCredentials.length" />
+              <div class="vk-list-wrapper">
+                <CredentialRow
+                  v-for="item in vaultStore.favoriteCredentials"
+                  :key="`fav-${item.id}`"
+                  :credential="item"
+                  @select="goToCredentialDetail"
+                  @toggle-favorite="handleToggleFavorite"
                 />
-              </template>
-            </SectionHeader>
-
-            <!-- Credential Rows List -->
-            <div v-if="vaultStore.filteredCredentials.length > 0" class="vk-list-wrapper">
-              <CredentialRow
-                v-for="item in vaultStore.filteredCredentials"
-                :key="item.id"
-                :credential="item"
-                @select="goToCredentialDetail"
-                @toggle-favorite="handleToggleFavorite"
-              />
+              </div>
             </div>
 
-            <!-- Empty Search Results -->
-            <EmptyState
-              v-else-if="vaultStore.searchQuery || vaultStore.selectedCategory !== 'All'"
-              title="No accounts found"
-              description="Try another name, website domain, or email address."
-              action-label="Clear Search"
-              @action="clearFilters"
-            />
+            <!-- ALL ACCOUNTS SECTION -->
+            <div class="vk-vault-section">
+              <SectionHeader
+                :title="vaultStore.searchQuery ? 'Search Results' : 'All Accounts'"
+                :count="vaultStore.filteredCredentials.length"
+              >
+                <template #actions>
+                  <!-- Custom Sort Dropdown -->
+                  <VaultSelect
+                    :model-value="sortSelection"
+                    :options="sortOptions"
+                    title="Sort Accounts"
+                    @change="onSortChange"
+                  />
+                </template>
+              </SectionHeader>
 
-            <!-- Empty Vault State -->
-            <EmptyState
-              v-else
-              title="Your vault is empty"
-              description="Store your first login credential locally and securely."
-              action-label="+ Add First Login"
-              @action="goToNewCredential"
-            />
-          </div>
+              <!-- Credential Rows List with Constrained Card-Based Swipe Actions -->
+              <div v-if="vaultStore.filteredCredentials.length > 0" class="vk-list-wrapper">
+                <CredentialSwipeCard
+                  v-for="item in vaultStore.filteredCredentials"
+                  :key="item.id"
+                  :credential="item"
+                  :is-open="activeSwipeId === item.id"
+                  :open-side="activeSwipeId === item.id ? activeSwipeSide : null"
+                  @select="goToCredentialDetail"
+                  @toggle-favorite="handleToggleFavorite"
+                  @edit="handleSwipeEdit"
+                  @delete="handleSwipeDelete"
+                  @open-change="handleOpenChange"
+                />
+              </div>
+
+              <!-- Empty Search Results -->
+              <EmptyState
+                v-else-if="vaultStore.searchQuery || vaultStore.selectedCategory !== 'All'"
+                title="No accounts found"
+                description="Try another name, website domain, or email address."
+                action-label="Clear Search"
+                @action="clearFilters"
+              />
+
+              <!-- Empty Vault State -->
+              <EmptyState
+                v-else
+                title="Your vault is empty"
+                description="Store your first login credential locally and securely."
+                action-label="+ Add First Login"
+                @action="goToNewCredential"
+              />
+            </div>
+          </main>
         </div>
-      </main>
+      </div>
+
+      <!-- Delete Confirmation Modal (Shared Swipe-to-Delete Modal) -->
+      <DeleteCredentialModal
+        :is-open="showDeleteConfirm"
+        :credential="credentialToDelete"
+        @close="handleCancelDelete"
+        @confirm="confirmDelete"
+      />
 
       <!-- Red Floating Action Button (FAB) - Shown when items exist -->
       <ion-fab v-if="vaultStore.credentials.length > 0" vertical="bottom" horizontal="end" slot="fixed" class="vk-fab">
@@ -142,9 +158,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { IonPage, IonContent, IonFab, IonFabButton } from '@ionic/vue';
+import {
+  IonPage,
+  IonContent,
+  IonFab,
+  IonFabButton,
+  onIonViewWillLeave,
+} from '@ionic/vue';
+import { Credential } from '@/models/credential.model';
 import { useVaultStore } from '@/stores/vault.store';
 import { useAuthStore } from '@/stores/auth.store';
 import { useProfileStore } from '@/stores/profile.store';
@@ -152,6 +175,8 @@ import { useGreeting } from '@/composables/useGreeting';
 import { useToast } from '@/composables/useToast';
 import CategorySelector from '@/components/vault/CategorySelector.vue';
 import CredentialRow from '@/components/vault/CredentialRow.vue';
+import CredentialSwipeCard from '@/components/vault/CredentialSwipeCard.vue';
+import DeleteCredentialModal from '@/components/vault/DeleteCredentialModal.vue';
 import VaultSummaryCard from '@/components/vault/VaultSummaryCard.vue';
 import SectionHeader from '@/components/common/SectionHeader.vue';
 import EmptyState from '@/components/common/EmptyState.vue';
@@ -178,17 +203,21 @@ function onSortChange(val: any) {
   const [field, order] = sortSelection.value.split('-');
   vaultStore.sortBy = field as 'title' | 'updatedAt' | 'createdAt';
   vaultStore.sortOrder = order as 'asc' | 'desc';
+  closeAllSliding();
 }
 
 function goToNewCredential() {
+  closeAllSliding();
   router.push('/credential/new');
 }
 
 function goToGenerator() {
+  closeAllSliding();
   router.push('/tabs/generator');
 }
 
 function goToCredentialDetail(id: string) {
+  closeAllSliding();
   router.push(`/credential/${id}`);
 }
 
@@ -198,6 +227,7 @@ async function handleToggleFavorite(id: string) {
 }
 
 function handleLock() {
+  closeAllSliding();
   authStore.lock();
   vaultStore.clearInMemoryData();
   showToast('Vault locked', 'medium', 1500);
@@ -207,25 +237,89 @@ function handleLock() {
 function clearFilters() {
   vaultStore.searchQuery = '';
   vaultStore.selectedCategory = 'All';
+  closeAllSliding();
 }
+
+/* ========================================= */
+/* SWIPE ACTIONS MANAGEMENT                  */
+/* ========================================= */
+const activeSwipeId = ref<string | null>(null);
+const activeSwipeSide = ref<'edit' | 'delete' | null>(null);
+
+function handleOpenChange(payload: { id: string; isOpen: boolean; side: 'edit' | 'delete' | null }) {
+  if (payload.isOpen) {
+    activeSwipeId.value = payload.id;
+    activeSwipeSide.value = payload.side;
+  } else if (activeSwipeId.value === payload.id) {
+    activeSwipeId.value = null;
+    activeSwipeSide.value = null;
+  }
+}
+
+function closeAllSliding() {
+  activeSwipeId.value = null;
+  activeSwipeSide.value = null;
+}
+
+function handleSwipeEdit(item: Credential) {
+  closeAllSliding();
+  router.push(`/credential/${item.id}/edit`);
+}
+
+const credentialToDelete = ref<Credential | null>(null);
+const showDeleteConfirm = ref(false);
+
+function handleSwipeDelete(item: Credential) {
+  credentialToDelete.value = item;
+  showDeleteConfirm.value = true;
+}
+
+function handleCancelDelete() {
+  showDeleteConfirm.value = false;
+  credentialToDelete.value = null;
+  closeAllSliding();
+}
+
+async function confirmDelete() {
+  if (!credentialToDelete.value) return;
+  const title = credentialToDelete.value.title;
+  await vaultStore.deleteCredential(credentialToDelete.value.id);
+  showDeleteConfirm.value = false;
+  credentialToDelete.value = null;
+  closeAllSliding();
+  showToast(`"${title}" deleted`, 'success');
+}
+
+watch(() => vaultStore.selectedCategory, () => closeAllSliding());
+watch(() => vaultStore.searchQuery, () => closeAllSliding());
+watch(sortSelection, () => closeAllSliding());
+onIonViewWillLeave(() => closeAllSliding());
 </script>
 
 <style scoped>
-.vk-vault-hero {
-  padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
-  padding-bottom: clamp(20px, 3dvh, 26px);
-  background: linear-gradient(180deg, #C92A27 0%, #B82321 100%);
+.vk-vault-ion-page {
+  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
 }
 
-.dark .vk-vault-hero {
-  background: #0D0D0D;
+.vk-vault-ion-content {
+  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
 }
 
-.vk-hero-top-row {
+/* Red Home Header */
+.vk-vault-red-header {
+  background: transparent;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 14px);
+  padding-bottom: 34px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.vk-vault-header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: clamp(16px, 2.4dvh, 20px);
 }
 
 .vk-brand-pill {
@@ -235,16 +329,17 @@ function clearFilters() {
 }
 
 .vk-header-avatar {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.9rem;
   font-weight: 800;
   color: #FFFFFF;
-  border: 2px solid rgba(255, 255, 255, 0.4);
   flex-shrink: 0;
   user-select: none;
 }
@@ -255,7 +350,7 @@ function clearFilters() {
 }
 
 .vk-header-greeting {
-  font-size: 0.925rem; /* ~14px */
+  font-size: 0.95rem;
   font-weight: 700;
   color: #FFFFFF;
   letter-spacing: -0.01em;
@@ -263,28 +358,20 @@ function clearFilters() {
 }
 
 .vk-header-status {
-  font-size: 0.725rem; /* ~11px */
+  font-size: 0.75rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.75);
   margin-top: 2px;
-}
-
-.dark .vk-header-greeting {
-  color: var(--text-primary);
-}
-
-.dark .vk-header-status {
-  color: var(--text-secondary);
 }
 
 .vk-hero-lock-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   color: #FFFFFF;
-  padding: 6px 14px;
+  padding: 7px 15px;
   border-radius: var(--radius-pill, 999px);
   font-size: 0.775rem;
   font-weight: 700;
@@ -296,59 +383,47 @@ function clearFilters() {
   -webkit-tap-highlight-color: transparent;
 }
 
+.vk-hero-lock-btn svg {
+  color: #FFFFFF;
+}
+
 .vk-hero-lock-btn:active {
   transform: scale(0.95);
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.22);
 }
 
-.dark .vk-hero-lock-btn {
-  background: var(--vk-bg-surface-soft);
-  border-color: var(--vk-border);
-  color: var(--text-primary);
-}
-
-.dark .vk-hero-lock-btn:hover {
-  background: var(--vk-bg-surface-elevated);
-}
-
-.vk-vault-ion-page {
-  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
-}
-
-.vk-vault-ion-content {
-  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
-  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
-}
-
-.vk-vault-hero {
-  background: transparent !important;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
-  padding-bottom: 20px;
+/* White/Light Body Container beginning with rounded top */
+.vk-vault-white-body {
+  background: #FFFFFF;
+  border-radius: 28px 28px 0 0;
+  margin-top: -14px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  padding-bottom: var(--vk-content-bottom-padding, 110px);
+  min-height: calc(100dvh - 120px);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.dark .vk-vault-white-body,
+.ion-palette-dark .vk-vault-white-body,
+body.dark-theme .vk-vault-white-body,
+[data-theme="dark"] .vk-vault-white-body {
+  background: #0D0D0D;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .vk-kpi-card-wrapper {
   width: 100%;
-}
-
-.vk-vault-sheet {
-  background: #FFFFFF;
-  border-radius: 36px 36px 0 0;
-  margin-top: -12px;
+  margin-top: -18px;
+  margin-bottom: 24px;
   position: relative;
-  z-index: 2;
-  padding-top: 24px;
-  padding-bottom: var(--vk-content-bottom-padding);
-  min-height: calc(100dvh - 200px);
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
+  z-index: 3;
 }
 
-.dark .vk-vault-sheet {
-  background: #151515;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.04), 0 -12px 32px rgba(0, 0, 0, 0.4);
+.vk-vault-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .vk-vault-section {

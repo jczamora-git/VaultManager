@@ -1133,6 +1133,13 @@ function getCategoryCount(credentials?: any[]): number {
   transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
+.dark .vk-settings-profile-card,
+.ion-palette-dark .vk-settings-profile-card,
+body.dark-theme .vk-settings-profile-card {
+  background: #1B1B1B;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
 .vk-settings-profile-card:active {
   transform: scale(0.985);
 }

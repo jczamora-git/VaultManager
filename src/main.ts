@@ -23,6 +23,7 @@ import '@ionic/vue/css/display.css';
 /* VaultKey Theme & Design System */
 import './theme/variables.css';
 import './theme/app.css';
+import { WebsiteIconCacheService } from './services/websiteIconCache.service';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -32,6 +33,9 @@ app.use(IonicVue, {
 });
 app.use(pinia);
 app.use(router);
+
+// Initialize persistent website icon cache in memory
+WebsiteIconCacheService.init();
 
 router.isReady().then(() => {
   app.mount('#app');

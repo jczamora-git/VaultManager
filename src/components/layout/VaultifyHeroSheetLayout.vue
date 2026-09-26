@@ -84,14 +84,13 @@ defineEmits<{
   min-height: 100dvh;
   height: 100dvh;
   width: 100%;
-  background: linear-gradient(
+  background: var(--vk-brand-gradient, linear-gradient(
     180deg,
     #D02724 0%,
     #B8201E 100%
-  );
+  ));
   overflow: hidden;
   position: relative;
-  color-scheme: light;
 }
 
 .vk-hero-sheet-page.is-scrollable {
@@ -196,12 +195,14 @@ defineEmits<{
   margin: 5px auto 0 auto;
 }
 
-/* WHITE FOREGROUND SHEET (The only white surface) */
-.vk-page-sheet {
+/* SHEET SURFACE */
+.vk-page-sheet,
+.vk-sheet {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: #FFFFFF;
+  background: var(--vk-bg-sheet, var(--vk-sheet-bg, #FFFFFF));
+  color: var(--text-primary);
   border-radius: 36px 36px 0 0;
   margin-top: -12px;
   z-index: 2;
@@ -209,12 +210,14 @@ defineEmits<{
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-top: 1px solid var(--border-light, rgba(255, 255, 255, 0.4));
   box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.35), 0 -12px 32px rgba(0, 0, 0, 0.06);
+  transition: background-color var(--vk-motion-base) ease;
 }
 
 .vk-sheet-inner {
-  padding-top: clamp(18px, 2.8dvh, 26px);
+  background: transparent !important;
+  padding-top: var(--vk-sheet-padding-top, 14px);
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
   padding-left: 24px;
   padding-right: 24px;
@@ -255,7 +258,7 @@ defineEmits<{
     font-size: 0.815rem;
   }
   .vk-sheet-inner {
-    padding-top: 16px;
+    padding-top: 12px;
     padding-left: 20px;
     padding-right: 20px;
   }
@@ -275,16 +278,46 @@ defineEmits<{
 /* Dark Mode Architecture */
 :global(.dark) .vk-hero-sheet-page,
 :global(.ion-palette-dark) .vk-hero-sheet-page,
-:global(body.dark-theme) .vk-hero-sheet-page {
-  background: #0D0D0D;
+:global(body.dark-theme) .vk-hero-sheet-page,
+:global([data-theme="dark"]) .vk-hero-sheet-page {
+  background: var(--canvas, #0D0D0D);
   color-scheme: dark;
 }
 
+:global(.dark) .vk-hero-title,
+:global(.ion-palette-dark) .vk-hero-title,
+:global(body.dark-theme) .vk-hero-title,
+:global([data-theme="dark"]) .vk-hero-title {
+  color: var(--text-primary, #F5F5F5);
+}
+
+:global(.dark) .vk-hero-subtitle,
+:global(.ion-palette-dark) .vk-hero-subtitle,
+:global(body.dark-theme) .vk-hero-subtitle,
+:global([data-theme="dark"]) .vk-hero-subtitle {
+  color: var(--text-secondary, #A0A0A0);
+}
+
+:global(.dark) .vk-hero-action-btn,
+:global(.ion-palette-dark) .vk-hero-action-btn,
+:global(body.dark-theme) .vk-hero-action-btn,
+:global([data-theme="dark"]) .vk-hero-action-btn {
+  background: var(--vk-bg-surface-soft, #202020);
+  border: 1px solid var(--vk-border, rgba(255, 255, 255, 0.08));
+  color: var(--text-primary, #F5F5F5);
+}
+
 :global(.dark) .vk-page-sheet,
+:global(.dark) .vk-sheet,
 :global(.ion-palette-dark) .vk-page-sheet,
-:global(body.dark-theme) .vk-page-sheet {
-  background: #151515;
-  border-top-color: rgba(255, 255, 255, 0.08);
+:global(.ion-palette-dark) .vk-sheet,
+:global(body.dark-theme) .vk-page-sheet,
+:global(body.dark-theme) .vk-sheet,
+:global([data-theme="dark"]) .vk-page-sheet,
+:global([data-theme="dark"]) .vk-sheet {
+  background: var(--vk-bg-sheet, var(--vk-sheet-bg, #151515));
+  color: var(--text-primary, #F5F5F5);
+  border-top-color: var(--vk-border, rgba(255, 255, 255, 0.08));
   box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.04), 0 -12px 32px rgba(0, 0, 0, 0.4);
 }
 </style>
