@@ -127,25 +127,25 @@ onMounted(() => {
 .vk-generated-pw-card {
   position: relative;
   background: var(--vk-gen-card-bg, #F2F0ED);
-  border-radius: 20px;
+  border-radius: 18px;
   padding: 0;
   margin-bottom: 22px;
   border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.06));
   box-shadow: none;
-  overflow: visible;
+  overflow: hidden;
 }
 
 :global(.dark) .vk-generated-pw-card,
 :global(.ion-palette-dark) .vk-generated-pw-card,
 :global(body.dark-theme) .vk-generated-pw-card,
 :global([data-theme="dark"]) .vk-generated-pw-card {
-  background: #202020;
+  background: #1F1F1F;
   border-color: rgba(255, 255, 255, 0.07);
   box-shadow: none;
 }
 
 .vk-pw-main-text {
-  padding: 22px 20px 18px 20px;
+  padding: 24px 20px 20px 20px;
   font-size: clamp(17px, 5vw, 22px);
   font-weight: 700;
   color: var(--text-primary);
@@ -164,25 +164,25 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 18px 14px 18px;
-  border-top: 1px dashed rgba(0, 0, 0, 0.12);
+  padding: 13px 18px 15px 18px;
+  border-top: 1.5px dashed rgba(0, 0, 0, 0.10);
 }
 
 :global(.dark) .vk-pw-card-footer,
 :global(.ion-palette-dark) .vk-pw-card-footer,
 :global(body.dark-theme) .vk-pw-card-footer,
 :global([data-theme="dark"]) .vk-pw-card-footer {
-  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  border-top: 1.5px dashed rgba(255, 255, 255, 0.09);
 }
 
-/* Left & Right Ticket Punch Semicircular Cutouts */
+/* Subtle Inward Ticket Cutouts (Integrated 11px diameter, clipped cleanly) */
 .vk-pw-card-footer::before,
 .vk-pw-card-footer::after {
   content: '';
   position: absolute;
   top: 0;
-  width: 16px;
-  height: 16px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   background: var(--vk-sheet-bg, var(--vk-bg-sheet, #FFFFFF));
   border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.06));
@@ -240,7 +240,7 @@ onMounted(() => {
   background: var(--vk-gen-copy-bg, #0A0A0A);
   color: var(--vk-gen-copy-text, #FFFFFF);
   border: none;
-  padding: 7px 15px;
+  padding: 6px 14px;
   border-radius: var(--radius-pill, 999px);
   font-size: 0.8125rem;
   font-weight: 700;
