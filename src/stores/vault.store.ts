@@ -29,8 +29,11 @@ export const useVaultStore = defineStore('vault', () => {
     createdAt.value = payload.metadata?.createdAt || new Date().toISOString();
     updatedAt.value = payload.metadata?.updatedAt || new Date().toISOString();
 
-    // Trigger daily background icon refresh sweep if 24h elapsed (non-blocking)
+    // 1. Repair missing icons immediately on unlock/load (never blocked by 24h timer)
     const allDomains = credentials.value.map((c) => c.domain || c.website).filter(Boolean) as string[];
+    WebsiteIconCacheService.ensureMissingIcons(allDomains);
+
+    // 2. Trigger daily background icon refresh sweep for existing cached icons if 24h elapsed (non-blocking)
     WebsiteIconCacheService.refreshAllIfDue(allDomains);
   }
 
@@ -224,9 +227,10 @@ export const useVaultStore = defineStore('vault', () => {
     credentials.value.unshift(newCredential);
     await persistVault();
 
-    // If new domain is not cached yet, fetch it once in background if online
+    // If new domain is not cached yet, fetch it immediately in background if online
     if (domain) {
-      WebsiteIconCacheService.ensureIcon(domain);
+      WebsiteIconCacheService.clearFailedDomain(domain);
+      void WebsiteIconCacheService.ensureIcon(domain);
     }
 
     return newCredential;
@@ -267,9 +271,10 @@ export const useVaultStore = defineStore('vault', () => {
     credentials.value[index] = updated;
     await persistVault();
 
-    // If domain changed/added and is uncached, fetch once in background if online
+    // If domain changed/added and is uncached, fetch immediately in background if online
     if (domain) {
-      WebsiteIconCacheService.ensureIcon(domain);
+      WebsiteIconCacheService.clearFailedDomain(domain);
+      void WebsiteIconCacheService.ensureIcon(domain);
     }
 
     return updated;

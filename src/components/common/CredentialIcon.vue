@@ -74,7 +74,7 @@ function onImageError() {
 }
 
 watch(
-  () => [props.domain, props.website],
+  () => [props.domain, props.website, cachedIcon.value],
   () => {
     hasImageError.value = false;
   }

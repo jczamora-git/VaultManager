@@ -1,33 +1,13 @@
+import { WebsiteIconCacheService } from './websiteIconCache.service';
+
 export class FaviconService {
   private static failedDomains = new Set<string>();
 
   /**
    * Extracts clean domain name from URL or raw text
-   * e.g. "https://github.com/settings" -> "github.com"
-   * "app.sub.example.co.uk/test" -> "app.sub.example.co.uk"
    */
   static extractDomain(input?: string): string {
-    if (!input || !input.trim()) return '';
-    let clean = input.trim();
-
-    // If input doesn't have protocol, prepend https:// for URL parser
-    if (!/^https?:\/\//i.test(clean)) {
-      clean = 'https://' + clean;
-    }
-
-    try {
-      const url = new URL(clean);
-      let hostname = url.hostname.toLowerCase();
-      // Remove www. prefix if present
-      if (hostname.startsWith('www.')) {
-        hostname = hostname.substring(4);
-      }
-      return hostname;
-    } catch {
-      // Fallback regex extraction
-      const match = input.match(/^(?:https?:\/\/)?(?:www\.)?([^/\s:]+)/i);
-      return match ? match[1].toLowerCase() : input.trim().toLowerCase();
-    }
+    return WebsiteIconCacheService.normalizeDomain(input);
   }
 
   /**
