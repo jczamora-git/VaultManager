@@ -54,6 +54,13 @@ jobs:
       - name: Sync Capacitor Android
         run: npx cap sync android
 
+      - name: Verify Android Assets Synced
+        run: |
+          echo "=== DIST ASSETS ==="
+          ls -la dist/assets
+          echo "=== ANDROID COPIED ASSETS ==="
+          ls -la android/app/src/main/assets/public/assets
+
       - name: Setup Java 17 (Temurin)
         uses: actions/setup-java@v4
         with:
@@ -66,7 +73,7 @@ jobs:
 
       - name: Build Debug APK
         working-directory: android
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew clean assembleDebug --no-daemon
 
       - name: Prepare Debug APK Artifact
         run: |

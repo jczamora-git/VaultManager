@@ -109,6 +109,8 @@ defineEmits<{
   flex-direction: column;
   position: relative;
   z-index: 1;
+  width: 100%;
+  box-sizing: border-box;
   background: transparent !important;
   transition: height 0.2s ease;
 }
@@ -261,6 +263,8 @@ defineEmits<{
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
   background: #FFFFFF;
   border-radius: 36px 36px 0 0;
   margin-top: -12px;
@@ -380,19 +384,12 @@ defineEmits<{
   }
 }
 
-/* Dark mode support when used outside forced onboarding */
-:global(.dark:not(.vaultify-onboarding)) .vk-onboarding-layout,
-:global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-onboarding-layout,
-:global(body.dark-theme:not(.vaultify-onboarding)) .vk-onboarding-layout {
-  background: #0D0D0D;
-  color-scheme: dark;
-}
-
+/* Dark mode support when used outside forced onboarding (e.g. PIN unlock screen) */
 :global(.dark:not(.vaultify-onboarding)) .vk-onboarding-sheet,
 :global(.ion-palette-dark:not(.vaultify-onboarding)) .vk-onboarding-sheet,
 :global(body.dark-theme:not(.vaultify-onboarding)) .vk-onboarding-sheet {
-  background: #151515;
-  border-top-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 -2px 0 rgba(255, 255, 255, 0.04), 0 -12px 32px rgba(0, 0, 0, 0.4);
+  background: var(--vk-bg-sheet, #151515);
+  border-top: none;
+  box-shadow: none;
 }
 </style>

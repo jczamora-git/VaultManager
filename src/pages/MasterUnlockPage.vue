@@ -110,33 +110,15 @@ async function handleMasterUnlock() {
 
 <style scoped>
 .vk-master-unlock-page {
-  --background: linear-gradient(
-    180deg,
-    #C62A27 0%,
-    #B82825 45%,
-    #A92220 100%
-  );
-  background: linear-gradient(
-    180deg,
-    #C62A27 0%,
-    #B82825 45%,
-    #A92220 100%
-  );
+  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
 }
 
-.dark .vk-master-unlock-page {
-  --background: linear-gradient(
-    180deg,
-    #181818 0%,
-    #121212 45%,
-    #0D0D0D 100%
-  );
-  background: linear-gradient(
-    180deg,
-    #181818 0%,
-    #121212 45%,
-    #0D0D0D 100%
-  );
+.vk-master-unlock-page :deep(.vk-onboarding-sheet),
+.vk-master-unlock-page :deep(.vk-sheet) {
+  border-top: none !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .vk-master-form {

@@ -34,6 +34,7 @@ ion-toolbar {
   max-width: 650px;
   margin: 0 auto;
   padding: 0 var(--vk-page-horizontal);
+  box-sizing: border-box;
 }
 
 /* Page Header Structure with proper safe-area top breathing room */

@@ -348,12 +348,104 @@ body.dark-theme .vk-vault-page-wrapper,
   width: 100%;
   box-sizing: border-box;
   flex-shrink: 0;
-  transition: background-color var(--vk-motion-base, 180ms) ease;
+  position: relative;
+  z-index: 1;
+}
+
+.vk-vault-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+
+.vk-brand-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.vk-header-avatar {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.vk-header-greeting-box {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.vk-header-greeting {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vk-header-status {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+  margin-top: 2px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vk-hero-lock-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #FFFFFF;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill, 9999px);
+  font-size: 0.775rem;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: transform var(--vk-motion-instant, 90ms) var(--vk-ease-press, ease),
+              background-color 120ms ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+.vk-hero-lock-btn svg {
+  color: #FFFFFF;
+  flex-shrink: 0;
 }
 
 .vk-hero-lock-btn:active {
   transform: scale(0.95);
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* White/Light Body Container filling the rest of the page */

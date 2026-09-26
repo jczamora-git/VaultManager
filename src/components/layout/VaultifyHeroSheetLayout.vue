@@ -122,8 +122,7 @@ defineEmits<{
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-left: 24px;
-  padding-right: 24px;
+  box-sizing: border-box;
 }
 
 .vk-hero-nav-row {
@@ -132,6 +131,7 @@ defineEmits<{
   justify-content: space-between;
   min-height: 44px;
   margin-bottom: 8px;
+  width: 100%;
 }
 
 .vk-nav-spacer {
@@ -201,6 +201,8 @@ defineEmits<{
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
   background: var(--vk-bg-sheet, var(--vk-sheet-bg, #FFFFFF));
   color: var(--text-primary);
   border-radius: 36px 36px 0 0;
@@ -219,12 +221,11 @@ defineEmits<{
   background: transparent !important;
   padding-top: var(--vk-sheet-padding-top, 14px);
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
-  padding-left: 24px;
-  padding-right: 24px;
   display: flex;
   flex-direction: column;
   flex: 1;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .has-dock .vk-sheet-inner {

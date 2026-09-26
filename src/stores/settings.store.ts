@@ -46,6 +46,7 @@ export const useSettingsStore = defineStore('settings', () => {
     document.documentElement.classList.toggle('ion-palette-dark', darkActive);
     document.documentElement.classList.toggle('dark', darkActive);
     document.body.classList.toggle('dark-theme', darkActive);
+    document.documentElement.setAttribute('data-theme', darkActive ? 'dark' : 'light');
   }
 
   return {

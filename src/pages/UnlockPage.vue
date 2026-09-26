@@ -276,7 +276,27 @@ function goToMasterPasswordFallback() {
 
 <style scoped>
 .vk-unlock-page {
-  --background: var(--canvas);
+  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+}
+
+/* Eliminate any seam/divider line between Red Hero and Dark Bottom Sheet */
+.vk-unlock-page :deep(.vk-onboarding-sheet),
+.vk-unlock-page :deep(.vk-sheet) {
+  border-top: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+:global(.dark) .vk-unlock-page :deep(.vk-onboarding-sheet),
+:global(.dark) .vk-unlock-page :deep(.vk-sheet),
+:global(.ion-palette-dark) .vk-unlock-page :deep(.vk-onboarding-sheet),
+:global(.ion-palette-dark) .vk-unlock-page :deep(.vk-sheet),
+:global(body.dark-theme) .vk-unlock-page :deep(.vk-onboarding-sheet),
+:global(body.dark-theme) .vk-unlock-page :deep(.vk-sheet) {
+  background: #151515 !important;
+  border-top: none !important;
+  box-shadow: none !important;
 }
 
 /* Clean Centered Top Brand Header on Red Background */
