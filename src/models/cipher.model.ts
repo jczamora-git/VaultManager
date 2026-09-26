@@ -10,13 +10,6 @@ export interface CipherAlgorithmInfo {
 
 export const CIPHER_ALGORITHMS: CipherAlgorithmInfo[] = [
   {
-    id: 'AES-GCM',
-    name: 'AES-256-GCM',
-    badge: 'Secure',
-    badgeColor: 'success',
-    description: 'Authenticated, military-grade symmetric encryption derived with PBKDF2. Safe for confidential data.',
-  },
-  {
     id: 'Caesar',
     name: 'Caesar Cipher',
     badge: 'Educational',
@@ -43,5 +36,12 @@ export const CIPHER_ALGORITHMS: CipherAlgorithmInfo[] = [
     badge: 'Encoding',
     badgeColor: 'medium',
     description: 'Binary-to-text encoding scheme. Provides NO confidentiality or encryption security.',
+  },
+  {
+    id: 'AES-GCM',
+    name: 'AES-256-GCM',
+    badge: 'Secure',
+    badgeColor: 'success',
+    description: 'Authenticated, military-grade symmetric encryption derived with PBKDF2. Safe for confidential data.',
   },
 ];

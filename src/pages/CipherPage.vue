@@ -160,7 +160,7 @@ import CopyButton from '@/components/common/CopyButton.vue';
 const { showToast } = useToast();
 
 const mode = ref<'encrypt' | 'decrypt'>('encrypt');
-const selectedAlgoId = ref<CipherAlgorithm>('AES-GCM');
+const selectedAlgoId = ref<CipherAlgorithm>(CIPHER_ALGORITHMS[0].id);
 const inputText = ref('');
 const outputText = ref('');
 const aesPassphrase = ref('');

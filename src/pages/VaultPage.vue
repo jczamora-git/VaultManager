@@ -1,48 +1,49 @@
 <template>
   <ion-page class="vk-vault-ion-page">
     <ion-content :fullscreen="true" :scroll-events="true" @ionScroll="closeAllSliding" class="vk-vault-ion-content">
-      <!-- RED HOME HEADER -->
-      <header class="vk-vault-red-header">
-        <div class="vk-container">
-          <div class="vk-vault-header-row">
-            <div class="vk-brand-pill">
-              <div class="vk-header-avatar">
-                {{ profileStore.initials }}
+      <div class="vk-vault-page-wrapper">
+        <!-- RED HOME HEADER ONLY -->
+        <header class="vk-vault-red-header">
+          <div class="vk-container">
+            <div class="vk-vault-header-row">
+              <div class="vk-brand-pill">
+                <div class="vk-header-avatar">
+                  {{ profileStore.initials }}
+                </div>
+                <div class="vk-header-greeting-box">
+                  <span class="vk-header-greeting">{{ greetingWithName }}</span>
+                  <span class="vk-header-status">Your vault is secure</span>
+                </div>
               </div>
-              <div class="vk-header-greeting-box">
-                <span class="vk-header-greeting">{{ greetingWithName }}</span>
-                <span class="vk-header-status">Your vault is secure</span>
-              </div>
+
+              <button type="button" class="vk-hero-lock-btn" @click.stop="handleLock" title="Lock vault">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                <span>Lock</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- FULL-WIDTH WHITE BODY FILLING THE REST OF THE PAGE -->
+        <div class="vk-vault-white-body" @click="closeAllSliding">
+          <div class="vk-container">
+            <!-- Distinct Vault Summary Deep Red KPI Card sitting on the white body -->
+            <div class="vk-kpi-card-wrapper" @click.stop>
+              <VaultSummaryCard
+                :count="vaultStore.summary.totalCount"
+                @add-login="goToNewCredential"
+                @generate="goToGenerator"
+              />
             </div>
 
-            <button type="button" class="vk-hero-lock-btn" @click.stop="handleLock" title="Lock vault">
-              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-              </svg>
-              <span>Lock</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <!-- WHITE/LIGHT BODY CONTAINER WITH OVERLAPPING KPI CARD -->
-      <div class="vk-vault-white-body" @click="closeAllSliding">
-        <div class="vk-container">
-          <!-- Distinct Vault Summary Deep Red KPI Card -->
-          <div class="vk-kpi-card-wrapper" @click.stop>
-            <VaultSummaryCard
-              :count="vaultStore.summary.totalCount"
-              @add-login="goToNewCredential"
-              @generate="goToGenerator"
-            />
-          </div>
-
-          <!-- MAIN CONTENT: SEARCH, CATEGORIES, & ACCOUNTS -->
-          <main class="vk-vault-body" @click.stop>
-            <!-- 54px Soft Search Pill -->
-            <div class="vk-search-pill-wrapper">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- MAIN CONTENT: SEARCH, CATEGORIES, & ACCOUNTS -->
+            <main class="vk-vault-body" @click.stop>
+              <!-- 54px Soft Search Pill -->
+              <div class="vk-search-pill-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
               </svg>
               <input
@@ -136,8 +137,9 @@
           </main>
         </div>
       </div>
+    </div>
 
-      <!-- Delete Confirmation Modal (Shared Swipe-to-Delete Modal) -->
+    <!-- Delete Confirmation Modal (Shared Swipe-to-Delete Modal) -->
       <DeleteCredentialModal
         :is-open="showDeleteConfirm"
         :credential="credentialToDelete"
@@ -298,22 +300,54 @@ onIonViewWillLeave(() => closeAllSliding());
 
 <style scoped>
 .vk-vault-ion-page {
-  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
-  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  --background: #FFFFFF;
+  background: #FFFFFF;
 }
 
 .vk-vault-ion-content {
-  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
-  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  --background: #FFFFFF;
+  background: #FFFFFF;
 }
 
-/* Red Home Header */
+.dark .vk-vault-ion-page,
+.ion-palette-dark .vk-vault-ion-page,
+body.dark-theme .vk-vault-ion-page,
+[data-theme="dark"] .vk-vault-ion-page {
+  --background: #0D0D0D;
+  background: #0D0D0D;
+}
+
+.dark .vk-vault-ion-content,
+.ion-palette-dark .vk-vault-ion-content,
+body.dark-theme .vk-vault-ion-content,
+[data-theme="dark"] .vk-vault-ion-content {
+  --background: #0D0D0D;
+  background: #0D0D0D;
+}
+
+.vk-vault-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  width: 100%;
+  background: #FFFFFF;
+}
+
+.dark .vk-vault-page-wrapper,
+.ion-palette-dark .vk-vault-page-wrapper,
+body.dark-theme .vk-vault-page-wrapper,
+[data-theme="dark"] .vk-vault-page-wrapper {
+  background: #0D0D0D;
+}
+
+/* Red Home Header ONLY */
 .vk-vault-red-header {
-  background: transparent;
+  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
   padding-top: calc(env(safe-area-inset-top, 0px) + 14px);
-  padding-bottom: 34px;
+  padding-bottom: 22px;
   width: 100%;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .vk-vault-header-row {
@@ -392,16 +426,16 @@ onIonViewWillLeave(() => closeAllSliding());
   background: rgba(255, 255, 255, 0.22);
 }
 
-/* White/Light Body Container beginning with rounded top */
+/* White/Light Body Container filling the rest of the page */
 .vk-vault-white-body {
   background: #FFFFFF;
-  border-radius: 28px 28px 0 0;
-  margin-top: -14px;
+  flex: 1;
+  width: 100%;
   position: relative;
   z-index: 2;
-  padding-bottom: var(--vk-content-bottom-padding, 110px);
-  min-height: calc(100dvh - 120px);
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.05);
+  padding-top: 20px;
+  padding-bottom: var(--vk-content-bottom-padding, 120px);
+  box-sizing: border-box;
 }
 
 .dark .vk-vault-white-body,
@@ -409,12 +443,11 @@ onIonViewWillLeave(() => closeAllSliding());
 body.dark-theme .vk-vault-white-body,
 [data-theme="dark"] .vk-vault-white-body {
   background: #0D0D0D;
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .vk-kpi-card-wrapper {
   width: 100%;
-  margin-top: -18px;
+  margin-top: 0;
   margin-bottom: 24px;
   position: relative;
   z-index: 3;
