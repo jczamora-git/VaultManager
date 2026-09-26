@@ -18,21 +18,35 @@ const route = useRoute();
 const settingsStore = useSettingsStore();
 const { setupListeners, removeListeners } = useAutoLock();
 
+let mediaQueryListener: ((e: MediaQueryListEvent) => void) | null = null;
+
 onMounted(async () => {
   await settingsStore.loadSettings();
   setupListeners();
   StatusBarService.updateForRoute(route.path, settingsStore.isDark);
+
+  if (typeof window !== 'undefined' && window.matchMedia) {
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQueryListener = () => {
+      settingsStore.applyTheme(settingsStore.settings.theme);
+      StatusBarService.updateForRoute(route.path, settingsStore.isDark);
+    };
+    mql.addEventListener('change', mediaQueryListener);
+  }
 });
 
 watch(
-  () => settingsStore.isDark,
-  (isDark) => {
-    StatusBarService.updateForRoute(route.path, isDark);
+  () => [route.path, settingsStore.isDark],
+  ([path, isDark]) => {
+    StatusBarService.updateForRoute(path as string, isDark as boolean);
   }
 );
 
 onUnmounted(() => {
   removeListeners();
+  if (mediaQueryListener && typeof window !== 'undefined' && window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', mediaQueryListener);
+  }
 });
 </script>
 

@@ -348,6 +348,14 @@ body.dark-theme .vk-vault-page-wrapper,
   width: 100%;
   box-sizing: border-box;
   flex-shrink: 0;
+  transition: background-color var(--vk-motion-base, 180ms) ease;
+}
+
+.dark .vk-vault-red-header,
+.ion-palette-dark .vk-vault-red-header,
+body.dark-theme .vk-vault-red-header,
+[data-theme="dark"] .vk-vault-red-header {
+  background: #0D0D0D;
 }
 
 .vk-vault-header-row {
@@ -378,6 +386,15 @@ body.dark-theme .vk-vault-page-wrapper,
   user-select: none;
 }
 
+.dark .vk-header-avatar,
+.ion-palette-dark .vk-header-avatar,
+body.dark-theme .vk-header-avatar,
+[data-theme="dark"] .vk-header-avatar {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+}
+
 .vk-header-greeting-box {
   display: flex;
   flex-direction: column;
@@ -391,11 +408,25 @@ body.dark-theme .vk-vault-page-wrapper,
   line-height: 1.2;
 }
 
+.dark .vk-header-greeting,
+.ion-palette-dark .vk-header-greeting,
+body.dark-theme .vk-header-greeting,
+[data-theme="dark"] .vk-header-greeting {
+  color: #F5F5F5;
+}
+
 .vk-header-status {
   font-size: 0.75rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.75);
   margin-top: 2px;
+}
+
+.dark .vk-header-status,
+.ion-palette-dark .vk-header-status,
+body.dark-theme .vk-header-status,
+[data-theme="dark"] .vk-header-status {
+  color: #9A9A9A;
 }
 
 .vk-hero-lock-btn {
@@ -424,6 +455,29 @@ body.dark-theme .vk-vault-page-wrapper,
 .vk-hero-lock-btn:active {
   transform: scale(0.95);
   background: rgba(255, 255, 255, 0.22);
+}
+
+.dark .vk-hero-lock-btn,
+.ion-palette-dark .vk-hero-lock-btn,
+body.dark-theme .vk-hero-lock-btn,
+[data-theme="dark"] .vk-hero-lock-btn {
+  background: #1D1D1D;
+  border-color: rgba(255, 255, 255, 0.10);
+  color: #F5F5F5;
+}
+
+.dark .vk-hero-lock-btn svg,
+.ion-palette-dark .vk-hero-lock-btn svg,
+body.dark-theme .vk-hero-lock-btn svg,
+[data-theme="dark"] .vk-hero-lock-btn svg {
+  color: #F5F5F5;
+}
+
+.dark .vk-hero-lock-btn:active,
+.ion-palette-dark .vk-hero-lock-btn:active,
+body.dark-theme .vk-hero-lock-btn:active,
+[data-theme="dark"] .vk-hero-lock-btn:active {
+  background: #282828;
 }
 
 /* White/Light Body Container filling the rest of the page */

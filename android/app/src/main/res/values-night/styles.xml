@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <!-- Base application theme for Night / Dark mode -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <item name="colorPrimary">#D02724</item>
-        <item name="colorPrimaryDark">#D02724</item>
+        <item name="colorPrimaryDark">#0D0D0D</item>
         <item name="colorAccent">#D02724</item>
     </style>
 
@@ -13,13 +11,13 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
-        <item name="android:statusBarColor">#D02724</item>
-        <item name="android:navigationBarColor">#FFFFFF</item>
+        <item name="android:statusBarColor">#0D0D0D</item>
+        <item name="android:navigationBarColor">#0D0D0D</item>
     </style>
 
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
         <item name="android:background">@drawable/splash</item>
-        <item name="android:statusBarColor">#D02724</item>
-        <item name="android:navigationBarColor">#D02724</item>
+        <item name="android:statusBarColor">#0D0D0D</item>
+        <item name="android:navigationBarColor">#0D0D0D</item>
     </style>
 </resources>

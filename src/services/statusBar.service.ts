@@ -1,17 +1,24 @@
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 
+export const SYSTEM_COLORS = {
+  brandRed: '#D02724',
+  darkSurface: '#151515',
+  lightSurface: '#FFFFFF',
+} as const;
+
 export const StatusBarService = {
   /**
-   * Sets the status bar for Vaultify brand red hero surfaces (#C62825)
+   * Sets the status bar for Vaultify brand red hero surfaces (#D02724)
    * with light (white) status icons.
    */
   async setBrand(): Promise<void> {
+    this.updatePwaThemeColor(SYSTEM_COLORS.brandRed);
     if (!Capacitor.isNativePlatform()) return;
     try {
-      await StatusBar.setStyle({ style: Style.Dark }); // Light/white status bar icons
+      await StatusBar.setStyle({ style: Style.Dark }); // Light/white status icons
       if (Capacitor.getPlatform() === 'android') {
-        await StatusBar.setBackgroundColor({ color: '#C62825' });
+        await StatusBar.setBackgroundColor({ color: SYSTEM_COLORS.brandRed });
       }
     } catch (e) {
       console.warn('StatusBarService.setBrand error:', e);
@@ -23,11 +30,12 @@ export const StatusBarService = {
    * with dark status icons.
    */
   async setLight(): Promise<void> {
+    this.updatePwaThemeColor(SYSTEM_COLORS.lightSurface);
     if (!Capacitor.isNativePlatform()) return;
     try {
-      await StatusBar.setStyle({ style: Style.Light }); // Dark status bar icons
+      await StatusBar.setStyle({ style: Style.Light }); // Dark status icons
       if (Capacitor.getPlatform() === 'android') {
-        await StatusBar.setBackgroundColor({ color: '#FFFFFF' });
+        await StatusBar.setBackgroundColor({ color: SYSTEM_COLORS.lightSurface });
       }
     } catch (e) {
       console.warn('StatusBarService.setLight error:', e);
@@ -39,11 +47,12 @@ export const StatusBarService = {
    * with light (white) status icons.
    */
   async setDark(): Promise<void> {
+    this.updatePwaThemeColor(SYSTEM_COLORS.darkSurface);
     if (!Capacitor.isNativePlatform()) return;
     try {
-      await StatusBar.setStyle({ style: Style.Dark }); // Light status bar icons
+      await StatusBar.setStyle({ style: Style.Dark }); // Light status icons
       if (Capacitor.getPlatform() === 'android') {
-        await StatusBar.setBackgroundColor({ color: '#0D0D0D' });
+        await StatusBar.setBackgroundColor({ color: SYSTEM_COLORS.darkSurface });
       }
     } catch (e) {
       console.warn('StatusBarService.setDark error:', e);
@@ -51,16 +60,37 @@ export const StatusBarService = {
   },
 
   /**
-   * Automatically updates status bar based on current route and theme mode.
+   * Update PWA meta theme-color tag dynamically
+   */
+  updatePwaThemeColor(color: string): void {
+    if (typeof document === 'undefined') return;
+    let meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'theme-color');
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', color);
+  },
+
+  /**
+   * Automatically updates status bar and dynamic web/PWA theme-color based on current route and theme mode.
    */
   async updateForRoute(path: string, isDark: boolean): Promise<void> {
-    // In dark mode, all screens use dark status bar
+    const cleanPath = (path || '').toLowerCase();
+
+    // 1. In Dark Mode, Home and all other dark-mode screens use dark surface (#0D0D0D)
     if (isDark) {
+      // Onboarding & Setup always force light branded red theme
+      if (cleanPath.startsWith('/onboarding') || cleanPath.startsWith('/setup')) {
+        await this.setBrand();
+        return;
+      }
       await this.setDark();
       return;
     }
 
-    // In light mode: all screens with red hero header use brand red status bar
+    // 2. In Light Mode: All screens with red hero header (Home, Onboarding, Setup, Unlock, Generator, Cipher, Settings, Form) use brand red (#D02724)
     await this.setBrand();
   },
 };

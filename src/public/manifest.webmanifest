@@ -5,7 +5,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0D0D0D",
-  "theme_color": "#C62825",
+  "theme_color": "#D02724",
   "icons": [
     {
       "src": "/image/vault-key-logo.png",
