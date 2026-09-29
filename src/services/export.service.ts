@@ -1,6 +1,7 @@
 import { EncryptedVaultEnvelope, DecryptedVaultPayload } from '@/models/vault.model';
 import { LocalProfile } from '@/models/profile.model';
 import { AppSettings, DEFAULT_SETTINGS } from '@/models/settings.model';
+import { APP_VERSION } from '@/constants/app';
 import { CryptoService } from './crypto.service';
 
 export interface PortableBackupBundle {
@@ -77,7 +78,7 @@ export class ExportService {
     return {
       format: 'vaultify-backup',
       schemaVersion: 1,
-      appVersion: '1.0.0',
+      appVersion: APP_VERSION,
       exportedAt: new Date().toISOString(),
       crypto: envelope.crypto,
       payload: envelope.payload,

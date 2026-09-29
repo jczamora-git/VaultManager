@@ -34,7 +34,7 @@
             <div class="vk-kpi-card-wrapper" @click.stop>
               <VaultSummaryCard
                 :count="vaultStore.summary.totalCount"
-                @add-login="goToNewCredential"
+                @add-login="openNewLoginCategorySheet"
                 @generate="goToGenerator"
               />
             </div>
@@ -131,7 +131,7 @@
                 title="Your vault is empty"
                 description="Store your first login credential locally and securely."
                 action-label="+ Add First Login"
-                @action="goToNewCredential"
+                @action="openNewLoginCategorySheet"
               />
             </div>
           </main>
@@ -149,12 +149,19 @@
 
       <!-- Red Floating Action Button (FAB) - Shown when items exist -->
       <ion-fab v-if="vaultStore.credentials.length > 0" vertical="bottom" horizontal="end" slot="fixed" class="vk-fab">
-        <ion-fab-button @click="goToNewCredential" class="vk-fab-btn" title="Add Credential">
+        <ion-fab-button @click="openNewLoginCategorySheet" class="vk-fab-btn" title="Add Credential">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14"/><path d="M12 5v14"/>
           </svg>
         </ion-fab-button>
       </ion-fab>
+
+      <!-- Category Selection Bottom Sheet for New Logins -->
+      <CategoryPickerSheet
+        :is-open="showCategorySheet"
+        @select="handleCategorySelected"
+        @dismiss="handleCategorySheetDismiss"
+      />
     </ion-content>
   </ion-page>
 </template>
@@ -169,13 +176,14 @@ import {
   IonFabButton,
   onIonViewWillLeave,
 } from '@ionic/vue';
-import { Credential } from '@/models/credential.model';
+import { Credential, CredentialCategory } from '@/models/credential.model';
 import { useVaultStore } from '@/stores/vault.store';
 import { useAuthStore } from '@/stores/auth.store';
 import { useProfileStore } from '@/stores/profile.store';
 import { useGreeting } from '@/composables/useGreeting';
 import { useToast } from '@/composables/useToast';
 import CategorySelector from '@/components/vault/CategorySelector.vue';
+import CategoryPickerSheet from '@/components/vault/CategoryPickerSheet.vue';
 import CredentialRow from '@/components/vault/CredentialRow.vue';
 import CredentialSwipeCard from '@/components/vault/CredentialSwipeCard.vue';
 import DeleteCredentialModal from '@/components/vault/DeleteCredentialModal.vue';
@@ -200,6 +208,8 @@ const sortOptions: SelectOption[] = [
   { label: 'Date Created', value: 'createdAt-desc' },
 ];
 
+const showCategorySheet = ref(false);
+
 function onSortChange(val: any) {
   sortSelection.value = String(val);
   const [field, order] = sortSelection.value.split('-');
@@ -208,9 +218,21 @@ function onSortChange(val: any) {
   closeAllSliding();
 }
 
-function goToNewCredential() {
+function openNewLoginCategorySheet() {
   closeAllSliding();
-  router.push('/credential/new');
+  showCategorySheet.value = true;
+}
+
+function handleCategorySelected(category: CredentialCategory) {
+  showCategorySheet.value = false;
+  router.push({
+    path: '/credential/new',
+    query: { category: category.toLowerCase() },
+  });
+}
+
+function handleCategorySheetDismiss() {
+  showCategorySheet.value = false;
 }
 
 function goToGenerator() {
@@ -295,7 +317,10 @@ async function confirmDelete() {
 watch(() => vaultStore.selectedCategory, () => closeAllSliding());
 watch(() => vaultStore.searchQuery, () => closeAllSliding());
 watch(sortSelection, () => closeAllSliding());
-onIonViewWillLeave(() => closeAllSliding());
+onIonViewWillLeave(() => {
+  closeAllSliding();
+  showCategorySheet.value = false;
+});
 </script>
 
 <style scoped>
@@ -330,19 +355,12 @@ body.dark-theme .vk-vault-ion-content,
   flex-direction: column;
   min-height: 100%;
   width: 100%;
-  background: #FFFFFF;
-}
-
-.dark .vk-vault-page-wrapper,
-.ion-palette-dark .vk-vault-page-wrapper,
-body.dark-theme .vk-vault-page-wrapper,
-[data-theme="dark"] .vk-vault-page-wrapper {
-  background: #0D0D0D;
+  background: var(--vk-page-bg);
 }
 
 /* Red Home Header ONLY */
 .vk-vault-red-header {
-  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  background: var(--vk-accent-gradient);
   padding-top: calc(env(safe-area-inset-top, 0px) + 14px);
   padding-bottom: 22px;
   width: 100%;
@@ -374,14 +392,14 @@ body.dark-theme .vk-vault-page-wrapper,
   min-width: 40px;
   min-height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.16);
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  background: var(--vk-on-accent-soft, rgba(255, 255, 255, 0.16));
+  border: 1.5px solid var(--vk-on-accent-border, rgba(255, 255, 255, 0.35));
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.9rem;
   font-weight: 800;
-  color: #FFFFFF;
+  color: var(--vk-on-accent, #FFFFFF);
   flex-shrink: 0;
   user-select: none;
   box-sizing: border-box;
@@ -397,7 +415,7 @@ body.dark-theme .vk-vault-page-wrapper,
 .vk-header-greeting {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #FFFFFF;
+  color: var(--vk-on-accent, #FFFFFF);
   letter-spacing: -0.01em;
   line-height: 1.25;
   white-space: nowrap;
@@ -408,7 +426,7 @@ body.dark-theme .vk-vault-page-wrapper,
 .vk-header-status {
   font-size: 0.75rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--vk-on-accent-muted, rgba(255, 255, 255, 0.78));
   margin-top: 2px;
   line-height: 1.2;
   white-space: nowrap;
@@ -420,9 +438,9 @@ body.dark-theme .vk-vault-page-wrapper,
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  color: #FFFFFF;
+  background: var(--vk-on-accent-soft, rgba(255, 255, 255, 0.15));
+  border: 1px solid var(--vk-on-accent-border, rgba(255, 255, 255, 0.28));
+  color: var(--vk-on-accent, #FFFFFF);
   padding: 7px 14px;
   border-radius: var(--radius-pill, 9999px);
   font-size: 0.775rem;
@@ -448,9 +466,9 @@ body.dark-theme .vk-vault-page-wrapper,
   background: rgba(255, 255, 255, 0.25);
 }
 
-/* White/Light Body Container filling the rest of the page */
+/* Body Container filling the rest of the page */
 .vk-vault-white-body {
-  background: #FFFFFF;
+  background: var(--vk-page-bg);
   flex: 1;
   width: 100%;
   position: relative;
@@ -458,13 +476,6 @@ body.dark-theme .vk-vault-page-wrapper,
   padding-top: 20px;
   padding-bottom: var(--vk-content-bottom-padding, 120px);
   box-sizing: border-box;
-}
-
-.dark .vk-vault-white-body,
-.ion-palette-dark .vk-vault-white-body,
-body.dark-theme .vk-vault-white-body,
-[data-theme="dark"] .vk-vault-white-body {
-  background: #0D0D0D;
 }
 
 .vk-kpi-card-wrapper {

@@ -60,14 +60,14 @@ ion-toolbar {
 }
 
 .is-contrast {
-  color: #ffffff;
+  color: var(--vk-on-accent, #ffffff);
 }
 
 .is-contrast .vk-header-title {
-  color: #ffffff;
+  color: var(--vk-on-accent, #ffffff);
 }
 
 .is-contrast .vk-back-btn {
-  --color: #ffffff;
+  --color: var(--vk-on-accent, #ffffff);
 }
 </style>

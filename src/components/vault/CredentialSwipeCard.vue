@@ -89,8 +89,8 @@
             width="18"
             height="18"
             viewBox="0 0 24 24"
-            :fill="credential.favorite ? 'var(--brand-red, #D3332F)' : 'none'"
-            :stroke="credential.favorite ? 'var(--brand-red, #D3332F)' : 'currentColor'"
+            :fill="credential.favorite ? 'var(--vk-accent, #D3332F)' : 'none'"
+            :stroke="credential.favorite ? 'var(--vk-accent, #D3332F)' : 'currentColor'"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -433,8 +433,8 @@ defineExpose({
 .vk-swipe-action-edit {
   left: 0;
   border-radius: 16px 0 0 16px;
-  background: #F5F1EE;
-  color: #C62825;
+  background: var(--vk-surface-soft, #F5F1EE);
+  color: var(--vk-accent);
 }
 
 :global(.dark) .vk-swipe-action-edit,
@@ -442,13 +442,13 @@ defineExpose({
 :global(body.dark-theme) .vk-swipe-action-edit,
 :global([data-theme="dark"]) .vk-swipe-action-edit {
   background: #242424 !important;
-  color: #D3332F !important;
+  color: var(--vk-accent) !important;
 }
 
 .vk-swipe-action-delete {
   right: 0;
   border-radius: 0 16px 16px 0;
-  background: #C62825;
+  background: var(--vk-danger, #C62825);
   color: #FFFFFF;
 }
 
@@ -456,7 +456,7 @@ defineExpose({
 :global(.ion-palette-dark) .vk-swipe-action-delete,
 :global(body.dark-theme) .vk-swipe-action-delete,
 :global([data-theme="dark"]) .vk-swipe-action-delete {
-  background: #D3332F !important;
+  background: var(--vk-danger, #D3332F) !important;
   color: #FFFFFF !important;
 }
 
@@ -637,7 +637,7 @@ defineExpose({
 :global(.ion-palette-dark) .vk-card-star-btn.is-favorite,
 :global(body.dark-theme) .vk-card-star-btn.is-favorite,
 :global([data-theme="dark"]) .vk-card-star-btn.is-favorite {
-  color: var(--brand-red, #D3332F) !important;
+  color: var(--vk-accent, #D3332F) !important;
 }
 
 .vk-card-chevron {

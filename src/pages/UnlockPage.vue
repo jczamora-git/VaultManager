@@ -276,27 +276,16 @@ function goToMasterPasswordFallback() {
 
 <style scoped>
 .vk-unlock-page {
-  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
-  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  --background: var(--vk-accent-gradient);
+  background: var(--vk-accent-gradient);
 }
 
-/* Eliminate any seam/divider line between Red Hero and Dark Bottom Sheet */
+/* Eliminate any seam/divider line between Hero and Bottom Sheet */
 .vk-unlock-page :deep(.vk-onboarding-sheet),
 .vk-unlock-page :deep(.vk-sheet) {
   border-top: none !important;
   box-shadow: none !important;
   outline: none !important;
-}
-
-:global(.dark) .vk-unlock-page :deep(.vk-onboarding-sheet),
-:global(.dark) .vk-unlock-page :deep(.vk-sheet),
-:global(.ion-palette-dark) .vk-unlock-page :deep(.vk-onboarding-sheet),
-:global(.ion-palette-dark) .vk-unlock-page :deep(.vk-sheet),
-:global(body.dark-theme) .vk-unlock-page :deep(.vk-onboarding-sheet),
-:global(body.dark-theme) .vk-unlock-page :deep(.vk-sheet) {
-  background: #151515 !important;
-  border-top: none !important;
-  box-shadow: none !important;
 }
 
 /* Clean Centered Top Brand Header on Red Background */
@@ -318,7 +307,7 @@ function goToMasterPasswordFallback() {
 .vk-unlock-brand-text {
   font-size: clamp(1rem, 4.2vw, 1.125rem); /* 16px - 18px */
   font-weight: 800;
-  color: #FFFFFF;
+  color: var(--vk-on-accent, #FFFFFF);
   letter-spacing: -0.02em;
   line-height: 1;
 }
@@ -380,7 +369,7 @@ function goToMasterPasswordFallback() {
 .vk-btn-master-fallback {
   background: transparent;
   border: none;
-  color: var(--brand-red, #B82825);
+  color: var(--vk-accent, #B82825);
   font-size: 0.8125rem; /* ~13px */
   font-weight: 600;
   cursor: pointer;
@@ -400,7 +389,7 @@ function goToMasterPasswordFallback() {
 
 .vk-btn-master-fallback:active {
   transform: scale(0.95);
-  background: rgba(184, 40, 37, 0.08);
+  background: var(--vk-accent-soft, rgba(184, 40, 37, 0.08));
 }
 
 /* Keypad Container */
@@ -421,18 +410,5 @@ function goToMasterPasswordFallback() {
   .vk-unlock-fallback-row {
     margin-bottom: 14px;
   }
-}
-
-/* Dark mode overrides for fallback button */
-:global(.dark) .vk-btn-master-fallback,
-:global(.ion-palette-dark) .vk-btn-master-fallback,
-:global(body.dark-theme) .vk-btn-master-fallback {
-  color: #D3332F;
-}
-
-:global(.dark) .vk-btn-master-fallback:active,
-:global(.ion-palette-dark) .vk-btn-master-fallback:active,
-:global(body.dark-theme) .vk-btn-master-fallback:active {
-  background: rgba(211, 51, 47, 0.15);
 }
 </style>

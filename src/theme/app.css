@@ -6,7 +6,7 @@
 }
 
 :focus-visible {
-  outline: 2px solid rgba(211, 51, 47, 0.65);
+  outline: 2px solid var(--vk-accent-glow);
   outline-offset: 2px;
 }
 
@@ -185,9 +185,9 @@ body.dark-theme .vk-page-sheet,
 }
 
 .vk-search-pill-wrapper:focus-within {
-  border-color: var(--brand-red);
+  border-color: var(--vk-accent);
   background: var(--vk-bg-surface-elevated);
-  box-shadow: 0 0 0 3px var(--brand-red-glow);
+  box-shadow: 0 0 0 3px var(--vk-accent-glow);
 }
 
 .vk-search-pill-input {
@@ -234,14 +234,14 @@ body.dark-theme .vk-page-sheet,
 }
 
 .vk-input-wrapper:focus-within {
-  border-color: var(--brand-red);
+  border-color: var(--vk-accent);
   background: var(--vk-bg-surface-elevated);
-  box-shadow: 0 0 0 3px var(--brand-red-glow);
+  box-shadow: 0 0 0 3px var(--vk-accent-glow);
 }
 
 .vk-input-wrapper.is-invalid {
-  border-color: var(--brand-red);
-  box-shadow: 0 0 0 3px var(--brand-red-glow);
+  border-color: var(--vk-danger, #D02724);
+  box-shadow: 0 0 0 3px var(--vk-danger-subtle, rgba(208, 39, 36, 0.12));
 }
 
 .vk-input {
@@ -298,8 +298,8 @@ body.dark-theme .vk-page-sheet,
 }
 
 .vk-btn-brand {
-  background: var(--brand-red);
-  color: #FFFFFF;
+  background: var(--vk-accent);
+  color: var(--vk-on-accent, #FFFFFF);
 }
 
 .vk-btn-secondary {
@@ -340,8 +340,16 @@ body.dark-theme .vk-btn-secondary:active,
 }
 
 .vk-btn-danger {
-  background: var(--brand-red);
-  color: #FFFFFF;
+  background: var(--vk-danger, #D02724);
+  color: var(--vk-danger-contrast, #FFFFFF);
+}
+
+.vk-btn-danger:hover {
+  background: var(--vk-danger-hover, #B8201E);
+}
+
+.vk-btn-danger:active {
+  background: var(--vk-danger-active, #9E1B19);
 }
 
 .vk-btn-block {
@@ -398,9 +406,9 @@ body.dark-theme .vk-btn-icon-only:active,
 }
 
 .vk-fab-btn {
-  --background: var(--brand-red);
-  --color: #FFFFFF;
-  --box-shadow: 0 8px 24px rgba(184, 40, 37, 0.4);
+  --background: var(--vk-accent);
+  --color: var(--vk-on-accent, #FFFFFF);
+  --box-shadow: 0 8px 24px var(--vk-accent-glow);
   width: 58px;
   height: 58px;
   transition: transform var(--vk-motion-fast) var(--vk-ease-press);
@@ -524,20 +532,57 @@ ion-modal.vk-bottom-sheet {
   }
 }
 
-/* PIN Keypad Global Dark Overrides */
-.dark .vk-backspace-btn,
-.ion-palette-dark .vk-backspace-btn,
-body.dark-theme .vk-backspace-btn,
-[data-theme="dark"] .vk-backspace-btn {
-  color: #FFFFFF !important;
+/* PIN Keypad Semantic Accent Color (Inherits active accent: Red / Purple) */
+.vk-backspace-btn {
+  color: var(--vk-accent) !important;
 }
 
-.dark .vk-backspace-btn svg,
-.ion-palette-dark .vk-backspace-btn svg,
-body.dark-theme .vk-backspace-btn svg,
-[data-theme="dark"] .vk-backspace-btn svg {
-  stroke: #FFFFFF !important;
-  color: #FFFFFF !important;
+.vk-backspace-btn svg {
+  stroke: currentColor !important;
+  color: currentColor !important;
+}
+
+/* PIN Keypad Global Dark Theme */
+.dark .vk-keypad-btn:not(.vk-keypad-action-btn),
+.ion-palette-dark .vk-keypad-btn:not(.vk-keypad-action-btn),
+body.dark-theme .vk-keypad-btn:not(.vk-keypad-action-btn),
+[data-theme="dark"] .vk-keypad-btn:not(.vk-keypad-action-btn) {
+  background: #1E1E1E !important;
+  color: #F5F5F5 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28) !important;
+}
+
+.dark .vk-keypad-btn:not(.vk-keypad-action-btn):active,
+.ion-palette-dark .vk-keypad-btn:not(.vk-keypad-action-btn):active,
+body.dark-theme .vk-keypad-btn:not(.vk-keypad-action-btn):active,
+[data-theme="dark"] .vk-keypad-btn:not(.vk-keypad-action-btn):active {
+  background: #282828 !important;
+}
+
+.dark .vk-keypad-action-btn,
+.ion-palette-dark .vk-keypad-action-btn,
+body.dark-theme .vk-keypad-action-btn,
+[data-theme="dark"] .vk-keypad-action-btn {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (hover: hover) {
+  .dark .vk-keypad-action-btn:hover:not(:disabled),
+  .ion-palette-dark .vk-keypad-action-btn:hover:not(:disabled),
+  body.dark-theme .vk-keypad-action-btn:hover:not(:disabled),
+  [data-theme="dark"] .vk-keypad-action-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+}
+
+.dark .vk-keypad-action-btn:active:not(:disabled),
+.ion-palette-dark .vk-keypad-action-btn:active:not(:disabled),
+body.dark-theme .vk-keypad-action-btn:active:not(:disabled),
+[data-theme="dark"] .vk-keypad-action-btn:active:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14) !important;
 }
 
 /* Global Credential Cards Dark Surface */

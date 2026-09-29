@@ -130,7 +130,7 @@ function updateOption<K extends keyof GeneratorOptions>(key: K, value: Generator
 .vk-length-number {
   font-size: 1.25rem;
   font-weight: 800;
-  color: var(--brand-red);
+  color: var(--vk-accent);
   font-family: var(--vk-font-mono);
 }
 
@@ -142,7 +142,7 @@ function updateOption<K extends keyof GeneratorOptions>(key: K, value: Generator
 
 .vk-custom-range {
   width: 100%;
-  accent-color: var(--brand-red);
+  accent-color: var(--vk-accent);
   cursor: pointer;
   height: 6px;
   border-radius: var(--radius-pill);
@@ -181,15 +181,8 @@ function updateOption<K extends keyof GeneratorOptions>(key: K, value: Generator
 .vk-custom-checkbox {
   width: 22px;
   height: 22px;
-  accent-color: var(--brand-red);
+  accent-color: var(--vk-accent);
   border-radius: 6px;
   cursor: pointer;
-}
-
-:global(.dark) .vk-custom-range,
-:global(.ion-palette-dark) .vk-custom-range,
-:global(body.dark-theme) .vk-custom-range,
-:global([data-theme="dark"]) .vk-custom-range {
-  background: #383838;
 }
 </style>

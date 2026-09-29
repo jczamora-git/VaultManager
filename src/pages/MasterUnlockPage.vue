@@ -110,8 +110,8 @@ async function handleMasterUnlock() {
 
 <style scoped>
 .vk-master-unlock-page {
-  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
-  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  --background: var(--vk-accent-gradient);
+  background: var(--vk-accent-gradient);
 }
 
 .vk-master-unlock-page :deep(.vk-onboarding-sheet),

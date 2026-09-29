@@ -85,11 +85,7 @@ defineEmits<{
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(
-    180deg,
-    #D02724 0%,
-    #B8201E 100%
-  );
+  background: var(--vk-accent-gradient);
   overflow: hidden;
   position: relative;
   color-scheme: light;

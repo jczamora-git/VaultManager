@@ -29,7 +29,7 @@
       height="16"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--brand-red)"
+      stroke="var(--vk-accent)"
       stroke-width="2.5"
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -131,8 +131,8 @@ body.dark-theme .vk-copy-btn:active {
 }
 
 .vk-copy-btn.is-copied {
-  background: var(--brand-red-subtle);
-  color: var(--brand-red);
+  background: var(--vk-accent-soft);
+  color: var(--vk-accent);
 }
 
 .vk-check-icon {

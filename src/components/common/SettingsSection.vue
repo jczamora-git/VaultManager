@@ -44,6 +44,6 @@ defineProps<{
 }
 
 .text-danger {
-  color: var(--brand-red) !important;
+  color: var(--vk-danger, #D02724) !important;
 }
 </style>

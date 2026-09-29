@@ -77,10 +77,10 @@ defineEmits<{
 <style scoped>
 .vk-kpi-card {
   width: 100%;
-  background: linear-gradient(145deg, #B51F1F 0%, #981918 100%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: var(--vk-accent-gradient);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 26px;
-  box-shadow: 0 12px 30px rgba(100, 16, 14, 0.24);
+  box-shadow: 0 12px 30px var(--vk-accent-glow, rgba(0, 0, 0, 0.24));
   padding: 20px 22px;
   display: flex;
   flex-direction: column;
@@ -110,7 +110,7 @@ defineEmits<{
 .vk-kpi-title {
   font-size: 0.875rem; /* 14px */
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--vk-on-accent-muted, rgba(255, 255, 255, 0.88));
   letter-spacing: -0.01em;
   text-transform: none;
 }
@@ -124,7 +124,7 @@ defineEmits<{
 .vk-kpi-count {
   font-size: clamp(2.5rem, 9vw, 2.85rem); /* ~40px-46px */
   font-weight: 800;
-  color: #FFFFFF;
+  color: var(--vk-on-accent, #FFFFFF);
   line-height: 1;
   letter-spacing: -0.04em;
   transition: transform 120ms ease;
@@ -133,7 +133,7 @@ defineEmits<{
 .vk-kpi-label {
   font-size: 0.8125rem; /* ~13px */
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--vk-on-accent-muted, rgba(255, 255, 255, 0.82));
   margin-top: 4px;
 }
 
@@ -169,8 +169,8 @@ defineEmits<{
 }
 
 .vk-kpi-btn-primary {
-  background: #FFFFFF;
-  color: #151515;
+  background: var(--vk-on-accent-btn-bg, #FFFFFF);
+  color: var(--vk-on-accent-btn-text, #151515);
   border: none;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
@@ -180,48 +180,12 @@ defineEmits<{
 }
 
 .vk-kpi-btn-secondary {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #FFFFFF;
+  background: var(--vk-on-accent-soft, rgba(255, 255, 255, 0.12));
+  border: 1px solid var(--vk-on-accent-border, rgba(255, 255, 255, 0.28));
+  color: var(--vk-on-accent, #FFFFFF);
 }
 
 .vk-kpi-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-/* Dark Mode Appearance */
-:global(.dark) .vk-kpi-card,
-:global(.ion-palette-dark) .vk-kpi-card,
-:global(body.dark-theme) .vk-kpi-card {
-  background: linear-gradient(145deg, #A81B1A 0%, #8C1413 100%);
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
-}
-
-:global(.dark) .vk-kpi-title,
-:global(.ion-palette-dark) .vk-kpi-title,
-:global(body.dark-theme) .vk-kpi-title {
-  color: rgba(255, 255, 255, 0.75);
-}
-
-:global(.dark) .vk-kpi-label,
-:global(.ion-palette-dark) .vk-kpi-label,
-:global(body.dark-theme) .vk-kpi-label {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-:global(.dark) .vk-kpi-btn-primary,
-:global(.ion-palette-dark) .vk-kpi-btn-primary,
-:global(body.dark-theme) .vk-kpi-btn-primary {
-  background: #F4F4F2;
-  color: #101010;
-}
-
-:global(.dark) .vk-kpi-btn-secondary,
-:global(.ion-palette-dark) .vk-kpi-btn-secondary,
-:global(body.dark-theme) .vk-kpi-btn-secondary {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.14);
-  color: #F5F5F5;
+  background: rgba(255, 255, 255, 0.20);
 }
 </style>

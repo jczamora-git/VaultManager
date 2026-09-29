@@ -176,6 +176,7 @@ import CopyButton from '@/components/common/CopyButton.vue';
 import PasswordStrengthMeter from '@/components/common/PasswordStrengthMeter.vue';
 import EmptyState from '@/components/common/EmptyState.vue';
 import DeleteCredentialModal from '@/components/vault/DeleteCredentialModal.vue';
+import { WebsiteIconCacheService } from '@/services/websiteIconCache.service';
 
 const route = useRoute();
 const router = useRouter();
@@ -250,9 +251,8 @@ function handleBack() {
 }
 
 const formattedWebsiteUrl = computed(() => {
-  if (!credential.value?.website) return '';
-  const url = credential.value.website.trim();
-  return /^https?:\/\//i.test(url) ? url : `https://${url}`;
+  const target = credential.value?.website || credential.value?.url || credential.value?.domain;
+  return WebsiteIconCacheService.formatOpenUrl(target);
 });
 
 function togglePasswordReveal() {
@@ -314,8 +314,8 @@ onUnmounted(() => {
 
 <style scoped>
 ion-content {
-  --background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
-  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  --background: var(--vk-accent-gradient);
+  background: var(--vk-accent-gradient);
 }
 
 .vk-detail-hero {
@@ -334,9 +334,9 @@ ion-content {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--vk-on-accent-soft, rgba(255, 255, 255, 0.15));
   border: none;
-  color: #FFFFFF;
+  color: var(--vk-on-accent, #FFFFFF);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -345,7 +345,7 @@ ion-content {
 }
 
 .vk-hero-circle-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: var(--vk-on-accent-border, rgba(255, 255, 255, 0.25));
 }
 
 .vk-hero-account-profile {
@@ -411,7 +411,7 @@ ion-content {
 .vk-detail-link {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--brand-red);
+  color: var(--vk-accent);
   text-decoration: none;
   word-break: break-all;
 }

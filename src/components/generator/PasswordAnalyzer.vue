@@ -402,20 +402,12 @@ defineExpose({
 
 /* INPUT CARD */
 .vk-analyzer-input-card {
-  background: var(--vk-surface-soft, #F1EFEC);
+  background: var(--vk-control-bg);
   border-radius: 18px;
   padding: 12px 16px;
   margin-bottom: 18px;
-  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.04));
+  border: 1px solid var(--vk-border);
   transition: border-color var(--vk-motion-base) ease;
-}
-
-:global(.dark) .vk-analyzer-input-card,
-:global(.ion-palette-dark) .vk-analyzer-input-card,
-:global(body.dark-theme) .vk-analyzer-input-card,
-:global([data-theme="dark"]) .vk-analyzer-input-card {
-  background: #202020;
-  border-color: rgba(255, 255, 255, 0.07);
 }
 
 .vk-analyzer-input-wrapper {
@@ -465,14 +457,7 @@ defineExpose({
 
 .vk-analyzer-icon-btn:hover {
   color: var(--text-primary);
-  background: rgba(0, 0, 0, 0.04);
-}
-
-:global(.dark) .vk-analyzer-icon-btn:hover,
-:global(.ion-palette-dark) .vk-analyzer-icon-btn:hover,
-:global(body.dark-theme) .vk-analyzer-icon-btn:hover,
-:global([data-theme="dark"]) .vk-analyzer-icon-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--vk-border);
 }
 
 /* STRENGTH METER */
@@ -523,19 +508,11 @@ defineExpose({
 
 /* RESISTANCE SUMMARY CARD */
 .vk-resistance-card {
-  background: var(--vk-surface-soft, #F1EFEC);
+  background: var(--vk-surface-elevated);
   border-radius: 20px;
   padding: 18px 18px 16px 18px;
   margin-bottom: 20px;
-  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.04));
-}
-
-:global(.dark) .vk-resistance-card,
-:global(.ion-palette-dark) .vk-resistance-card,
-:global(body.dark-theme) .vk-resistance-card,
-:global([data-theme="dark"]) .vk-resistance-card {
-  background: #202020;
-  border-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--vk-border);
 }
 
 .vk-resistance-header {
@@ -570,7 +547,7 @@ defineExpose({
   gap: 6px;
   background: transparent;
   border: none;
-  color: var(--brand-red, #D3332F);
+  color: var(--vk-accent);
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
@@ -639,22 +616,10 @@ defineExpose({
 
 .vk-checks-card,
 .vk-suggestions-card {
-  background: var(--vk-surface-soft, #F1EFEC);
+  background: var(--vk-surface-elevated);
   border-radius: 18px;
   padding: 16px;
-  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.04));
-}
-
-:global(.dark) .vk-checks-card,
-:global(.dark) .vk-suggestions-card,
-:global(.ion-palette-dark) .vk-checks-card,
-:global(.ion-palette-dark) .vk-suggestions-card,
-:global(body.dark-theme) .vk-checks-card,
-:global(body.dark-theme) .vk-suggestions-card,
-:global([data-theme="dark"]) .vk-checks-card,
-:global([data-theme="dark"]) .vk-suggestions-card {
-  background: #202020;
-  border-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--vk-border);
 }
 
 .vk-check-item {
@@ -684,8 +649,8 @@ defineExpose({
 }
 
 .vk-check-icon.is-fail {
-  background: rgba(211, 51, 47, 0.14);
-  color: var(--brand-red, #D3332F);
+  background: var(--vk-danger-subtle, rgba(211, 51, 47, 0.14));
+  color: var(--vk-danger, #D3332F);
 }
 
 .vk-check-icon.is-neutral {
@@ -721,7 +686,7 @@ defineExpose({
   justify-content: center;
   width: 16px;
   height: 16px;
-  background: var(--brand-red, #D3332F);
+  background: var(--vk-danger, #D3332F);
   color: #FFFFFF;
   font-size: 0.65rem;
   font-weight: 800;
@@ -732,7 +697,7 @@ defineExpose({
 
 .vk-warning-text {
   font-size: 0.775rem;
-  color: var(--brand-red, #D3332F);
+  color: var(--vk-danger, #D3332F);
   font-weight: 600;
   line-height: 1.35;
 }
@@ -751,7 +716,7 @@ defineExpose({
 }
 
 .vk-suggestion-bullet {
-  color: var(--brand-red, #D3332F);
+  color: var(--vk-accent);
   font-weight: 800;
   font-size: 0.9rem;
   line-height: 1.2;

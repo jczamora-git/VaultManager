@@ -19,7 +19,7 @@
 
       <!-- Soft Red Trash Icon Circle -->
       <div class="vk-delete-icon-circle">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C62825" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--vk-danger, #C62825)" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 6h18"/>
           <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
           <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
@@ -431,7 +431,7 @@ ion-modal.vk-delete-modal {
 /* Centered Label */
 .vk-swipe-delete-label {
   position: absolute;
-  color: #C62825;
+  color: var(--vk-danger, #C62825);
   font-size: 0.9rem; /* ~14.5px */
   font-weight: 700;
   letter-spacing: 0.01em;
@@ -456,7 +456,7 @@ ion-modal.vk-delete-modal {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #C62825;
+  background: var(--vk-danger, #C62825);
   box-shadow: 0 4px 12px rgba(198, 40, 37, 0.38);
   display: flex;
   align-items: center;

@@ -1,6 +1,6 @@
 import { Preferences } from '@capacitor/preferences';
 import { EncryptedVaultEnvelope } from '@/models/vault.model';
-import { AppSettings, DEFAULT_SETTINGS } from '@/models/settings.model';
+import { AppSettings, DEFAULT_SETTINGS, isValidAccent } from '@/models/settings.model';
 import { LocalProfile } from '@/models/profile.model';
 
 const STORAGE_KEYS = {
@@ -225,7 +225,9 @@ export class StorageService {
     const { value } = await Preferences.get({ key: STORAGE_KEYS.SETTINGS });
     if (value) {
       try {
-        return { ...DEFAULT_SETTINGS, ...JSON.parse(value) };
+        const parsed = JSON.parse(value);
+        const accent = isValidAccent(parsed.accent) ? parsed.accent : 'red';
+        return { ...DEFAULT_SETTINGS, ...parsed, accent };
       } catch {
         return DEFAULT_SETTINGS;
       }
@@ -233,7 +235,9 @@ export class StorageService {
     const local = localStorage.getItem(STORAGE_KEYS.SETTINGS);
     if (local) {
       try {
-        return { ...DEFAULT_SETTINGS, ...JSON.parse(local) };
+        const parsed = JSON.parse(local);
+        const accent = isValidAccent(parsed.accent) ? parsed.accent : 'red';
+        return { ...DEFAULT_SETTINGS, ...parsed, accent };
       } catch {
         return DEFAULT_SETTINGS;
       }

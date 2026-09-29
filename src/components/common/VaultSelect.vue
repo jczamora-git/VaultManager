@@ -58,7 +58,7 @@
               height="18"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="var(--brand-red)"
+              stroke="var(--vk-accent)"
               stroke-width="3"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -254,15 +254,8 @@ function selectOption(val: any) {
 }
 
 .vk-select-option-item.is-selected {
-  color: var(--brand-red);
+  color: var(--vk-accent);
   font-weight: 700;
-}
-
-:global(.dark) .vk-select-option-item.is-selected,
-:global(.ion-palette-dark) .vk-select-option-item.is-selected,
-:global(body.dark-theme) .vk-select-option-item.is-selected,
-:global([data-theme="dark"]) .vk-select-option-item.is-selected {
-  color: #D3332F;
 }
 
 .vk-check-icon {

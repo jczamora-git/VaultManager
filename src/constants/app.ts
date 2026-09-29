@@ -1,5 +1,5 @@
 export const APP_NAME = 'Vaultify';
-export const APP_VERSION = '1.0.0';
+export const APP_VERSION = '1.1.0';
 export const APP_RELEASE_DATE = 'September 2026';
 export const APP_TAGLINE = 'Your passwords.\nYour device.\nYour vault.';
 export const APP_DESCRIPTION =

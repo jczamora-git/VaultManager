@@ -124,8 +124,8 @@ import { APP_NAME, APP_VERSION } from '@/constants/app';
 .vk-about-version {
   font-size: 0.825rem;
   font-weight: 700;
-  color: var(--brand-red);
-  background: var(--brand-red-subtle);
+  color: var(--vk-accent);
+  background: var(--vk-accent-soft);
   padding: 4px 12px;
   border-radius: var(--radius-pill);
   margin-bottom: 16px;
@@ -158,7 +158,7 @@ import { APP_NAME, APP_VERSION } from '@/constants/app';
 .vk-info-heading {
   font-size: 0.775rem;
   font-weight: 800;
-  color: var(--brand-red);
+  color: var(--vk-accent);
   letter-spacing: 0.05em;
   margin: 0;
   text-transform: uppercase;

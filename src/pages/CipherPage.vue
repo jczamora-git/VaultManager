@@ -341,17 +341,9 @@ ion-content {
 }
 
 .vk-algo-pill.is-active {
-  background: var(--brand-red, #B82825);
-  color: #FFFFFF;
+  background: var(--vk-accent);
+  color: var(--vk-on-accent, #FFFFFF);
   border-color: transparent;
-}
-
-:global(.dark) .vk-algo-pill.is-active,
-:global(.ion-palette-dark) .vk-algo-pill.is-active,
-:global(body.dark-theme) .vk-algo-pill.is-active,
-:global([data-theme="dark"]) .vk-algo-pill.is-active {
-  background: var(--brand-red, #D3332F);
-  color: #FFFFFF;
 }
 
 .vk-cipher-fields {
@@ -374,13 +366,13 @@ ion-content {
 .vk-shift-number {
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--brand-red);
+  color: var(--vk-accent);
   font-family: var(--vk-font-mono);
 }
 
 .vk-custom-range {
   width: 100%;
-  accent-color: var(--brand-red);
+  accent-color: var(--vk-accent);
   cursor: pointer;
   height: 6px;
   border-radius: var(--radius-pill, 999px);
@@ -391,8 +383,8 @@ ion-content {
   margin-top: 12px;
   padding: 12px 16px;
   border-radius: var(--radius-md);
-  background: var(--brand-red-subtle);
-  color: var(--brand-red);
+  background: var(--vk-danger-subtle, rgba(208, 39, 36, 0.12));
+  color: var(--vk-danger, #D02724);
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -402,19 +394,11 @@ ion-content {
 }
 
 .vk-output-card {
-  background: var(--vk-bg-surface-soft, #F1EFEC);
+  background: var(--vk-surface-elevated);
   border-radius: 20px;
   padding: 18px;
-  border: 1px solid var(--vk-border, rgba(0, 0, 0, 0.04));
+  border: 1px solid var(--vk-border);
   animation: vkRiseIn var(--vk-motion-base) var(--vk-ease-enter) forwards;
-}
-
-:global(.dark) .vk-output-card,
-:global(.ion-palette-dark) .vk-output-card,
-:global(body.dark-theme) .vk-output-card,
-:global([data-theme="dark"]) .vk-output-card {
-  background: #202020;
-  border-color: rgba(255, 255, 255, 0.07);
 }
 
 .vk-output-box {

@@ -59,7 +59,7 @@ withDefaults(
   width: clamp(8px, 2.2vw, 10px);
   height: clamp(8px, 2.2vw, 10px);
   border-radius: 50%;
-  background: var(--brand-red, #B82825);
+  background: var(--vk-accent);
   transform: scale(0);
   opacity: 0;
   transition: transform 140ms var(--vk-ease-enter),

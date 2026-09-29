@@ -178,12 +178,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { IonPage, IonContent, onIonViewDidEnter, useBackButton } from '@ionic/vue';
 import { useVaultStore } from '@/stores/vault.store';
 import { useToast } from '@/composables/useToast';
-import { CredentialCategory, CredentialFormData } from '@/models/credential.model';
+import { CredentialCategory, CredentialFormData, parseCredentialCategory } from '@/models/credential.model';
 import { PasswordGeneratorService } from '@/services/password-generator.service';
 import { DEFAULT_GENERATOR_OPTIONS } from '@/models/generator.model';
 import CategorySelector from '@/components/vault/CategorySelector.vue';
@@ -219,7 +219,15 @@ const errors = reactive({
   password: '',
 });
 
+function applyCategoryFromQuery() {
+  if (!isEditMode.value && route.query.category) {
+    form.category = parseCredentialCategory(route.query.category, form.category);
+  }
+}
+
 onMounted(() => {
+  applyCategoryFromQuery();
+
   if (route.query.prefillPassword) {
     form.password = String(route.query.prefillPassword);
   }
@@ -242,7 +250,15 @@ onMounted(() => {
   }
 });
 
+watch(
+  () => route.query.category,
+  () => {
+    applyCategoryFromQuery();
+  }
+);
+
 onIonViewDidEnter(() => {
+  applyCategoryFromQuery();
   contentRef.value?.$el?.scrollToTop?.(0);
 });
 
@@ -300,24 +316,8 @@ function handleCancel() {
 }
 
 .vk-credential-form-content {
-  --background: #FFFFFF;
-  background: #FFFFFF;
-}
-
-:global(.dark) .vk-credential-form-page,
-:global(.ion-palette-dark) .vk-credential-form-page,
-:global(body.dark-theme) .vk-credential-form-page,
-:global([data-theme="dark"]) .vk-credential-form-page {
-  --background: #151515;
-  background: #151515;
-}
-
-:global(.dark) .vk-credential-form-content,
-:global(.ion-palette-dark) .vk-credential-form-content,
-:global(body.dark-theme) .vk-credential-form-content,
-:global([data-theme="dark"]) .vk-credential-form-content {
-  --background: #151515;
-  background: #151515;
+  --background: var(--vk-surface);
+  background: var(--vk-surface);
 }
 
 .vk-credential-form-layout {
@@ -325,19 +325,12 @@ function handleCancel() {
   flex-direction: column;
   min-height: 100%;
   width: 100%;
-  background: #FFFFFF;
-}
-
-:global(.dark) .vk-credential-form-layout,
-:global(.ion-palette-dark) .vk-credential-form-layout,
-:global(body.dark-theme) .vk-credential-form-layout,
-:global([data-theme="dark"]) .vk-credential-form-layout {
-  background: #151515;
+  background: var(--vk-surface);
 }
 
 /* Red Hero Header */
 .vk-form-hero-header {
-  background: var(--vk-brand-gradient, linear-gradient(180deg, #D02724 0%, #C12320 45%, #B8201E 100%));
+  background: var(--vk-accent-gradient);
   color: var(--vk-bg-hero-text, #FFFFFF);
   padding-top: var(--vk-safe-top, calc(env(safe-area-inset-top, 0px) + 12px));
   padding-bottom: 28px;
@@ -427,8 +420,8 @@ function handleCancel() {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: var(--brand-red-subtle);
-  color: var(--brand-red);
+  background: var(--vk-accent-soft);
+  color: var(--vk-accent);
   border: none;
   padding: 4px 10px;
   border-radius: var(--radius-pill);
@@ -442,7 +435,7 @@ function handleCancel() {
 }
 
 .text-danger {
-  color: var(--brand-red);
+  color: var(--vk-danger, #D02724);
 }
 
 .vk-textarea-wrapper {

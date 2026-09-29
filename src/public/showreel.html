@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VAULTIFY — 15s Product Showreel & Motion Launch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       VAULTIFY SHOWREEL MASTER STYLES & MOTION GRAPHICS ENGINE
+       ========================================================================== */
+    :root {
+      --vk-bg-void: #050507;
+      --vk-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --vk-font-mono: 'JetBrains Mono', monospace;
+
+      /* Dynamic Accent Palette (Default: Vaultify Red) */
+      --vk-accent: #D02724;
+      --vk-accent-hover: #B8201E;
+      --vk-accent-glow: rgba(208, 39, 36, 0.45);
+      --vk-accent-soft: rgba(208, 39, 36, 0.15);
+      --vk-on-accent: #FFFFFF;
+
+      /* Surface Tokens */
+      --vk-card-bg: rgba(18, 18, 22, 0.75);
+      --vk-card-border: rgba(255, 255, 255, 0.10);
+      --vk-text-primary: #FFFFFF;
+      --vk-text-secondary: rgba(255, 255, 255, 0.65);
+      --vk-text-muted: rgba(255, 255, 255, 0.40);
+    }
+
+    /* Reset & Base Setup */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: var(--vk-bg-void);
+      color: var(--vk-text-primary);
+      font-family: var(--vk-font-sans);
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Cinema Viewport Container (16:9 Master Aspect Ratio) */
+    .viewport-wrapper {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      max-width: 1920px;
+      max-height: 1080px;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #0d0e14 0%, #050507 85%, #000000 100%);
+      perspective: 1200px;
+    }
+
+    /* Background Dynamic Canvas (Stars, Hex Matrix, Laser Grid) */
+    #fx-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Ambient Lighting & Chromatic Vignette */
+    .ambient-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--glow-x, 50%) var(--glow-y, 50%), var(--vk-accent-glow) 0%, transparent 65%);
+      opacity: 0.55;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: 2;
+      transition: background 0.4s ease, opacity 0.4s ease;
+    }
+
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.85) 100%);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .scanlines {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      pointer-events: none;
+      opacity: 0.35;
+      z-index: 4;
+    }
+
+    /* Master 3D Stage */
+    .stage-3d {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+      z-index: 10;
+      transition: transform 0.1s linear;
+    }
+
+    /* ==========================================================================
+       ACT 1: BRAND REVEAL & CIPHER MATRIX (0.0s – 3.0s)
+       ========================================================================== */
+    .act-1-container {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transform-style: preserve-3d;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .cipher-stream {
+      font-family: var(--vk-font-mono);
+      font-size: 14px;
+      letter-spacing: 0.35em;
+      color: var(--vk-accent);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      text-shadow: 0 0 12px var(--vk-accent-glow);
+      opacity: 0.9;
+    }
+
+    .emblem-wrapper {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+      transform-style: preserve-3d;
+    }
+
+    .emblem-ring {
+      position: absolute;
+      inset: -20px;
+      border-radius: 50%;
+      border: 2px dashed var(--vk-accent);
+      opacity: 0.4;
+      animation: spinRing 20s linear infinite;
+    }
+
+    .emblem-pulse {
+      position: absolute;
+      inset: -40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--vk-accent-glow) 0%, transparent 70%);
+      opacity: 0.6;
+      filter: blur(12px);
+    }
+
+    .emblem-logo {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      filter: drop-shadow(0 15px 35px var(--vk-accent-glow));
+      z-index: 5;
+    }
+
+    .brand-title {
+      font-size: clamp(52px, 7vw, 96px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      background: linear-gradient(180deg, #FFFFFF 0%, #DFDFDF 60%, rgba(255,255,255,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+      text-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+
+    .brand-tagline {
+      font-size: clamp(14px, 1.6vw, 22px);
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--vk-text-secondary);
+    }
+
+    .brand-tagline span {
+      color: var(--vk-accent);
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       ACT 2: PRODUCT & UI SHOWCASE (3.0s – 7.0s)
+       ========================================================================== */
+    .act-2-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* 3D Realistic Phone Mockup */
+    .phone-mockup {
+      position: relative;
+      width: 380px;
+      height: 760px;
+      background: #09090b;
+      border-radius: 48px;
+      border: 5px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 0 0 60px var(--vk-accent-soft), inset 0 0 2px rgba(255,255,255,0.4);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: rotateX(12deg) rotateY(-18deg) rotateZ(3deg);
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 26px;
+      background: #000;
+      border-radius: 14px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 10px;
+    }
+
+    .notch-camera {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #111e2e;
+      border: 1px solid #1a2a3a;
+    }
+
+    .notch-sensor {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #151515;
+    }
+
+    /* Phone Screen Content */
+    .screen-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 56px 20px 24px 20px;
+      background: #0d0d11;
+      color: #fff;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Top Bar */
+    .phone-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .brand-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand-pill img {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-pill span {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .status-badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--vk-accent-soft);
+      color: var(--vk-accent);
+      border: 1px solid var(--vk-accent);
+      padding: 4px 10px;
+      border-radius: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Vault Summary KPI Card */
+    .phone-kpi-card {
+      background: linear-gradient(135deg, rgba(30, 30, 36, 0.9) 0%, rgba(18, 18, 22, 0.95) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .kpi-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--vk-text-muted);
+      margin-bottom: 6px;
+    }
+
+    .kpi-metric-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .kpi-number {
+      font-size: 34px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .kpi-label {
+      font-size: 13px;
+      color: var(--vk-text-secondary);
+    }
+
+    .kpi-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .kpi-btn {
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .kpi-btn-primary {
+      background: var(--vk-accent);
+      color: #fff;
+      box-shadow: 0 4px 15px var(--vk-accent-glow);
+    }
+
+    .kpi-btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #eee;
+    }
+
+    /* Credential Cards List */
+    .credential-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+
+    .cred-card {
+      background: rgba(26, 26, 32, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+      transform: translateZ(0);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cred-card.active-highlight {
+      border-color: var(--vk-accent);
+      box-shadow: 0 8px 25px var(--vk-accent-glow);
+      transform: translateX(4px) scale(1.02);
+    }
+
+    .cred-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .icon-github { background: #24292e; }
+    .icon-google { background: #ea4335; }
+    .icon-stripe { background: #635bff; }
+    .icon-figma  { background: #a259ff; }
+
+    .cred-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cred-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cred-sub {
+      font-size: 11px;
+      color: var(--vk-text-secondary);
+      font-family: var(--vk-font-mono);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cred-tag {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--vk-text-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Toast Notification */
+    .mini-toast {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(50px);
+      background: #15803d;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      opacity: 0;
+      z-index: 90;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mini-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Category Bottom Sheet (Slide-Up Overlay) */
+    .category-sheet-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      z-index: 80;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .category-sheet-content {
+      background: #18181e;
+      border-top-left-radius: 32px;
+      border-top-right-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: none;
+      padding: 16px 18px 26px 18px;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sheet-handle {
+      width: 38px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 2px;
+      align-self: center;
+      margin-bottom: 8px;
+    }
+
+    .sheet-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .sheet-subtitle {
+      font-size: 11px;
+      color: var(--vk-text-muted);
+      margin-top: -8px;
+      margin-bottom: 4px;
+    }
+
+    .category-items {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .cat-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.2s;
+    }
+
+    .cat-item.selected {
+      background: var(--vk-accent-soft);
+      border-color: var(--vk-accent);
+    }
+
+    .cat-icon-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .cat-item.selected .cat-icon-badge {
+      background: var(--vk-accent);
+      color: #fff;
+    }
+
+    .cat-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .cat-desc {
+      font-size: 10px;
+      color: var(--vk-text-muted);
+    }
+
+    /* Floating Parallax Graphics outside phone */
+    .floating-callout {
+      position: absolute;
+      background: rgba(18, 18, 24, 0.85);
+      border: 1px solid var(--vk-card-border);
+      backdrop-filter: blur(16px);
+      padding: 14px 20px;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 50;
+      opacity: 0;
+      transform: scale(0.8) translateZ(80px);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .callout-left {
+      left: calc(50% - 460px);
+      top: 30%;
+    }
+
+    .callout-right {
+      right: calc(50% - 460px);
+      bottom: 25%;
+    }
+
+    .callout-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--vk-accent-soft);
+      border: 1px solid var(--vk-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--vk-accent);
+    }
+
+    .callout-text h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .callout-text p {
+      font-size: 12px;
+      color: var(--vk-text-secondary);
+    }
+
+    /* ==========================================================================
+       ACT 3: SECURITY & ADVANCED CIPHER FEATURES (7.0s – 11.0s)
+       ========================================================================== */
+    .act-3-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      transform-style: preserve-3d;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Feature Card Left: Generator */
+    .feature-card {
+      width: 440px;
+      background: rgba(16, 16, 22, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 32px;
+      padding: 28px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+      transform-style: preserve-3d;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--vk-accent);
+      background: var(--vk-accent-soft);
+      border: 1px solid var(--vk-accent);
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+
+    .generator-output-box {
+      background: #09090c;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .generator-pw {
+      font-family: var(--vk-font-mono);
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.08em;
+      word-break: break-all;
+      margin-bottom: 12px;
+      text-shadow: 0 0 15px rgba(255,255,255,0.4);
+    }
+
+    .entropy-bar-track {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .entropy-bar-fill {
+      height: 100%;
+      width: 95%;
+      background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+      box-shadow: 0 0 10px #10b981;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .entropy-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 600;
+      color: #34d399;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+    }
+
+    .slider-row span {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--vk-text-secondary);
+    }
+
+    .slider-val {
+      font-family: var(--vk-font-mono);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--vk-accent);
+    }
+
+    /* Feature Card Right: PIN Security */
+    .pin-card-mock {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pin-dots-row {
+      display: flex;
+      gap: 16px;
+      margin: 18px 0 24px 0;
+    }
+
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pin-dot.filled {
+      background: var(--vk-accent);
+      border-color: var(--vk-accent);
+      box-shadow: 0 0 16px var(--vk-accent-glow);
+      transform: scale(1.15);
+    }
+
+    .pin-keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+    }
+
+    .key-btn {
+      height: 54px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .key-btn.active-key {
+      background: var(--vk-accent);
+      border-color: var(--vk-accent);
+      box-shadow: 0 0 20px var(--vk-accent-glow);
+      transform: scale(0.94);
+    }
+
+    /* Biometric Scan Hologram Overlay */
+    .biometric-hologram {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.5);
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 2px solid #10b981;
+      box-shadow: 0 0 50px rgba(16, 185, 129, 0.5), inset 0 0 30px rgba(16, 185, 129, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(16, 185, 129, 0.12);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      z-index: 100;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .biometric-hologram.show {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    .biometric-hologram svg {
+      width: 64px;
+      height: 64px;
+      color: #10b981;
+      margin-bottom: 8px;
+    }
+
+    .biometric-hologram span {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #34d399;
+    }
+
+    /* Floating Security Telemetry Chips */
+    .telemetry-row {
+      position: absolute;
+      bottom: 60px;
+      display: flex;
+      gap: 16px;
+      z-index: 50;
+    }
+
+    .telem-pill {
+      font-family: var(--vk-font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 18px;
+      border-radius: 24px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    /* ==========================================================================
+       ACT 4: RAPID DYNAMIC THEME & 7-ACCENT PRISM SHOWCASE (11.0s – 14.0s)
+       ========================================================================== */
+    .act-4-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .prism-title-row {
+      text-align: center;
+      margin-bottom: 30px;
+      z-index: 20;
+    }
+
+    .prism-kicker {
+      font-family: var(--vk-font-mono);
+      font-size: 13px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--vk-accent);
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px var(--vk-accent-glow);
+    }
+
+    .prism-headline {
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    /* Multi-Accent UI Fan Array */
+    .accent-fan-cards {
+      display: flex;
+      gap: 18px;
+      perspective: 1000px;
+      z-index: 20;
+    }
+
+    .accent-swatch-card {
+      width: 130px;
+      height: 220px;
+      border-radius: 24px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 2px solid transparent;
+      background: #141419;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .accent-swatch-card.active-swatch {
+      transform: translateY(-24px) scale(1.1);
+      box-shadow: 0 30px 60px var(--card-glow);
+      border-color: #fff;
+      z-index: 30;
+    }
+
+    .swatch-color-orb {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--swatch-color);
+      box-shadow: 0 0 20px var(--card-glow);
+    }
+
+    .swatch-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .swatch-hex {
+      font-family: var(--vk-font-mono);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Large Dynamic UI Display that morphs live */
+    .dynamic-morph-ui {
+      width: 780px;
+      background: var(--morph-bg, #101015);
+      color: var(--morph-text, #ffffff);
+      border: 2px solid var(--vk-accent);
+      border-radius: 28px;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 36px;
+      box-shadow: 0 20px 60px var(--vk-accent-glow);
+      transition: all 0.25s ease;
+      z-index: 20;
+    }
+
+    .morph-ui-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .morph-ui-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: var(--vk-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px var(--vk-accent-glow);
+    }
+
+    .morph-ui-texts h3 {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .morph-ui-texts p {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .morph-ui-action {
+      padding: 12px 24px;
+      border-radius: 16px;
+      background: var(--vk-accent);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      box-shadow: 0 6px 20px var(--vk-accent-glow);
+    }
+
+    /* ==========================================================================
+       ACT 5: HERO CLIMAX & BRAND FINALE (14.0s – 15.0s)
+       ========================================================================== */
+    .act-5-container {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transform-style: preserve-3d;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    .hero-final-emblem {
+      width: 170px;
+      height: 170px;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 60px var(--vk-accent-glow));
+      animation: floatHero 4s ease-in-out infinite alternate;
+      margin-bottom: 28px;
+    }
+
+    .hero-final-title {
+      font-size: clamp(64px, 8.5vw, 110px);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      background: linear-gradient(180deg, #FFFFFF 0%, #EEEEEE 60%, rgba(255,255,255,0.75) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 18px;
+    }
+
+    .hero-final-tagline {
+      font-size: clamp(16px, 2.2vw, 28px);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: #FFFFFF;
+      margin-bottom: 28px;
+    }
+
+    .hero-final-tagline span {
+      color: var(--vk-accent);
+      font-weight: 800;
+    }
+
+    .hero-final-badges {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .hero-badge svg {
+      color: var(--vk-accent);
+    }
+
+    /* ==========================================================================
+       DIRECTOR CONTROL CONSOLE & MASTER TIMELINE HUD
+       ========================================================================== */
+    .director-hud {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 48px);
+      max-width: 1200px;
+      background: rgba(14, 14, 18, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(24px);
+      border-radius: 24px;
+      padding: 14px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1000;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .hud-timeline-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hud-scrubber-track {
+      flex: 1;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .hud-scrubber-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #D02724 0%, var(--vk-accent) 100%);
+      box-shadow: 0 0 12px var(--vk-accent-glow);
+      border-radius: 5px;
+      transition: width 0.05s linear;
+    }
+
+    /* Act Markers on Scrubber */
+    .scrubber-marker {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: rgba(255, 255, 255, 0.35);
+      z-index: 2;
+    }
+
+    .hud-timecode {
+      font-family: var(--vk-font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.05em;
+      min-width: 130px;
+      text-align: right;
+    }
+
+    .hud-controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hud-act-pills {
+      display: flex;
+      gap: 8px;
+    }
+
+    .act-pill-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--vk-text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .act-pill-btn:hover, .act-pill-btn.active {
+      background: var(--vk-accent-soft);
+      border-color: var(--vk-accent);
+      color: #fff;
+    }
+
+    .hud-playback-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hud-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 7px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .hud-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .hud-btn.primary {
+      background: var(--vk-accent);
+      border-color: var(--vk-accent);
+      box-shadow: 0 2px 10px var(--vk-accent-glow);
+    }
+
+    /* Auto-hide toggle button in corner */
+    .hud-toggle-btn {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: rgba(14, 14, 18, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      z-index: 1001;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
+    }
+
+    .hud-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .hud-hidden .director-hud {
+      opacity: 0;
+      transform: translateX(-50%) translateY(40px);
+      pointer-events: none;
+    }
+
+    /* Keyframe Animations */
+    @keyframes spinRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes floatHero {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-12px) rotate(2deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MASTER 16:9 VIEWPORT WRAPPER -->
+  <div class="viewport-wrapper" id="viewport">
+    
+    <!-- 1. Background Particle & Ray FX Canvas -->
+    <canvas id="fx-canvas"></canvas>
+
+    <!-- 2. Ambient Lighting & Chromatic Vignette -->
+    <div class="ambient-glow" id="ambient-glow"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+
+    <!-- HUD Hide/Show Toggle -->
+    <button class="hud-toggle-btn" id="hud-toggle-btn" onclick="toggleHud()">Hide HUD [H]</button>
+
+    <!-- 3. Master 3D Stage -->
+    <div class="stage-3d" id="stage-3d">
+
+      <!-- ======================================================================
+           ACT 1: BRAND REVEAL & CIPHER MATRIX (0.0s – 3.0s)
+           ====================================================================== -->
+      <div class="act-1-container" id="act-1">
+        <div class="cipher-stream" id="cipher-stream">0x8F9B :: AES-256-GCM :: ARGON2ID :: CLIENT-ENCRYPTED</div>
+        <div class="emblem-wrapper" id="act1-emblem-wrap">
+          <div class="emblem-ring"></div>
+          <div class="emblem-pulse"></div>
+          <!-- Fallback safe inline SVG Vaultify Wheel Mark -->
+          <svg class="emblem-logo" id="act1-logo-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="95" fill="var(--vk-accent)" />
+            <circle cx="100" cy="100" r="34" fill="#09090b" />
+            <polygon points="100,60 84,20 116,20" fill="#09090b" />
+            <polygon points="135,75 168,48 184,76" fill="#09090b" />
+            <polygon points="140,118 184,124 168,152" fill="#09090b" />
+            <polygon points="65,75 32,48 16,76" fill="#09090b" />
+            <polygon points="60,118 16,124 32,152" fill="#09090b" />
+            <polygon points="82,128 65,185 135,185 118,128" fill="#09090b" />
+          </svg>
+        </div>
+        <h1 class="brand-title" id="act1-title">VAULTIFY</h1>
+        <p class="brand-tagline" id="act1-tagline">Your passwords. <span>Your vault.</span> Your control.</p>
+      </div>
+
+      <!-- ======================================================================
+           ACT 2: PRODUCT & UI SHOWCASE (3.0s – 7.0s)
+           ====================================================================== -->
+      <div class="act-2-container" id="act-2">
+        
+        <!-- Left Floating Parallax Graphic -->
+        <div class="floating-callout callout-left" id="callout-left">
+          <div class="callout-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <div class="callout-text">
+            <h4>Private Local Vault</h4>
+            <p>100% On-Device Sovereign Storage</p>
+          </div>
+        </div>
+
+        <!-- 3D Realistic Phone Mockup -->
+        <div class="phone-mockup" id="phone-mockup">
+          <div class="phone-notch">
+            <div class="notch-sensor"></div>
+            <div class="notch-camera"></div>
+          </div>
+
+          <div class="screen-content">
+            <!-- App Bar -->
+            <div class="phone-top-bar">
+              <div class="brand-pill">
+                <svg width="18" height="18" viewBox="0 0 200 200" fill="none">
+                  <circle cx="100" cy="100" r="95" fill="var(--vk-accent)" />
+                  <circle cx="100" cy="100" r="34" fill="#18181e" />
+                  <polygon points="100,60 84,20 116,20" fill="#18181e" />
+                  <polygon points="135,75 168,48 184,76" fill="#18181e" />
+                  <polygon points="140,118 184,124 168,152" fill="#18181e" />
+                  <polygon points="65,75 32,48 16,76" fill="#18181e" />
+                  <polygon points="60,118 16,124 32,152" fill="#18181e" />
+                  <polygon points="82,128 65,185 135,185 118,128" fill="#18181e" />
+                </svg>
+                <span>Vaultify</span>
+              </div>
+              <span class="status-badge">ENCRYPTED</span>
+            </div>
+
+            <!-- Vault Summary KPI Card -->
+            <div class="phone-kpi-card">
+              <div class="kpi-title">My Vault</div>
+              <div class="kpi-metric-row">
+                <span class="kpi-number" id="kpi-counter">24</span>
+                <span class="kpi-label">Saved accounts</span>
+              </div>
+              <div class="kpi-buttons">
+                <button class="kpi-btn kpi-btn-primary" id="phone-btn-add">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                  <span>Add Login</span>
+                </button>
+                <button class="kpi-btn kpi-btn-secondary">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  <span>Generate</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Credential Cards List -->
+            <div class="credential-cards-list">
+              <!-- Card 1: GitHub -->
+              <div class="cred-card" id="card-github">
+                <div class="cred-icon icon-github">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                </div>
+                <div class="cred-details">
+                  <div class="cred-title">GitHub Enterprise</div>
+                  <div class="cred-sub">dev@vaultify.internal</div>
+                </div>
+                <span class="cred-tag">Developer</span>
+              </div>
+
+              <!-- Card 2: Google Workspace -->
+              <div class="cred-card" id="card-google">
+                <div class="cred-icon icon-google">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
+                </div>
+                <div class="cred-details">
+                  <div class="cred-title">Google Workspace</div>
+                  <div class="cred-sub">jc@corp.com</div>
+                </div>
+                <span class="cred-tag">Work</span>
+              </div>
+
+              <!-- Card 3: Stripe -->
+              <div class="cred-card" id="card-stripe">
+                <div class="cred-icon icon-stripe">
+                  <span style="font-weight:900; font-size:22px;">S</span>
+                </div>
+                <div class="cred-details">
+                  <div class="cred-title">Stripe Production</div>
+                  <div class="cred-sub">api_live_9f8b...</div>
+                </div>
+                <span class="cred-tag">Finance</span>
+              </div>
+            </div>
+
+            <!-- Mini Toast Feedback -->
+            <div class="mini-toast" id="phone-toast">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Copied (Auto-clears in 30s)</span>
+            </div>
+
+            <!-- Category Bottom Sheet (Slide Up) -->
+            <div class="category-sheet-overlay" id="category-sheet-overlay">
+              <div class="category-sheet-content" id="category-sheet-content">
+                <div class="sheet-handle"></div>
+                <div class="sheet-title">Choose a category</div>
+                <div class="sheet-subtitle">What kind of login are you adding?</div>
+                <div class="category-items">
+                  <div class="cat-item">
+                    <div class="cat-icon-badge">💼</div>
+                    <div><div class="cat-label">Work</div><div class="cat-desc">Workplace & corporate accounts</div></div>
+                  </div>
+                  <div class="cat-item selected" id="cat-developer">
+                    <div class="cat-icon-badge">⚡</div>
+                    <div><div class="cat-label">Developer</div><div class="cat-desc">APIs, servers & developer tools</div></div>
+                  </div>
+                  <div class="cat-item">
+                    <div class="cat-icon-badge">💬</div>
+                    <div><div class="cat-label">Social</div><div class="cat-desc">Social networks & forums</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right Floating Parallax Graphic -->
+        <div class="floating-callout callout-right" id="callout-right">
+          <div class="callout-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </div>
+          <div class="callout-text">
+            <h4>Category Routing</h4>
+            <p>Smart pre-selection bottom sheet</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ======================================================================
+           ACT 3: SECURITY & ADVANCED CIPHER FEATURES (7.0s – 11.0s)
+           ====================================================================== -->
+      <div class="act-3-container" id="act-3">
+        
+        <!-- Generator Feature Card -->
+        <div class="feature-card" id="feat-generator">
+          <div class="card-header-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Cryptographic Engine
+          </div>
+          <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 14px;">High-Entropy Generator</h3>
+          
+          <div class="generator-output-box">
+            <div class="generator-pw" id="rolling-pw">9x$K@7pL#2vW!8mQ</div>
+            <div class="entropy-bar-track">
+              <div class="entropy-bar-fill" id="entropy-fill"></div>
+            </div>
+            <div class="entropy-label">
+              <span>ENTROPY: 128-BIT</span>
+              <span>UNBREAKABLE</span>
+            </div>
+          </div>
+
+          <div class="slider-row">
+            <span>Password Length</span>
+            <span class="slider-val" id="slider-length-val">24 CHARS</span>
+          </div>
+        </div>
+
+        <!-- PIN Security Feature Card -->
+        <div class="feature-card pin-card-mock" id="feat-pin">
+          <div class="card-header-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Hardware Security Enclave
+          </div>
+          <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 6px;">Zero-Knowledge PIN</h3>
+          <p style="font-size: 12px; color: var(--vk-text-secondary); margin-bottom: 12px;">Instant biometric derivation</p>
+
+          <div class="pin-dots-row">
+            <div class="pin-dot" id="dot-1"></div>
+            <div class="pin-dot" id="dot-2"></div>
+            <div class="pin-dot" id="dot-3"></div>
+            <div class="pin-dot" id="dot-4"></div>
+            <div class="pin-dot" id="dot-5"></div>
+            <div class="pin-dot" id="dot-6"></div>
+          </div>
+
+          <div class="pin-keypad-grid">
+            <div class="key-btn" id="key-1">1</div>
+            <div class="key-btn" id="key-2">2</div>
+            <div class="key-btn" id="key-3">3</div>
+            <div class="key-btn" id="key-4">4</div>
+            <div class="key-btn" id="key-5">5</div>
+            <div class="key-btn" id="key-6">6</div>
+            <div class="key-btn" id="key-7">7</div>
+            <div class="key-btn" id="key-8">8</div>
+            <div class="key-btn" id="key-9">9</div>
+          </div>
+        </div>
+
+        <!-- Biometric Scan Confirmation Hologram -->
+        <div class="biometric-hologram" id="bio-holo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.026.99-4.18.99-6.41 0-3.92-1.34-7.51-3.6-10.334M3.6 14.666A17.92 17.92 0 013 11c0-4.97 4.03-9 9-9a8.96 8.96 0 016.364 2.636"/>
+          </svg>
+          <span>Vault Verified</span>
+        </div>
+
+        <!-- Floating Telemetry Chips -->
+        <div class="telemetry-row">
+          <div class="telem-pill">AES-256-GCM</div>
+          <div class="telem-pill">ARGON2ID KDF</div>
+          <div class="telem-pill">ZERO TELEMETRY</div>
+          <div class="telem-pill">SECURE ENCLAVE</div>
+        </div>
+
+      </div>
+
+      <!-- ======================================================================
+           ACT 4: RAPID DYNAMIC THEME & 7-ACCENT PRISM SHOWCASE (11.0s – 14.0s)
+           ====================================================================== -->
+      <div class="act-4-container" id="act-4">
+        
+        <div class="prism-title-row">
+          <div class="prism-kicker" id="prism-kicker">7 DYNAMIC ACCENT SYSTEM</div>
+          <h2 class="prism-headline" id="prism-headline">Tailored To Your Sovereign Identity</h2>
+        </div>
+
+        <!-- Multi-Accent UI Fan Array -->
+        <div class="accent-fan-cards" id="accent-fan">
+          
+          <div class="accent-swatch-card" id="swatch-red" style="--swatch-color: #D02724; --card-glow: rgba(208, 39, 36, 0.5);">
+            <div class="swatch-color-orb"></div>
+            <div>
+              <div class="swatch-name">Red</div>
+              <div class="swatch-hex">#D02724</div>
+            </div>
+          </div>
+
+          <div class="accent-swatch-card" id="swatch-blue" style="--swatch-color: #2563EB; --card-glow: rgba(37, 99, 235, 0.5);">
+            <div class="swatch-color-orb"></div>
+            <div>
+              <div class="swatch-name">Blue</div>
+              <div class="swatch-hex">#2563EB</div>
+            </div>
+          </div>
+
+          <div class="accent-swatch-card" id="swatch-purple" style="--swatch-color: #6B46C1; --card-glow: rgba(107, 70, 193, 0.5);">
+            <div class="swatch-color-orb"></div>
+            <div>
+              <div class="swatch-name">Purple</div>
+              <div class="swatch-hex">#6B46C1</div>
+            </div>
+          </div>
+
+          <div class="accent-swatch-card" id="swatch-green" style="--swatch-color: #16865C; --card-glow: rgba(22, 134, 92, 0.5);">
+            <div class="swatch-color-orb"></div>
+            <div>
+              <div class="swatch-name">Green</div>
+              <div class="swatch-hex">#16865C</div>
+            </div>
+          </div>
+
+          <div class="accent-swatch-card" id="swatch-yellow" style="--swatch-color: #F4C430; --card-glow: rgba(244, 196, 48, 0.5);">
+            <div class="swatch-color-orb"></div>
+            <div>
+              <div class="swatch-name">Yellow</div>
+              <div class="swatch-hex">#F4C430</div>
+            </div>
+          </div>
+
+          <div class="accent-swatch-card" id="swatch-orange" style="--swatch-color: #EA6A1B; --card-glow: rgba(234, 106, 27, 0.5);">
+            <div class="swatch-color-orb"></div>
+            <div>
+              <div class="swatch-name">Orange</div>
+              <div class="swatch-hex">#EA6A1B</div>
+            </div>
+          </div>
+
+          <div class="accent-swatch-card" id="swatch-pink" style="--swatch-color: #DB3E7C; --card-glow: rgba(219, 62, 124, 0.5);">
+            <div class="swatch-color-orb"></div>
+            <div>
+              <div class="swatch-name">Pink</div>
+              <div class="swatch-hex">#DB3E7C</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Live Morphing UI Display Card -->
+        <div class="dynamic-morph-ui" id="morph-ui">
+          <div class="morph-ui-info">
+            <div class="morph-ui-logo" id="morph-logo">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="morph-ui-texts">
+              <h3 id="morph-accent-name">Signature Crimson Active</h3>
+              <p id="morph-theme-mode">Dark Theme • Semantic Token Synchronization</p>
+            </div>
+          </div>
+          <button class="morph-ui-action" id="morph-btn">Access Vault</button>
+        </div>
+
+      </div>
+
+      <!-- ======================================================================
+           ACT 5: HERO CLIMAX & BRAND FINALE (14.0s – 15.0s)
+           ====================================================================== -->
+      <div class="act-5-container" id="act-5">
+        <svg class="hero-final-emblem" id="hero-final-logo" viewBox="0 0 200 200" fill="none">
+          <circle cx="100" cy="100" r="95" fill="var(--vk-accent)" />
+          <circle cx="100" cy="100" r="34" fill="#09090b" />
+          <polygon points="100,60 84,20 116,20" fill="#09090b" />
+          <polygon points="135,75 168,48 184,76" fill="#09090b" />
+          <polygon points="140,118 184,124 168,152" fill="#09090b" />
+          <polygon points="65,75 32,48 16,76" fill="#09090b" />
+          <polygon points="60,118 16,124 32,152" fill="#09090b" />
+          <polygon points="82,128 65,185 135,185 118,128" fill="#09090b" />
+        </svg>
+
+        <h1 class="hero-final-title">VAULTIFY</h1>
+        <p class="hero-final-tagline">Your passwords. <span>Your vault.</span> Your control.</p>
+
+        <div class="hero-final-badges">
+          <div class="hero-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            AES-256-GCM
+          </div>
+          <div class="hero-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            100% Local-First
+          </div>
+          <div class="hero-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Zero-Knowledge Sovereign
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /stage-3d -->
+
+    <!-- ======================================================================
+         DIRECTOR CONTROL CONSOLE & MASTER TIMELINE HUD
+         ====================================================================== -->
+    <div class="director-hud" id="director-hud">
+      <div class="hud-timeline-row">
+        <div class="hud-scrubber-track" id="scrubber-track" onclick="onScrub(event)">
+          <div class="hud-scrubber-fill" id="scrubber-fill"></div>
+          <!-- Act Timeline Division Markers -->
+          <div class="scrubber-marker" style="left: 20%;"></div>  <!-- 3.0s -->
+          <div class="scrubber-marker" style="left: 46.66%;"></div> <!-- 7.0s -->
+          <div class="scrubber-marker" style="left: 73.33%;"></div> <!-- 11.0s -->
+          <div class="scrubber-marker" style="left: 93.33%;"></div> <!-- 14.0s -->
+        </div>
+        <div class="hud-timecode" id="timecode-display">00:00.00 / 00:15.00</div>
+      </div>
+
+      <div class="hud-controls-row">
+        <!-- Jump to Act Buttons -->
+        <div class="hud-act-pills">
+          <button class="act-pill-btn active" id="pill-act1" onclick="jumpTo(0)">01 Reveal</button>
+          <button class="act-pill-btn" id="pill-act2" onclick="jumpTo(3.0)">02 Showcase</button>
+          <button class="act-pill-btn" id="pill-act3" onclick="jumpTo(7.0)">03 Security</button>
+          <button class="act-pill-btn" id="pill-act4" onclick="jumpTo(11.0)">04 Themes</button>
+          <button class="act-pill-btn" id="pill-act5" onclick="jumpTo(14.0)">05 Outro</button>
+        </div>
+
+        <!-- Master Playback Controls -->
+        <div class="hud-playback-buttons">
+          <button class="hud-btn primary" id="btn-play" onclick="togglePlay()">
+            <span id="play-icon">▶</span> <span id="play-text">Play</span>
+          </button>
+          <button class="hud-btn" onclick="restartShowreel()">↺ Restart</button>
+          <button class="hud-btn" id="btn-sound" onclick="toggleAudio()">
+            <span id="sound-icon">🔇</span> Sound Off
+          </button>
+          <button class="hud-btn" id="btn-speed" onclick="cycleSpeed()">1.0x</button>
+          <button class="hud-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /viewport-wrapper -->
+
+  <!-- ==========================================================================
+       REAL-TIME MOTION ENGINE, SYNTH AUDIO & TIMELINE CONTROLLER SCRIPT
+       ========================================================================== -->
+  <script>
+    /* Global Palette Constants */
+    const ACCENTS = {
+      red:    { name: 'Signature Crimson', hex: '#D02724', glow: 'rgba(208, 39, 36, 0.45)', soft: 'rgba(208, 39, 36, 0.15)' },
+      blue:   { name: 'Electric Cobalt',   hex: '#2563EB', glow: 'rgba(37, 99, 235, 0.45)',  soft: 'rgba(37, 99, 235, 0.18)' },
+      purple: { name: 'Royal Violet',     hex: '#6B46C1', glow: 'rgba(107, 70, 193, 0.45)', soft: 'rgba(107, 70, 193, 0.18)' },
+      green:  { name: 'Emerald Cipher',   hex: '#16865C', glow: 'rgba(22, 134, 92, 0.45)',  soft: 'rgba(22, 134, 92, 0.18)' },
+      yellow: { name: 'Amber Pulse',      hex: '#F4C430', glow: 'rgba(244, 196, 48, 0.45)', soft: 'rgba(244, 196, 48, 0.20)' },
+      orange: { name: 'Neon Tangerine',   hex: '#EA6A1B', glow: 'rgba(234, 106, 27, 0.45)', soft: 'rgba(234, 106, 27, 0.18)' },
+      pink:   { name: 'Hyper Magenta',    hex: '#DB3E7C', glow: 'rgba(219, 62, 124, 0.45)', soft: 'rgba(219, 62, 124, 0.18)' }
+    };
+
+    const ACCENT_ORDER = ['red', 'blue', 'purple', 'green', 'yellow', 'orange', 'pink'];
+
+    /* State Variables */
+    let currentTime = 0.0;
+    const TOTAL_DURATION = 15.0;
+    let isPlaying = true;
+    let playbackSpeed = 1.0;
+    let lastTimestamp = 0;
+    let audioEnabled = false;
+    let audioCtx = null;
+
+    /* DOM References */
+    const stage3d = document.getElementById('stage-3d');
+    const ambientGlow = document.getElementById('ambient-glow');
+    const scrubberFill = document.getElementById('scrubber-fill');
+    const timecodeDisplay = document.getElementById('timecode-display');
+    const playIcon = document.getElementById('play-icon');
+    const playText = document.getElementById('play-text');
+    const btnPlay = document.getElementById('btn-play');
+    const btnSound = document.getElementById('btn-sound');
+    const soundIcon = document.getElementById('sound-icon');
+    const btnSpeed = document.getElementById('btn-speed');
+
+    /* Acts Containers */
+    const act1 = document.getElementById('act-1');
+    const act2 = document.getElementById('act-2');
+    const act3 = document.getElementById('act-3');
+    const act4 = document.getElementById('act-4');
+    const act5 = document.getElementById('act-5');
+
+    /* Act 1 Elements */
+    const cipherStream = document.getElementById('cipher-stream');
+    const act1Title = document.getElementById('act1-title');
+    const act1EmblemWrap = document.getElementById('act1-emblem-wrap');
+
+    /* Act 2 Elements */
+    const phoneMockup = document.getElementById('phone-mockup');
+    const calloutLeft = document.getElementById('callout-left');
+    const calloutRight = document.getElementById('callout-right');
+    const phoneBtnAdd = document.getElementById('phone-btn-add');
+    const cardGithub = document.getElementById('card-github');
+    const cardGoogle = document.getElementById('card-google');
+    const cardStripe = document.getElementById('card-stripe');
+    const phoneToast = document.getElementById('phone-toast');
+    const categorySheetOverlay = document.getElementById('category-sheet-overlay');
+    const categorySheetContent = document.getElementById('category-sheet-content');
+
+    /* Act 3 Elements */
+    const featGenerator = document.getElementById('feat-generator');
+    const featPin = document.getElementById('feat-pin');
+    const rollingPw = document.getElementById('rolling-pw');
+    const entropyFill = document.getElementById('entropy-fill');
+    const bioHolo = document.getElementById('bio-holo');
+    const dots = [
+      document.getElementById('dot-1'),
+      document.getElementById('dot-2'),
+      document.getElementById('dot-3'),
+      document.getElementById('dot-4'),
+      document.getElementById('dot-5'),
+      document.getElementById('dot-6')
+    ];
+    const keys = [
+      document.getElementById('key-1'),
+      document.getElementById('key-2'),
+      document.getElementById('key-3'),
+      document.getElementById('key-4'),
+      document.getElementById('key-5'),
+      document.getElementById('key-6'),
+      document.getElementById('key-7'),
+      document.getElementById('key-8'),
+      document.getElementById('key-9')
+    ];
+
+    /* Act 4 Elements */
+    const prismKicker = document.getElementById('prism-kicker');
+    const prismHeadline = document.getElementById('prism-headline');
+    const morphUi = document.getElementById('morph-ui');
+    const morphAccentName = document.getElementById('morph-accent-name');
+    const morphThemeMode = document.getElementById('morph-theme-mode');
+
+    /* Act 5 Elements */
+    const heroFinalLogo = document.getElementById('hero-final-logo');
+
+    /* ==========================================================================
+       SYNTHESIZED WEB AUDIO SOUND SYSTEM (Self-Contained Cinematic FX)
+       ========================================================================== */
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.1, bendTo = null) {
+      if (!audioEnabled || !audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        if (bendTo) {
+          osc.frequency.exponentialRampToValueAtTime(bendTo, audioCtx.currentTime + duration);
+        }
+        gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function playSubBassBoom() {
+      playTone(90, 'sine', 1.2, 0.35, 25);
+    }
+
+    function playLockSound() {
+      playTone(280, 'triangle', 0.1, 0.2, 120);
+      setTimeout(() => playTone(540, 'sine', 0.25, 0.15), 60);
+    }
+
+    function playWhoosh() {
+      playTone(180, 'sawtooth', 0.3, 0.08, 60);
+    }
+
+    function playChime(freq = 660) {
+      playTone(freq, 'sine', 0.35, 0.18);
+    }
+
+    let lastAudioTriggers = {};
+
+    function triggerAudioAt(t) {
+      if (!audioEnabled) return;
+
+      // 0.0s Sub boom
+      if (t >= 0.05 && t < 0.2 && !lastAudioTriggers['boom1']) {
+        playSubBassBoom();
+        lastAudioTriggers['boom1'] = true;
+      }
+      // 1.5s Emblem Lock
+      if (t >= 1.5 && t < 1.7 && !lastAudioTriggers['lock1']) {
+        playLockSound();
+        lastAudioTriggers['lock1'] = true;
+      }
+      // 3.0s Showcase Transition Whoosh
+      if (t >= 3.0 && t < 3.2 && !lastAudioTriggers['whoosh1']) {
+        playWhoosh();
+        lastAudioTriggers['whoosh1'] = true;
+      }
+      // 4.2s Copy Toast Click
+      if (t >= 4.2 && t < 4.4 && !lastAudioTriggers['chime1']) {
+        playChime(880);
+        lastAudioTriggers['chime1'] = true;
+      }
+      // 5.2s Category Sheet Slide
+      if (t >= 5.2 && t < 5.4 && !lastAudioTriggers['sheet1']) {
+        playWhoosh();
+        setTimeout(() => playChime(740), 120);
+        lastAudioTriggers['sheet1'] = true;
+      }
+      // 7.0s Security Transition
+      if (t >= 7.0 && t < 7.2 && !lastAudioTriggers['boom2']) {
+        playSubBassBoom();
+        lastAudioTriggers['boom2'] = true;
+      }
+      // 8.2s Generator Unbreakable Chime
+      if (t >= 8.2 && t < 8.4 && !lastAudioTriggers['genChime']) {
+        playChime(1040);
+        lastAudioTriggers['genChime'] = true;
+      }
+      // 10.4s Biometric unlock chord
+      if (t >= 10.4 && t < 10.6 && !lastAudioTriggers['bioUnlock']) {
+        playChime(523.25);
+        setTimeout(() => playChime(659.25), 60);
+        setTimeout(() => playChime(783.99), 120);
+        lastAudioTriggers['bioUnlock'] = true;
+      }
+      // 11.0s Prism Reveal
+      if (t >= 11.0 && t < 11.2 && !lastAudioTriggers['prismBoom']) {
+        playSubBassBoom();
+        lastAudioTriggers['prismBoom'] = true;
+      }
+      // 14.0s Grand Finale Hit
+      if (t >= 14.0 && t < 14.2 && !lastAudioTriggers['finalBoom']) {
+        playSubBassBoom();
+        setTimeout(() => playChime(1174.66), 80);
+        lastAudioTriggers['finalBoom'] = true;
+      }
+    }
+
+    function resetAudioTriggers() {
+      lastAudioTriggers = {};
+    }
+
+    /* ==========================================================================
+       CANVAS PARTICLE & PERSPECTIVE DATA RAY SYSTEM
+       ========================================================================== */
+    const canvas = document.getElementById('fx-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const NUM_PARTICLES = 65;
+
+    function resizeCanvas() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      initParticles();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < NUM_PARTICLES; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          z: Math.random() * 800 + 200,
+          speed: Math.random() * 2 + 1,
+          size: Math.random() * 2 + 0.8,
+          char: ['0', '1', 'A', 'F', 'X', '9', 'C', '🔒', '🔑'][Math.floor(Math.random() * 9)]
+        });
+      }
+    }
+
+    function renderParticles(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
+      // Draw subtle perspective horizon lines
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+      ctx.lineWidth = 1;
+      for (let y = cy; y < canvas.height; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Draw streaming data particles
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.font = '10px "JetBrains Mono"';
+      particles.forEach(p => {
+        p.z -= p.speed * 2.5;
+        if (p.z <= 0) {
+          p.z = 1000;
+          p.x = Math.random() * canvas.width;
+          p.y = Math.random() * canvas.height;
+        }
+        const k = 400 / p.z;
+        const px = (p.x - cx) * k + cx;
+        const py = (p.y - cy) * k + cy;
+        const alpha = Math.min(1, (1000 - p.z) / 500) * 0.45;
+
+        if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
+          ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+          ctx.fillText(p.char, px, py);
+        }
+      });
+    }
+
+    /* Helper: Set Global Dynamic Accent */
+    function setAccent(accentKey) {
+      const a = ACCENTS[accentKey] || ACCENTS.red;
+      document.documentElement.style.setProperty('--vk-accent', a.hex);
+      document.documentElement.style.setProperty('--vk-accent-glow', a.glow);
+      document.documentElement.style.setProperty('--vk-accent-soft', a.soft);
+    }
+
+    /* ==========================================================================
+       MASTER TIMELINE ANIMATION CHOREOGRAPHY (15.00 SECONDS)
+       ========================================================================== */
+    function renderFrame(t) {
+      triggerAudioAt(t);
+
+      // Scrubber fill & Timecode
+      const progress = Math.min(1, t / TOTAL_DURATION);
+      scrubberFill.style.width = (progress * 100) + '%';
+      
+      const seconds = Math.floor(t);
+      const centis = Math.floor((t - seconds) * 100);
+      timecodeDisplay.textContent = `00:${String(seconds).padStart(2, '0')}.${String(centis).padStart(2, '0')} / 00:15.00`;
+
+      // Update Active Act Pill in HUD
+      document.querySelectorAll('.act-pill-btn').forEach(b => b.classList.remove('active'));
+      if (t < 3.0) document.getElementById('pill-act1').classList.add('active');
+      else if (t < 7.0) document.getElementById('pill-act2').classList.add('active');
+      else if (t < 11.0) document.getElementById('pill-act3').classList.add('active');
+      else if (t < 14.0) document.getElementById('pill-act4').classList.add('active');
+      else document.getElementById('pill-act5').classList.add('active');
+
+      // ----------------------------------------------------------------------
+      // ACT 1: BRAND REVEAL & CIPHER MATRIX (0.0s – 3.0s)
+      // ----------------------------------------------------------------------
+      if (t < 3.0) {
+        act1.style.opacity = '1';
+        act2.style.opacity = '0';
+        act3.style.opacity = '0';
+        act4.style.opacity = '0';
+        act5.style.opacity = '0';
+
+        setAccent('red');
+
+        // Scramble hex cipher stream
+        if (Math.random() < 0.3) {
+          const randHex = '0x' + Math.floor(Math.random()*16777215).toString(16).toUpperCase();
+          cipherStream.textContent = `${randHex} :: AES-256-GCM :: ARGON2ID :: CLIENT-ENCRYPTED`;
+        }
+
+        if (t < 1.0) {
+          // Fade and zoom in emblem
+          const p = t / 1.0;
+          const scale = 2.5 - p * 1.5;
+          const rot = (1 - p) * 180;
+          act1EmblemWrap.style.transform = `scale(${scale}) rotate(${rot}deg)`;
+          act1Title.style.opacity = '0';
+          act1Title.style.transform = 'translateY(30px)';
+        } else if (t < 2.2) {
+          // Lock emblem, reveal brand title
+          act1EmblemWrap.style.transform = 'scale(1) rotate(0deg)';
+          const p = (t - 1.0) / 1.2;
+          act1Title.style.opacity = Math.min(1, p * 1.5);
+          act1Title.style.transform = `translateY(${(1 - p) * 20}px)`;
+        } else {
+          // 2.2s - 3.0s: Dramatic camera push into the keyhole
+          const p = (t - 2.2) / 0.8;
+          const camZ = p * 600;
+          const fadeOut = 1 - p;
+          act1.style.transform = `translateZ(${camZ}px) scale(${1 + p * 1.2})`;
+          act1.style.opacity = Math.max(0, fadeOut);
+        }
+      }
+
+      // ----------------------------------------------------------------------
+      // ACT 2: PRODUCT & UI SHOWCASE (3.0s – 7.0s)
+      // ----------------------------------------------------------------------
+      else if (t >= 3.0 && t < 7.0) {
+        act1.style.opacity = '0';
+        act2.style.opacity = '1';
+        act3.style.opacity = '0';
+        act4.style.opacity = '0';
+        act5.style.opacity = '0';
+
+        setAccent('red');
+
+        const localT = t - 3.0; // 0.0s to 4.0s
+
+        // 3D Phone entrance & orbit
+        if (localT < 1.0) {
+          const p = localT / 1.0;
+          const ease = 1 - Math.pow(1 - p, 3);
+          phoneMockup.style.transform = `rotateX(${18 - ease * 6}deg) rotateY(${-30 + ease * 12}deg) rotateZ(${8 - ease * 5}deg) scale(${0.85 + ease * 0.15})`;
+          calloutLeft.style.opacity = Math.min(1, p * 1.5);
+          calloutRight.style.opacity = Math.min(1, p * 1.5);
+        } else {
+          // Gentle floating isometric idle
+          const wobble = Math.sin(localT * 2) * 2;
+          phoneMockup.style.transform = `rotateX(${12 + wobble}deg) rotateY(-18deg) rotateZ(3deg) scale(1)`;
+        }
+
+        // Cascade Credential cards
+        if (localT > 0.4) cardGithub.style.transform = 'translateY(0) scale(1)';
+        if (localT > 0.7) cardGoogle.style.transform = 'translateY(0) scale(1)';
+        if (localT > 1.0) cardStripe.style.transform = 'translateY(0) scale(1)';
+
+        // 4.2s (localT 1.2): Trigger copy toast
+        if (localT >= 1.2 && localT < 2.0) {
+          cardGithub.classList.add('active-highlight');
+          phoneToast.classList.add('show');
+        } else {
+          cardGithub.classList.remove('active-highlight');
+          phoneToast.classList.remove('show');
+        }
+
+        // 5.2s (localT 2.2s - 4.0s): Category Bottom Sheet Slide Up & Selection!
+        if (localT >= 2.2) {
+          categorySheetOverlay.style.opacity = '1';
+          categorySheetOverlay.style.pointerEvents = 'auto';
+          categorySheetContent.style.transform = 'translateY(0%)';
+          phoneBtnAdd.style.transform = 'scale(0.95)';
+        } else {
+          categorySheetOverlay.style.opacity = '0';
+          categorySheetOverlay.style.pointerEvents = 'none';
+          categorySheetContent.style.transform = 'translateY(100%)';
+          phoneBtnAdd.style.transform = 'scale(1)';
+        }
+
+        // Camera push into phone before next act
+        if (localT >= 3.4) {
+          const p = (localT - 3.4) / 0.6;
+          phoneMockup.style.transform = `rotateX(0deg) rotateY(0deg) scale(${1 + p * 0.9}) translateZ(${p * 200}px)`;
+          act2.style.opacity = Math.max(0, 1 - p * 1.5);
+        }
+      }
+
+      // ----------------------------------------------------------------------
+      // ACT 3: SECURITY & ADVANCED CIPHER FEATURES (7.0s – 11.0s)
+      // ----------------------------------------------------------------------
+      else if (t >= 7.0 && t < 11.0) {
+        act1.style.opacity = '0';
+        act2.style.opacity = '0';
+        act3.style.opacity = '1';
+        act4.style.opacity = '0';
+        act5.style.opacity = '0';
+
+        const localT = t - 7.0; // 0.0s to 4.0s
+
+        // Entrance
+        if (localT < 0.6) {
+          const p = localT / 0.6;
+          act3.style.transform = `scale(${0.9 + p * 0.1}) translateZ(${(1 - p) * -150}px)`;
+        } else {
+          act3.style.transform = 'scale(1) translateZ(0)';
+        }
+
+        // Generator Scrambler Animation (7.0s – 8.8s)
+        if (localT < 1.8) {
+          const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%^&*';
+          let str = '';
+          for (let i = 0; i < 16; i++) {
+            str += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          rollingPw.textContent = str;
+          entropyFill.style.width = '70%';
+        } else {
+          // Lock to perfect high entropy password
+          rollingPw.textContent = 'vK9#mQ8$xL2!zP9@';
+          entropyFill.style.width = '100%';
+        }
+
+        // PIN Keypad rhythmic presses (8.5s – 10.2s / localT 1.5s – 3.2s)
+        const pinSteps = [1.6, 1.9, 2.2, 2.5, 2.8, 3.1];
+        dots.forEach((dot, idx) => {
+          if (localT >= pinSteps[idx]) {
+            dot.classList.add('filled');
+          } else {
+            dot.classList.remove('filled');
+          }
+        });
+
+        // Keypad button lighting
+        keys.forEach(k => k.classList.remove('active-key'));
+        if (localT >= 1.6 && localT < 1.8) document.getElementById('key-4').classList.add('active-key');
+        if (localT >= 1.9 && localT < 2.1) document.getElementById('key-9').classList.add('active-key');
+        if (localT >= 2.2 && localT < 2.4) document.getElementById('key-2').classList.add('active-key');
+        if (localT >= 2.5 && localT < 2.7) document.getElementById('key-7').classList.add('active-key');
+        if (localT >= 2.8 && localT < 3.0) document.getElementById('key-1').classList.add('active-key');
+        if (localT >= 3.1 && localT < 3.3) document.getElementById('key-8').classList.add('active-key');
+
+        // Biometric Hologram Success Reveal (localT 3.3s – 4.0s)
+        if (localT >= 3.3) {
+          bioHolo.classList.add('show');
+          featGenerator.style.opacity = '0.3';
+          featPin.style.opacity = '0.3';
+        } else {
+          bioHolo.classList.remove('show');
+          featGenerator.style.opacity = '1';
+          featPin.style.opacity = '1';
+        }
+
+        // Transition out
+        if (localT >= 3.7) {
+          const p = (localT - 3.7) / 0.3;
+          act3.style.opacity = Math.max(0, 1 - p);
+        }
+      }
+
+      // ----------------------------------------------------------------------
+      // ACT 4: RAPID DYNAMIC THEME & 7-ACCENT PRISM SHOWCASE (11.0s – 14.0s)
+      // ----------------------------------------------------------------------
+      else if (t >= 11.0 && t < 14.0) {
+        act1.style.opacity = '0';
+        act2.style.opacity = '0';
+        act3.style.opacity = '0';
+        act4.style.opacity = '1';
+        act5.style.opacity = '0';
+
+        const localT = t - 11.0; // 0.0s to 3.0s
+
+        // 7 Accents cycle over 3 seconds (each accent ~0.42s)
+        const step = Math.min(6, Math.floor(localT / 0.42));
+        const activeAccentKey = ACCENT_ORDER[step];
+        const activeData = ACCENTS[activeAccentKey];
+
+        setAccent(activeAccentKey);
+
+        // Highlight matching swatch card
+        document.querySelectorAll('.accent-swatch-card').forEach(c => c.classList.remove('active-swatch'));
+        const activeCard = document.getElementById(`swatch-${activeAccentKey}`);
+        if (activeCard) activeCard.classList.add('active-swatch');
+
+        // Dynamic UI card content
+        morphAccentName.textContent = `${activeData.name} Accent`;
+        morphAccentName.style.color = activeData.hex;
+
+        // Toggle Dark vs Light Theme midway through for dramatic contrast
+        if (step % 2 === 1) {
+          // Light Mode Flash
+          morphUi.style.background = '#FFFFFF';
+          morphUi.style.color = '#151515';
+          morphThemeMode.textContent = `Light Theme • Contrast AAA Certified`;
+          morphThemeMode.style.color = '#666';
+        } else {
+          // Dark Mode
+          morphUi.style.background = '#101015';
+          morphUi.style.color = '#FFFFFF';
+          morphThemeMode.textContent = `Dark Theme • Dynamic Semantic Tokens`;
+          morphThemeMode.style.color = 'rgba(255,255,255,0.7)';
+        }
+
+        // Transition out to hero
+        if (localT >= 2.6) {
+          const p = (localT - 2.6) / 0.4;
+          act4.style.transform = `scale(${1 + p * 0.3}) translateZ(${p * 200}px)`;
+          act4.style.opacity = Math.max(0, 1 - p * 1.5);
+        } else {
+          act4.style.transform = 'scale(1) translateZ(0)';
+        }
+      }
+
+      // ----------------------------------------------------------------------
+      // ACT 5: HERO CLIMAX & BRAND FINALE (14.0s – 15.0s)
+      // ----------------------------------------------------------------------
+      else {
+        act1.style.opacity = '0';
+        act2.style.opacity = '0';
+        act3.style.opacity = '0';
+        act4.style.opacity = '0';
+        act5.style.opacity = '1';
+
+        setAccent('red');
+
+        const localT = t - 14.0; // 0.0s to 1.0s
+        const p = Math.min(1, localT / 0.8);
+        const ease = 1 - Math.pow(1 - p, 4);
+
+        heroFinalLogo.style.transform = `scale(${0.7 + ease * 0.3}) rotate(${(1 - ease) * 45}deg)`;
+        act5.style.transform = `scale(${0.9 + ease * 0.1})`;
+      }
+
+      // Render background canvas particles
+      renderParticles(t);
+    }
+
+    /* ==========================================================================
+       MAIN LOOP (rAF 60 FPS)
+       ========================================================================== */
+    function animationLoop(timestamp) {
+      if (!lastTimestamp) lastTimestamp = timestamp;
+      const deltaSec = (timestamp - lastTimestamp) / 1000;
+      lastTimestamp = timestamp;
+
+      if (isPlaying) {
+        currentTime += deltaSec * playbackSpeed;
+        if (currentTime >= TOTAL_DURATION) {
+          currentTime = TOTAL_DURATION;
+          pauseShowreel();
+        }
+      }
+
+      renderFrame(currentTime);
+      requestAnimationFrame(animationLoop);
+    }
+
+    /* ==========================================================================
+       PLAYBACK CONTROLLER ACTIONS
+       ========================================================================== */
+    function togglePlay() {
+      initAudio();
+      if (isPlaying) {
+        pauseShowreel();
+      } else {
+        if (currentTime >= TOTAL_DURATION) {
+          currentTime = 0;
+          resetAudioTriggers();
+        }
+        playShowreel();
+      }
+    }
+
+    function playShowreel() {
+      isPlaying = true;
+      playIcon.textContent = '❚❚';
+      playText.textContent = 'Pause';
+      btnPlay.classList.add('primary');
+    }
+
+    function pauseShowreel() {
+      isPlaying = false;
+      playIcon.textContent = '▶';
+      playText.textContent = 'Play';
+      btnPlay.classList.remove('primary');
+    }
+
+    function restartShowreel() {
+      currentTime = 0;
+      resetAudioTriggers();
+      playShowreel();
+    }
+
+    function jumpTo(targetSec) {
+      currentTime = targetSec;
+      resetAudioTriggers();
+      renderFrame(currentTime);
+    }
+
+    function onScrub(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+      jumpTo(ratio * TOTAL_DURATION);
+    }
+
+    function toggleAudio() {
+      initAudio();
+      audioEnabled = !audioEnabled;
+      if (audioEnabled) {
+        btnSound.innerHTML = '<span>🔊</span> Sound On';
+        btnSound.classList.add('primary');
+        playChime(880);
+      } else {
+        btnSound.innerHTML = '<span>🔇</span> Sound Off';
+        btnSound.classList.remove('primary');
+      }
+    }
+
+    function cycleSpeed() {
+      if (playbackSpeed === 1.0) playbackSpeed = 0.5;
+      else if (playbackSpeed === 0.5) playbackSpeed = 2.0;
+      else playbackSpeed = 1.0;
+      btnSpeed.textContent = playbackSpeed + 'x';
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    function toggleHud() {
+      const vp = document.getElementById('viewport');
+      const toggleBtn = document.getElementById('hud-toggle-btn');
+      vp.classList.toggle('hud-hidden');
+      if (vp.classList.contains('hud-hidden')) {
+        toggleBtn.textContent = 'Show HUD [H]';
+      } else {
+        toggleBtn.textContent = 'Hide HUD [H]';
+      }
+    }
+
+    // Keyboard Shortcuts (Space: Play/Pause, R: Restart, M: Mute/Sound, H: HUD)
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.code === 'KeyR') {
+        restartShowreel();
+      } else if (e.code === 'KeyM') {
+        toggleAudio();
+      } else if (e.code === 'KeyH') {
+        toggleHud();
+      }
+    });
+
+    // Start Engine
+    resizeCanvas();
+    requestAnimationFrame(animationLoop);
+  </script>
+</body>
+</html>

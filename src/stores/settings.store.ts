@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { AppSettings, DEFAULT_SETTINGS } from '@/models/settings.model';
+import { AppSettings, DEFAULT_SETTINGS, isValidAccent } from '@/models/settings.model';
 import { StorageService } from '@/services/storage.service';
+import { StatusBarService } from '@/services/statusBar.service';
 
 export const useSettingsStore = defineStore('settings', () => {
   const settings = ref<AppSettings>({ ...DEFAULT_SETTINGS });
@@ -15,13 +16,13 @@ export const useSettingsStore = defineStore('settings', () => {
   });
 
   /**
-   * Load settings from storage and apply theme
+   * Load settings from storage and apply theme & accent
    */
   async function loadSettings() {
     const loaded = await StorageService.getSettings();
     settings.value = loaded;
     isLoaded.value = true;
-    applyTheme(loaded.theme);
+    applyTheme(loaded.theme, loaded.accent);
   }
 
   /**
@@ -31,15 +32,15 @@ export const useSettingsStore = defineStore('settings', () => {
     settings.value = { ...settings.value, ...partial };
     await StorageService.saveSettings(settings.value);
 
-    if (partial.theme !== undefined) {
-      applyTheme(partial.theme);
+    if (partial.theme !== undefined || partial.accent !== undefined) {
+      applyTheme(settings.value.theme, settings.value.accent);
     }
   }
 
   /**
-   * Apply theme to DOM
+   * Apply theme and accent to DOM
    */
-  function applyTheme(theme: AppSettings['theme']) {
+  function applyTheme(theme: AppSettings['theme'], accent: AppSettings['accent'] = settings.value.accent) {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const darkActive = theme === 'dark' || (theme === 'system' && prefersDark);
 
@@ -47,6 +48,14 @@ export const useSettingsStore = defineStore('settings', () => {
     document.documentElement.classList.toggle('dark', darkActive);
     document.body.classList.toggle('dark-theme', darkActive);
     document.documentElement.setAttribute('data-theme', darkActive ? 'dark' : 'light');
+
+    // Centralized root accent attribute
+    const validAccent = isValidAccent(accent) ? accent : 'red';
+    document.documentElement.setAttribute('data-vk-accent', validAccent);
+    document.documentElement.dataset.vkAccent = validAccent;
+
+    // Synchronize native status bar and web theme-color to active brand accent
+    StatusBarService.setBrand().catch(() => {});
   }
 
   return {

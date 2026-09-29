@@ -69,7 +69,7 @@
           <div class="vk-choice-cluster">
             <button type="button" class="vk-choice-card" @click="goToStep(2)">
               <div class="vk-choice-icon-wrap">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--brand-red)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--vk-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
                 </svg>
               </div>
@@ -84,7 +84,7 @@
 
             <button type="button" class="vk-choice-card" @click="triggerOnboardingImport">
               <div class="vk-choice-icon-wrap">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--brand-red)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--vk-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
                 </svg>
               </div>
@@ -261,12 +261,12 @@
                   class="vk-palette-btn"
                   :class="{ 'is-selected': selectedAvatarColor === item.color }"
                   :style="{ backgroundColor: item.color }"
-                  @click="selectedAvatarColor = item.color"
+                  @click="handleSelectAvatarColor(item)"
                   :title="item.label"
                 >
-                  <span class="vk-palette-initials">{{ previewInitials }}</span>
+                  <span class="vk-palette-initials" :style="{ color: item.text }">{{ previewInitials }}</span>
                   <div v-if="selectedAvatarColor === item.color" class="vk-palette-check">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" :stroke="item.text" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                       <polyline points="20 6 9 17 4 12"/>
                     </svg>
                   </div>
@@ -276,7 +276,7 @@
 
             <!-- Profile Preview Card -->
             <div class="vk-profile-preview-card">
-              <div class="vk-preview-avatar" :style="{ backgroundColor: selectedAvatarColor }">
+              <div class="vk-preview-avatar" :style="{ backgroundColor: selectedAvatarColor, color: getAvatarTextColor(selectedAvatarColor) }">
                 {{ previewInitials }}
               </div>
               <div class="vk-preview-info">
@@ -450,7 +450,7 @@
           <div class="vk-bio-setup-cluster">
             <div class="vk-bio-icon-ring">
               <!-- Face ID Icon -->
-              <svg v-if="biometricAvailability.type === 'face'" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--brand-red)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg v-if="biometricAvailability.type === 'face'" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--vk-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
                 <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
                 <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
@@ -461,7 +461,7 @@
               </svg>
 
               <!-- Fingerprint Icon -->
-              <svg v-else xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--brand-red)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg v-else xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--vk-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"></path>
                 <path d="M14 13.12c0 2.38 0 6.38-1 8.88"></path>
                 <path d="M17.29 21.02c.12-.6.43-2.3.43-5.02 0-3.41-.9-5.11-2.02-6.52-1.3-1.63-2.67-2.48-3.7-2.48-1.5 0-3 1.09-3.7 2.48-.68 1.35-.97 2.87-1.07 4.29"></path>
@@ -647,7 +647,7 @@ import { useToast } from '@/composables/useToast';
 import { ExportService, PortableBackupBundle } from '@/services/export.service';
 import { PinService } from '@/services/pin.service';
 import { BiometricService, BiometricAvailability } from '@/services/biometric.service';
-import { AVATAR_PALETTES, generateInitials } from '@/models/profile.model';
+import { AVATAR_PALETTES, AvatarPaletteOption, getAccentFromColor, getColorFromAccent, getAvatarTextColor, generateInitials } from '@/models/profile.model';
 import { AutoLockTimeout, ClipboardTimeout } from '@/models/settings.model';
 import OnboardingLayout from '@/components/onboarding/OnboardingLayout.vue';
 import PasswordStrengthMeter from '@/components/common/PasswordStrengthMeter.vue';
@@ -679,6 +679,14 @@ const importedBundle = ref<PortableBackupBundle | null>(null);
 // STEP 2: PROFILE STATE
 const displayNameInput = ref('');
 const selectedAvatarColor = ref('#B82825');
+
+function handleSelectAvatarColor(item: AvatarPaletteOption) {
+  selectedAvatarColor.value = item.color;
+  const accent = item.accent || getAccentFromColor(item.color);
+  if (accent) {
+    settingsStore.updateSettings({ accent });
+  }
+}
 const profileError = ref('');
 
 const userDisplayName = computed(() => {
@@ -1018,12 +1026,14 @@ async function handleFinishOnboarding() {
       updatedAt: now,
     });
 
-    // 2. Save security settings
+    // 2. Save security settings & accent
+    const accent = getAccentFromColor(selectedAvatarColor.value);
     await settingsStore.updateSettings({
       autoLockTimeout: secAutoLock.value,
       lockOnBackground: secLockOnBackground.value,
       clipboardTimeout: secClipboardTimeout.value,
       biometricsEnabled: biometricEnabled.value,
+      ...(accent ? { accent } : {}),
     });
   } else {
     await settingsStore.updateSettings({
@@ -1061,16 +1071,8 @@ function getCategoryCount(credentials?: any[]): number {
 }
 
 .vk-setup-page {
-  --background: linear-gradient(
-    180deg,
-    #D02724 0%,
-    #B8201E 100%
-  );
-  background: linear-gradient(
-    180deg,
-    #D02724 0%,
-    #B8201E 100%
-  );
+  --background: var(--vk-accent-gradient);
+  background: var(--vk-accent-gradient);
 }
 
 /* Thin Top Progress Indicator */
@@ -1102,11 +1104,7 @@ function getCategoryCount(credentials?: any[]): number {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: linear-gradient(
-    180deg,
-    #D02724 0%,
-    #B8201E 100%
-  );
+  background: var(--vk-accent-gradient);
 }
 
 .vk-onboarding-container {
@@ -1208,14 +1206,14 @@ function getCategoryCount(credentials?: any[]): number {
 
 .vk-choice-card:active {
   transform: scale(0.985);
-  border-color: var(--brand-red);
+  border-color: var(--vk-accent);
 }
 
 .vk-choice-icon-wrap {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(184, 40, 37, 0.10);
+  background: var(--vk-accent-soft);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1277,7 +1275,7 @@ function getCategoryCount(credentials?: any[]): number {
 .vk-import-meta-label {
   font-size: 0.75rem;
   font-weight: 800;
-  color: var(--brand-red);
+  color: var(--vk-accent);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -1440,6 +1438,7 @@ function getCategoryCount(credentials?: any[]): number {
 
 .vk-palette-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-top: 8px;
 }
@@ -1456,6 +1455,7 @@ function getCategoryCount(credentials?: any[]): number {
   position: relative;
   transition: transform var(--vk-motion-base) var(--vk-ease-enter),
               border-color var(--vk-motion-base) ease;
+  flex-shrink: 0;
 }
 
 .vk-palette-btn:active {
@@ -1527,7 +1527,7 @@ function getCategoryCount(credentials?: any[]): number {
 .vk-preview-tag {
   font-size: 0.775rem;
   font-weight: 600;
-  color: var(--brand-red);
+  color: var(--vk-accent);
 }
 
 /* Form Helper Note */
@@ -1604,7 +1604,7 @@ function getCategoryCount(credentials?: any[]): number {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: var(--brand-red-subtle);
+  background: var(--vk-accent-soft);
   display: flex;
   align-items: center;
   justify-content: center;

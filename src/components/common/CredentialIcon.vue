@@ -51,7 +51,7 @@ const props = withDefaults(
 const hasImageError = ref(false);
 
 const cleanDomain = computed(() => {
-  return props.domain || WebsiteIconCacheService.normalizeDomain(props.website);
+  return WebsiteIconCacheService.normalizeDomain(props.domain || props.website);
 });
 
 // Cache First: Read strictly from local reactive cache (dataUrl). Never remote URL directly.
@@ -59,6 +59,17 @@ const cachedIcon = computed(() => {
   if (!cleanDomain.value) return null;
   return WebsiteIconCacheService.getCachedIcon(cleanDomain.value);
 });
+
+// Automatic repair: when an uncached domain is rendered, trigger immediate fetch in background
+watch(
+  cleanDomain,
+  (domain) => {
+    if (domain && !WebsiteIconCacheService.hasCachedIcon(domain)) {
+      void WebsiteIconCacheService.ensureIcon(domain);
+    }
+  },
+  { immediate: true }
+);
 
 const letter = computed(() => {
   return FaviconService.getFallbackLetter(props.title, cleanDomain.value);

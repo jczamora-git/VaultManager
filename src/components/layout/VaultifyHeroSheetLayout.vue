@@ -84,11 +84,7 @@ defineEmits<{
   min-height: 100dvh;
   height: 100dvh;
   width: 100%;
-  background: var(--vk-brand-gradient, linear-gradient(
-    180deg,
-    #D02724 0%,
-    #B8201E 100%
-  ));
+  background: var(--vk-accent-gradient);
   overflow: hidden;
   position: relative;
 }
@@ -143,9 +139,9 @@ defineEmits<{
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--vk-on-accent-soft, rgba(255, 255, 255, 0.14));
   border: none;
-  color: #FFFFFF;
+  color: var(--vk-on-accent, #FFFFFF);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,7 +155,7 @@ defineEmits<{
 
 .vk-hero-action-btn:active {
   transform: scale(0.94);
-  background: rgba(255, 255, 255, 0.26);
+  background: var(--vk-on-accent-border, rgba(255, 255, 255, 0.26));
 }
 
 .vk-hero-titles {
@@ -176,7 +172,7 @@ defineEmits<{
 .vk-hero-title {
   font-size: clamp(1.65rem, 5.5vw, 1.85rem);
   font-weight: 800;
-  color: #FFFFFF;
+  color: var(--vk-on-accent, #FFFFFF);
   margin: 0;
   letter-spacing: -0.03em;
   line-height: 1.15;
@@ -184,7 +180,7 @@ defineEmits<{
 
 .vk-hero-subtitle {
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--vk-on-accent-muted, rgba(255, 255, 255, 0.9));
   margin: 4px 0 0 0;
   line-height: 1.38;
   max-width: 360px;
@@ -276,18 +272,4 @@ defineEmits<{
   }
 }
 
-/* Dark Mode Architecture - ONLY FOREGROUND SHEET CHANGES */
-:global(.dark) .vk-page-sheet,
-:global(.dark) .vk-sheet,
-:global(.ion-palette-dark) .vk-page-sheet,
-:global(.ion-palette-dark) .vk-sheet,
-:global(body.dark-theme) .vk-page-sheet,
-:global(body.dark-theme) .vk-sheet,
-:global([data-theme="dark"]) .vk-page-sheet,
-:global([data-theme="dark"]) .vk-sheet {
-  background: var(--vk-bg-sheet, var(--vk-sheet-bg, #151515));
-  color: var(--text-primary, #F5F5F5);
-  border-top: none;
-  box-shadow: none;
-}
 </style>

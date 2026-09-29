@@ -35,6 +35,9 @@ export class WebsiteIconCacheService {
   // In-memory tracker of recently failed domain fetches: domain -> timestamp of failure
   private static failedDomainMap = new Map<string, number>();
 
+  // In-memory tracker of last checked / verified timestamp per domain
+  private static lastCheckedMap = new Map<string, number>();
+
   // In-flight fetch promises to deduplicate simultaneous requests for the same domain
   private static inFlightFetches = new Map<string, Promise<string | null>>();
 
@@ -95,6 +98,16 @@ export class WebsiteIconCacheService {
   }
 
   /**
+   * Formats a raw website, URL, or domain into an openable HTTP/HTTPS URL.
+   * Preserves full paths and query strings if provided.
+   */
+  public static formatOpenUrl(input?: string): string {
+    if (!input || !input.trim()) return '';
+    const clean = input.trim();
+    return /^https?:\/\//i.test(clean) ? clean : `https://${clean}`;
+  }
+
+  /**
    * Initialize cache on app startup: loads all cached icons into the reactive in-memory map.
    */
   public static async init(): Promise<void> {
@@ -111,9 +124,13 @@ export class WebsiteIconCacheService {
       });
 
       this.reactiveIconMap.clear();
+      this.lastCheckedMap.clear();
       for (const entry of allEntries) {
         if (entry.domain && entry.dataUrl) {
           this.reactiveIconMap.set(entry.domain, entry.dataUrl);
+        }
+        if (entry.domain && entry.lastCheckedAt) {
+          this.lastCheckedMap.set(entry.domain, entry.lastCheckedAt);
         }
       }
       this.isInitialized = true;
@@ -141,6 +158,17 @@ export class WebsiteIconCacheService {
     const domain = this.normalizeDomain(domainOrUrl);
     if (!domain) return false;
     return this.reactiveIconMap.has(domain);
+  }
+
+  /**
+   * Returns true if an existing cached domain is due for rolling ~24h revalidation.
+   */
+  public static isDailyRefreshDue(domainOrUrl?: string): boolean {
+    const domain = this.normalizeDomain(domainOrUrl);
+    if (!domain) return false;
+    const lastChecked = this.lastCheckedMap.get(domain);
+    if (!lastChecked) return true;
+    return Date.now() - lastChecked >= WEBSITE_ICON_REFRESH_INTERVAL_MS;
   }
 
   /**
@@ -178,6 +206,9 @@ export class WebsiteIconCacheService {
     // 1. Check reactive memory cache first (instant)
     const existing = this.reactiveIconMap.get(domain);
     if (existing && !options?.force) {
+      if (this.isDailyRefreshDue(domain)) {
+        void this.revalidateIcon(domain);
+      }
       return existing;
     }
 
@@ -186,7 +217,13 @@ export class WebsiteIconCacheService {
       const cachedEntry = await this.getIconEntry(domain);
       if (cachedEntry?.dataUrl) {
         this.reactiveIconMap.set(domain, cachedEntry.dataUrl);
+        if (cachedEntry.lastCheckedAt) {
+          this.lastCheckedMap.set(domain, cachedEntry.lastCheckedAt);
+        }
         this.cacheVersion.value++;
+        if (this.isDailyRefreshDue(domain)) {
+          void this.revalidateIcon(domain);
+        }
         return cachedEntry.dataUrl;
       }
     }
@@ -213,7 +250,9 @@ export class WebsiteIconCacheService {
           this.failedDomainMap.delete(domain);
           return this.reactiveIconMap.get(domain) || null;
         } else {
-          this.failedDomainMap.set(domain, Date.now());
+          if (this.isOnline()) {
+            this.failedDomainMap.set(domain, Date.now());
+          }
           return null;
         }
       } finally {
@@ -299,11 +338,11 @@ export class WebsiteIconCacheService {
           }
         }
 
-        // Collect unique domains that ALREADY have a cached icon
+        // Collect unique domains that ALREADY have a cached icon AND are due for refresh
         const existingCachedDomains: string[] = [];
         for (const item of domainsInput) {
           const norm = this.normalizeDomain(item);
-          if (norm && this.hasCachedIcon(norm)) {
+          if (norm && this.hasCachedIcon(norm) && (force || this.isDailyRefreshDue(norm))) {
             existingCachedDomains.push(norm);
           }
         }
@@ -335,8 +374,9 @@ export class WebsiteIconCacheService {
    * Validates response to ensure only genuine image data is cached.
    */
   private static async fetchAndStoreIcon(domain: string, cachedMeta?: CachedWebsiteIcon): Promise<boolean> {
-    // Discovery URLs in order of preference
+    // Discovery URLs in order of preference (CORS-friendly unavatar first, then Google S2, then direct host fallbacks)
     const candidateUrls = [
+      `https://unavatar.io/${encodeURIComponent(domain)}?fallback=false`,
       `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128`,
       `https://${domain}/favicon.ico`,
       `https://${domain}/favicon.png`,
@@ -558,6 +598,7 @@ export class WebsiteIconCacheService {
     try {
       this.reactiveIconMap.clear();
       this.failedDomainMap.clear();
+      this.lastCheckedMap.clear();
       this.inFlightFetches.clear();
       this.cacheVersion.value++;
 
@@ -598,6 +639,7 @@ export class WebsiteIconCacheService {
    */
   private static async saveIconEntry(entry: CachedWebsiteIcon): Promise<void> {
     try {
+      this.lastCheckedMap.set(entry.domain, entry.lastCheckedAt);
       const db = await this.getDB();
       await new Promise<void>((resolve, reject) => {
         const tx = db.transaction(STORE_NAME, 'readwrite');
@@ -616,6 +658,7 @@ export class WebsiteIconCacheService {
    */
   private static async deleteIconEntry(domain: string): Promise<void> {
     try {
+      this.lastCheckedMap.delete(domain);
       const db = await this.getDB();
       await new Promise<void>((resolve, reject) => {
         const tx = db.transaction(STORE_NAME, 'readwrite');

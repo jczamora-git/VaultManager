@@ -93,6 +93,15 @@
                 @change="(val) => settingsStore.updateSettings({ theme: val as ThemeMode })"
               />
             </SettingsRow>
+
+            <SettingsRow label="Accent Color" sublabel="Vaultify brand accent">
+              <VaultSelect
+                :model-value="settingsStore.settings.accent"
+                :options="accentOptions"
+                title="Accent Color"
+                @change="handleAccentChange"
+              />
+            </SettingsRow>
           </SettingsSection>
 
           <!-- SECTION: VAULT & BACKUP -->
@@ -172,7 +181,7 @@
               :danger="true"
               @click="showWipeConfirm = true"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="vk-chevron">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--vk-danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="vk-chevron">
                 <path d="m9 18 6-6-6-6"/>
               </svg>
             </SettingsRow>
@@ -543,32 +552,62 @@
       </ion-modal>
 
       <!-- Wipe Confirmation Modal -->
-      <ion-modal :is-open="showWipeConfirm" @didDismiss="showWipeConfirm = false" class="vk-modal">
-        <div class="vk-modal-content">
-          <div class="vk-modal-icon-brand">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--brand-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
-            </svg>
+      <ion-modal :is-open="showWipeConfirm" @didDismiss="showWipeConfirm = false" class="vk-fullscreen-modal">
+        <VaultifyHeroSheetLayout
+          title="Delete Vault Data"
+          subtitle="Permanently remove Vaultify data from this device."
+          :show-close="true"
+          hero-size="compact"
+          @close="showWipeConfirm = false"
+        >
+          <div class="vk-wipe-sheet-content">
+            <div class="vk-wipe-danger-card">
+              <div class="vk-wipe-card-header">
+                <div class="vk-wipe-card-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>
+                  </svg>
+                </div>
+                <div class="vk-wipe-card-header-text">
+                  <h4 class="vk-wipe-card-title">Permanently delete local Vaultify data</h4>
+                  <p class="vk-wipe-card-subtitle">This action cannot be undone.</p>
+                </div>
+              </div>
+
+              <div class="vk-wipe-divider"></div>
+
+              <h5 class="vk-wipe-items-title">This will remove from this device:</h5>
+              <ul class="vk-wipe-items-list">
+                <li><span class="vk-bullet-danger" aria-hidden="true">•</span> Local Profile</li>
+                <li><span class="vk-bullet-danger" aria-hidden="true">•</span> Encrypted credentials & categories</li>
+                <li><span class="vk-bullet-danger" aria-hidden="true">•</span> PIN configuration</li>
+                <li><span class="vk-bullet-danger" aria-hidden="true">•</span> Biometric quick-unlock configuration</li>
+                <li><span class="vk-bullet-danger" aria-hidden="true">•</span> Vaultify preferences</li>
+              </ul>
+            </div>
+
+            <p class="vk-wipe-note-text">
+              Previously exported backups stored elsewhere will not be deleted.
+            </p>
+
+            <div class="vk-wipe-actions">
+              <button
+                type="button"
+                class="vk-btn vk-btn-secondary vk-btn-block"
+                @click="showWipeConfirm = false"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="vk-btn vk-btn-danger vk-btn-block"
+                @click="handleWipeVault"
+              >
+                Permanently Delete
+              </button>
+            </div>
           </div>
-          <h3 class="vk-modal-title">Delete All Vaultify Data?</h3>
-          <p class="vk-modal-desc">
-            This will remove from this device:
-          </p>
-          <ul class="vk-wipe-list">
-            <li>• Local Profile</li>
-            <li>• Encrypted credentials & categories</li>
-            <li>• PIN configuration</li>
-            <li>• Biometric quick-unlock configuration</li>
-            <li>• Vaultify preferences</li>
-          </ul>
-          <p class="vk-wipe-note">
-            Previously exported backups stored elsewhere will not be deleted.
-          </p>
-          <div class="vk-modal-actions">
-            <button type="button" class="vk-btn vk-btn-secondary" @click="showWipeConfirm = false">Cancel</button>
-            <button type="button" class="vk-btn vk-btn-danger" @click="handleWipeVault">Permanently Delete</button>
-          </div>
-        </div>
+        </VaultifyHeroSheetLayout>
       </ion-modal>
 
       <!-- Edit Profile Modal -->
@@ -612,12 +651,12 @@
                     class="vk-palette-btn"
                     :class="{ 'is-selected': editAvatarColor === item.color }"
                     :style="{ backgroundColor: item.color }"
-                    @click="editAvatarColor = item.color"
+                    @click="handleSelectPalette(item)"
                     :title="item.label"
                   >
-                    <span class="vk-palette-initials">{{ editInitials }}</span>
+                    <span class="vk-palette-initials" :style="{ color: item.text }">{{ editInitials }}</span>
                     <div v-if="editAvatarColor === item.color" class="vk-palette-check">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" :stroke="item.text" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="20 6 9 17 4 12"/>
                       </svg>
                     </div>
@@ -627,7 +666,7 @@
 
               <!-- Live Preview Card -->
               <div class="vk-profile-preview-card">
-                <div class="vk-preview-avatar" :style="{ backgroundColor: editAvatarColor }">
+                <div class="vk-preview-avatar" :style="{ backgroundColor: editAvatarColor, color: getAvatarTextColor(editAvatarColor) }">
                   {{ editInitials }}
                 </div>
                 <div class="vk-preview-info">
@@ -667,8 +706,8 @@ import { BiometricService, BiometricAvailability } from '@/services/biometric.se
 import { PinService } from '@/services/pin.service';
 import { StorageService } from '@/services/storage.service';
 import { CryptoService } from '@/services/crypto.service';
-import { AVATAR_PALETTES, generateInitials } from '@/models/profile.model';
-import { AutoLockTimeout, ClipboardTimeout, ThemeMode } from '@/models/settings.model';
+import { AVATAR_PALETTES, AvatarPaletteOption, getAccentFromColor, getColorFromAccent, getAvatarTextColor, generateInitials } from '@/models/profile.model';
+import { AutoLockTimeout, ClipboardTimeout, ThemeMode, AccentColor, ACCENT_OPTIONS } from '@/models/settings.model';
 import { APP_VERSION } from '@/constants/app';
 import AppHeader from '@/components/common/AppHeader.vue';
 import PasswordStrengthMeter from '@/components/common/PasswordStrengthMeter.vue';
@@ -697,13 +736,35 @@ const editInitials = computed(() => {
 
 function openEditProfileModal() {
   editDisplayName.value = profileStore.displayName;
-  editAvatarColor.value = profileStore.avatarColor;
+  editAvatarColor.value = getColorFromAccent(settingsStore.settings.accent) || profileStore.avatarColor;
   showEditProfileModal.value = true;
+}
+
+function handleSelectPalette(item: AvatarPaletteOption) {
+  editAvatarColor.value = item.color;
+  const accent = item.accent || getAccentFromColor(item.color);
+  if (accent) {
+    settingsStore.updateSettings({ accent });
+  }
+}
+
+async function handleAccentChange(val: any) {
+  const accent = val as AccentColor;
+  await settingsStore.updateSettings({ accent });
+  const newColor = getColorFromAccent(accent);
+  if (newColor && profileStore.avatarColor !== newColor) {
+    await profileStore.updateProfile({ avatarColor: newColor });
+  }
 }
 
 async function handleSaveProfile() {
   const name = editDisplayName.value.trim();
   if (name.length < 2) return;
+
+  const accent = getAccentFromColor(editAvatarColor.value);
+  if (accent) {
+    await settingsStore.updateSettings({ accent });
+  }
 
   await profileStore.updateProfile({
     displayName: name,
@@ -761,6 +822,8 @@ const themeOptions: SelectOption<ThemeMode>[] = [
   { label: 'Dark Theme', value: 'dark' },
   { label: 'Light Theme', value: 'light' },
 ];
+
+const accentOptions: SelectOption<AccentColor>[] = ACCENT_OPTIONS;
 
 const showChangePasswordModal = ref(false);
 const currentPasswordInput = ref('');
@@ -1190,7 +1253,7 @@ body.dark-theme .vk-settings-profile-card:active {
 .vk-settings-profile-badge {
   font-size: 0.775rem;
   font-weight: 600;
-  color: var(--brand-red);
+  color: var(--vk-accent);
   margin-top: 3px;
 }
 
@@ -1205,6 +1268,7 @@ body.dark-theme .vk-settings-profile-card:active {
 
 .vk-palette-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-top: 8px;
 }
@@ -1220,6 +1284,7 @@ body.dark-theme .vk-settings-profile-card:active {
   cursor: pointer;
   position: relative;
   transition: transform 0.15s ease;
+  flex-shrink: 0;
 }
 
 .vk-palette-btn.is-selected {
@@ -1285,7 +1350,7 @@ body.dark-theme .vk-settings-profile-card:active {
 .vk-preview-tag {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--brand-red);
+  color: var(--vk-accent);
 }
 
 .vk-field-hint {
@@ -1362,7 +1427,7 @@ body.dark-theme .vk-settings-profile-card:active {
 .vk-pin-error-text {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--brand-red);
+  color: var(--vk-danger);
   text-align: center;
   line-height: 1.2;
 }
@@ -1375,7 +1440,7 @@ body.dark-theme .vk-settings-profile-card:active {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--brand-red-subtle);
+  background: var(--vk-accent-soft);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1428,16 +1493,11 @@ ion-modal.vk-fullscreen-modal {
 
 /* Export Summary Styles */
 .vk-export-summary-box {
-  background: #F1EFEC;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: var(--vk-surface-soft);
+  border: 1px solid var(--vk-border);
   border-radius: 20px;
   padding: 18px 20px;
   margin-bottom: 16px;
-}
-
-.dark .vk-export-summary-box {
-  background: #1E1E1E;
-  border-color: rgba(255, 255, 255, 0.06);
 }
 
 .vk-export-box-title {
@@ -1502,7 +1562,7 @@ ion-modal.vk-fullscreen-modal {
 .vk-import-meta-label {
   font-size: 0.75rem;
   font-weight: 800;
-  color: var(--brand-red);
+  color: var(--vk-accent);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -1560,24 +1620,108 @@ ion-modal.vk-fullscreen-modal {
   margin: 0;
 }
 
-.vk-wipe-list {
+/* Wipe Vault Modal Styles */
+.vk-wipe-sheet-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.vk-wipe-danger-card {
+  background: var(--vk-surface-soft);
+  border: 1px solid var(--vk-border);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.vk-wipe-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.vk-wipe-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--vk-danger-subtle, rgba(208, 39, 36, 0.12));
+  color: var(--vk-danger, #D02724);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.vk-wipe-card-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.vk-wipe-card-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.vk-wipe-card-subtitle {
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: var(--vk-danger, #D02724);
+  margin: 2px 0 0 0;
+}
+
+.vk-wipe-divider {
+  height: 1px;
+  background: var(--vk-divider);
+  margin: 14px 0;
+}
+
+.vk-wipe-items-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 10px 0;
+}
+
+.vk-wipe-items-list {
   list-style: none;
   padding: 0;
-  margin: 10px 0;
+  margin: 0;
   font-size: 0.85rem;
   color: var(--text-secondary);
-  text-align: left;
 }
 
-.vk-wipe-list li {
-  margin-bottom: 4px;
+.vk-wipe-items-list li {
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.vk-wipe-note {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: 10px;
-  font-style: italic;
-  line-height: 1.4;
+.vk-bullet-danger {
+  color: var(--vk-danger, #D02724);
+  font-weight: 800;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.vk-wipe-note-text {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+.vk-wipe-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
 }
 </style>
