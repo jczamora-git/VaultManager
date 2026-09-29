@@ -10,6 +10,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Existing tag to build/publish (e.g. v1.1.0)'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -22,21 +27,55 @@ jobs:
   build-android:
     name: Build Android APK & Bundle
     runs-on: ubuntu-latest
+    env:
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
     outputs:
       version: ${{ steps.app_version.outputs.version }}
-      has_release_artifacts: ${{ steps.check_artifacts.outputs.has_release_artifacts }}
+      is_release: ${{ steps.release_cfg.outputs.is_release }}
+      release_tag: ${{ steps.release_cfg.outputs.release_tag }}
     steps:
+      - name: Resolve release configuration
+        id: release_cfg
+        shell: bash
+        run: |
+          IS_RELEASE="false"
+          RELEASE_TAG=""
+          TARGET_REF="${{ github.ref }}"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.release_tag }}" ]; then
+            INPUT_TAG="${{ inputs.release_tag }}"
+            if [[ ! "$INPUT_TAG" =~ ^v[0-9] ]]; then
+              echo "::error::Invalid release_tag '$INPUT_TAG'. Must start with 'v' (e.g. v1.1.0)."
+              exit 1
+            fi
+            IS_RELEASE="true"
+            RELEASE_TAG="$INPUT_TAG"
+            TARGET_REF="refs/tags/$INPUT_TAG"
+          elif [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            IS_RELEASE="true"
+            RELEASE_TAG="${{ github.ref_name }}"
+          fi
+
+          echo "is_release=${IS_RELEASE}" >> "$GITHUB_OUTPUT"
+          echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
+          echo "target_ref=${TARGET_REF}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ steps.release_cfg.outputs.target_ref }}
           fetch-depth: 0
 
       - name: Extract App Version
         id: app_version
+        shell: bash
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
-          echo "APP_VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "APP_VERSION=${VERSION}" >> "$GITHUB_ENV"
 
       - name: Setup Node.js 22
         uses: actions/setup-node@v4
@@ -51,6 +90,13 @@ jobs:
       - name: Validate TypeScript Types
         run: npx vue-tsc --noEmit
 
+      - name: Run Regression Tests
+        shell: bash
+        run: |
+          if [ -f scripts/test-accent-suite.mjs ]; then node scripts/test-accent-suite.mjs; fi
+          if [ -f scripts/test-favicon-suite.mjs ]; then node scripts/test-favicon-suite.mjs; fi
+          if [ -f scripts/test-category-sheet-flow.mjs ]; then node scripts/test-category-sheet-flow.mjs; fi
+
       - name: Build Web Assets (Production)
         run: npm run build
 
@@ -58,6 +104,7 @@ jobs:
         run: npx cap sync android
 
       - name: Verify Android Assets Synced
+        shell: bash
         run: |
           echo "=== DIST ASSETS ==="
           ls -la dist/assets
@@ -72,92 +119,92 @@ jobs:
           cache: 'gradle'
 
       - name: Grant execute permission for gradlew
+        shell: bash
         run: chmod +x android/gradlew
 
       - name: Build Debug APK
         working-directory: android
         run: ./gradlew clean assembleDebug --no-daemon
 
-      - name: Prepare Debug APK Artifact
+      # ==========================================
+      # RELEASE SIGNING & BUILD (Release Executions Only)
+      # ==========================================
+      - name: Detect Android signing configuration
+        id: signing
+        shell: bash
         run: |
-          mkdir -p dist-apk
-          cp android/app/build/outputs/apk/debug/app-debug.apk dist-apk/Vaultify-v${{ steps.app_version.outputs.version }}-debug.apk
+          if [[ -n "$ANDROID_KEYSTORE_BASE64" \
+             && -n "$ANDROID_KEYSTORE_PASSWORD" \
+             && -n "$ANDROID_KEY_ALIAS" \
+             && -n "$ANDROID_KEY_PASSWORD" ]]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "Android release signing: CONFIGURED"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Android release signing: NOT CONFIGURED (will proceed without signing)"
+          fi
 
-      - name: Upload Debug APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: Vaultify-Android-Debug
-          path: dist-apk/Vaultify-v${{ steps.app_version.outputs.version }}-debug.apk
-          retention-days: 14
-
-      # ==========================================
-      # RELEASE BUILD (Version Tags Only: v*)
-      # ==========================================
       - name: Setup Keystore for Release Signing
-        if: startsWith(github.ref, 'refs/tags/v') && secrets.ANDROID_KEYSTORE_BASE64 != ''
-        env:
-          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        if: steps.release_cfg.outputs.is_release == 'true' && steps.signing.outputs.available == 'true'
+        shell: bash
         run: |
-          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/release.keystore
-          echo "ANDROID_KEYSTORE_PATH=release.keystore" >> $GITHUB_ENV
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/release.keystore
+          echo "ANDROID_KEYSTORE_PATH=release.keystore" >> "$GITHUB_ENV"
 
-      - name: Build Release APK and AAB
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Build Release APK and AAB (Signed)
+        if: steps.release_cfg.outputs.is_release == 'true' && steps.signing.outputs.available == 'true'
         working-directory: android
-        env:
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: ./gradlew assembleRelease bundleRelease --no-daemon
 
-      - name: Prepare Release Artifacts
-        id: prepare_release
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Build Release APK and AAB (Unsigned Fallback)
+        if: steps.release_cfg.outputs.is_release == 'true' && steps.signing.outputs.available != 'true'
+        working-directory: android
+        continue-on-error: true
+        run: ./gradlew assembleRelease bundleRelease --no-daemon
+
+      # ==========================================
+      # STAGE AND UPLOAD ARTIFACTS
+      # ==========================================
+      - name: Stage Android Artifacts
+        shell: bash
         run: |
-          mkdir -p dist-release
+          mkdir -p release-artifacts
+          VERSION="${{ steps.app_version.outputs.version }}"
+          TAG="${{ steps.release_cfg.outputs.release_tag }}"
+          PREFIX="${TAG:-v${VERSION}}"
 
-          # Copy Release APK (signed or unsigned fallback)
+          # Debug APK always exists if assembleDebug succeeded
+          if [ -f android/app/build/outputs/apk/debug/app-debug.apk ]; then
+            cp android/app/build/outputs/apk/debug/app-debug.apk "release-artifacts/Vaultify-${PREFIX}-debug.apk"
+          fi
+
+          # Signed Release APK & Bundle
           if [ -f android/app/build/outputs/apk/release/app-release.apk ]; then
-            cp android/app/build/outputs/apk/release/app-release.apk dist-release/Vaultify-v${{ steps.app_version.outputs.version }}.apk
-            echo "APK_TYPE=signed" >> $GITHUB_OUTPUT
+            cp android/app/build/outputs/apk/release/app-release.apk "release-artifacts/Vaultify-${PREFIX}.apk"
           elif [ -f android/app/build/outputs/apk/release/app-release-unsigned.apk ]; then
-            cp android/app/build/outputs/apk/release/app-release-unsigned.apk dist-release/Vaultify-v${{ steps.app_version.outputs.version }}-unsigned.apk
-            echo "APK_TYPE=unsigned" >> $GITHUB_OUTPUT
+            cp android/app/build/outputs/apk/release/app-release-unsigned.apk "release-artifacts/Vaultify-${PREFIX}-unsigned.apk"
           fi
 
-          # Copy Release AAB Bundle (signed or unsigned fallback)
           if [ -f android/app/build/outputs/bundle/release/app-release.aab ]; then
-            cp android/app/build/outputs/bundle/release/app-release.aab dist-release/Vaultify-v${{ steps.app_version.outputs.version }}.aab
+            cp android/app/build/outputs/bundle/release/app-release.aab "release-artifacts/Vaultify-${PREFIX}.aab"
           elif [ -f android/app/build/outputs/bundle/release/app-release-unsigned.aab ]; then
-            cp android/app/build/outputs/bundle/release/app-release-unsigned.aab dist-release/Vaultify-v${{ steps.app_version.outputs.version }}-unsigned.aab
+            cp android/app/build/outputs/bundle/release/app-release-unsigned.aab "release-artifacts/Vaultify-${PREFIX}-unsigned.aab"
           fi
 
-          # Check if we actually have any release artifacts
-          FILE_COUNT=$(ls dist-release | wc -l)
-          echo "file_count=${FILE_COUNT}" >> $GITHUB_OUTPUT
+          echo "=== Staged Artifacts in release-artifacts/ ==="
+          ls -la release-artifacts/
 
-      - name: Upload Release Artifacts
-        id: upload_release
-        if: startsWith(github.ref, 'refs/tags/v') && steps.prepare_release.outputs.file_count != '0'
+      - name: Upload Android Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Vaultify-Android-Release
-          path: dist-release/*
+          name: Vaultify-Android
+          path: release-artifacts/*
+          if-no-files-found: error
           retention-days: 14
 
-      - name: Check Release Artifacts Available
-        id: check_artifacts
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: |
-          if [ "${{ steps.prepare_release.outputs.file_count }}" != "0" ] && [ "${{ steps.prepare_release.outputs.file_count }}" != "" ]; then
-            echo "has_release_artifacts=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_release_artifacts=false" >> $GITHUB_OUTPUT
-          fi
-
   release:
-    name: Create GitHub Release
-    if: startsWith(github.ref, 'refs/tags/v')
+    name: Publish GitHub Release
+    if: needs.build-android.outputs.is_release == 'true'
     needs: build-android
     runs-on: ubuntu-latest
     permissions:
@@ -165,43 +212,39 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.build-android.outputs.release_tag }}
 
-      - name: Extract App Version
-        id: app_version
+      - name: Prepare Release Notes
+        shell: bash
         run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          if [ ! -f RELEASE_NOTES.md ]; then
+            echo "# Vaultify ${{ needs.build-android.outputs.release_tag }} — Personalization & Smarter Login Creation" > RELEASE_NOTES.md
+            echo "Release build for Vaultify ${{ needs.build-android.outputs.release_tag }}." >> RELEASE_NOTES.md
+          fi
 
-      - name: Download Release Artifacts
-        if: needs.build-android.outputs.has_release_artifacts == 'true'
+      - name: Download Android Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: Vaultify-Android-Release
+          name: Vaultify-Android
           path: release-artifacts
-        continue-on-error: true
-
-      - name: Download Debug APK as Fallback
-        if: needs.build-android.outputs.has_release_artifacts != 'true'
-        uses: actions/download-artifact@v4
-        with:
-          name: Vaultify-Android-Debug
-          path: release-artifacts
-        continue-on-error: true
 
       - name: List Release Files
+        shell: bash
         run: |
-          echo "=== Release artifacts ==="
-          ls -la release-artifacts/ 2>/dev/null || echo "(no artifacts)"
+          echo "=== Release Artifacts to Attach ==="
+          ls -la release-artifacts/
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Vaultify v${{ steps.app_version.outputs.version }}
+          tag_name: ${{ needs.build-android.outputs.release_tag }}
+          name: Vaultify ${{ needs.build-android.outputs.release_tag }} — Personalization & Smarter Login Creation
           body_path: RELEASE_NOTES.md
-          files: |
-            release-artifacts/*
+          files: release-artifacts/*
           draft: false
           prerelease: false
           fail_on_unmatched_files: false
+          make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
